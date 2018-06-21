@@ -26,7 +26,7 @@ export const findTodayParties = async() => {
   }
 }
 
-export const partyJoin = async(partyId, email) => {
+export const partyJoin = async(partyId, userId) => {
    const querySnapshot = await db.collection('parties').doc(partyId).get()
 
    const party = querySnapshot.data()
@@ -35,14 +35,14 @@ export const partyJoin = async(partyId, email) => {
    if (!party.joinner) {
       updateParty = {
         ...party,
-        joinner: [ email ]
+        joinner: [ userId ]
       }
-   } else if(!party.joinner.includes(email)) {
+   } else if(!party.joinner.includes(userId)) {
       updateParty = {
         ...party,
        joinner: [
          ...party.joinner,
-         email
+         userId
        ]
      }
    }

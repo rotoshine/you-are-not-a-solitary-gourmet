@@ -9,6 +9,7 @@ import { findCommentsByPartyId } from './utils/commentUtils'
 import CommentTestForm from './CommentTestForm';
 
 import './App.css';
+import { addUserIfNotExist } from './utils/userUtils';
 
 const { firebase } = window
 
@@ -42,6 +43,11 @@ class App extends Component {
           displayName,
           photoURL
         }
+      })
+      addUserIfNotExist({
+        email,
+        displayName,
+        photoURL
       })
     }
   }
