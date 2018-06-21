@@ -45,7 +45,7 @@ export const joinParty = async(partyId, userId) => {
    const party = querySnapshot.data()
 
    let updateParty = null
-   if (!party.joinner) {
+   if (!party.joinner || party.joinner.length === 0) {
       updateParty = {
         ...party,
         joinner: [ userId ]
