@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "cagegory": "점심",
+    "title": "떡볶이에 분식 가즈아",
+    "destinationName": "마녀김밥",
+    "description": "설명이 들어갈 부분",
+    "partyTime": "201806211130",
+    "location": {
+      "lat": "",
+      "lng": ""
+    },
+    "joinners": [
+      "rotoshine@gmail.com"
+    ]
+  },
+  {
+    "id": 1,
+    "cagegory": "저녁",
+    "title": "파파호 가실 분",
+    "destinationName": "파파호",
+    "description": "설명이 들어갈 부분",
+    "partyTime": "201806211130",
+    "location": {
+      "lat": "",
+      "lng": ""
+    },
+    "joinners": [
+      "rotoshine@gmail.com"
+    ]
+  }
+]

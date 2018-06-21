@@ -2,27 +2,38 @@ import React, { Component } from 'react';
 import UserContext from './context/UserContext'
 import GoogleLoginButton from './GoogleLoginButton'
 import logo from './logo.svg';
-
+import FBTest from './FBTest'
 import './App.css';
+
+import { findTodayParties } from './utils/partyUtils'
 
 const { firebase } = window
 
 class App extends Component {
   state = {
-    user: null
+    user: null,
+    parties: []
   }
 
   async componentDidMount() {    
     await firebase.auth().getRedirectResult()
     await this.loadCurrentUser()
+
+    const parties = await findTodayParties()
+
+    console.log(parties)
+    this.setState({
+      parties: parties
+    })
   }
 
   async loadCurrentUser() {    
     const { currentUser } = firebase.auth() 
     if (currentUser !== null) {
-      const { displayName, photoURL } = currentUser
+      const { displayName, email, photoURL } = currentUser
       this.setState({
         user: {
+          email,
           displayName,
           photoURL
         }
@@ -50,6 +61,8 @@ class App extends Component {
           { user === null && <GoogleLoginButton /> }
           { user !== null && <button onClick={this.handleSignOut}>Logout</button> }
         </div>
+        <FBTest />
+        {this.state.parties.map(party => JSON.stringify(party))}
       </UserContext.Provider>
     );
   }
