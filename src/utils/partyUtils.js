@@ -39,7 +39,7 @@ export const findTodayParties = async() => {
   }
 }
 
-export const partyJoin = async(partyId, userId) => {
+export const joinParty = async(partyId, userId) => {
    const querySnapshot = await db.collection('parties').doc(partyId).get()
 
    const party = querySnapshot.data()
