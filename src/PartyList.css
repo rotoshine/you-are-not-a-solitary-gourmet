@@ -1,20 +1,66 @@
 .PartyList {
   padding: 20px;
   height: 100vh;
-  
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .parties {
   display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
 }
 
 .party {
-  width: 33%;
-  height: 200px;
+  width: 30%;
+  /* height: 200px; */
   border-radius: 6px;
-  padding: 20px;
-  margin: 10px;
+  padding: 10px;
+  margin: 20px 10px;
+  flex-wrap: wrap;
   border: 1px solid darkorange;
+}
+
+.party-title {
+
+}
+
+.party-title h3 {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.party-category {
+  display: inline;
+  background: #cacaca;
+  font-size: 12px;
+  border-radius: 2px;
+  padding: 4px 10px;
+  margin-right: 4px;
+  color: white;
+}
+
+.party-nav-group {
+  margin-bottom: 60px;
+}
+
+.party-nav {
+  border: 1px solid #d6d6d6;
+  border-radius: 4px;
+  line-height: 40px;
+  display: inline-block;
+  margin-right: 10px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #717171;
+  cursor: pointer;
+}
+
+.party-nav:hover {
+  background-color: #d6d6d6;
+}
+
+.party-make {
+  background-color: #d6d6d6;
 }

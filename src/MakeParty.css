@@ -1,0 +1,38 @@
+.MakeParty-overlay {
+  position: fixed;
+  z-index: 10;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.close-button {
+  
+}
+.MakeParty-group {
+  width: 600px;
+  height: 700px;
+  background: white;
+  padding: 20px;
+  position: relative;
+}
+
+.MakeParty-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.MakeParty-form input {
+  line-height: 3;
+  margin: 10px 0;
+}
+
+.submit {
+  margin: 0 auto;
+  margin-top: 40px;
+}

@@ -75,7 +75,7 @@ class App extends Component {
             parties={this.state.parties}
           />
         </div>
-        <FBTest />
+        {/* <FBTest /> */}
         <UserContext.Consumer>
           {user => (
             <CommentTestForm user={user}/>

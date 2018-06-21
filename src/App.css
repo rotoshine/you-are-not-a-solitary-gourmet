@@ -2,10 +2,9 @@
   box-sizing: border-box;
 }
 
-
 em {
   font-style: normal;
-  color: white;
+  color: orange;
 }
 
 h3 {
@@ -21,6 +20,22 @@ ul, li {
   width: 100%;
 }
 
+@keyframes bgIn {
+  0% {
+    opacity: 0;
+    background-position-x: -100%, 200%;
+  }
+  50% {
+    background-position-x: -10%, 200%;
+    background-position-y: 0%, 70%;
+  }
+  100% {
+    opacity: 1;
+    background-position-x: -10%, 110%;
+    background-position-y: 0%, 70%;
+  }
+}
+
 .App-header {
   text-align: center;
   height: 100vh;
@@ -28,14 +43,26 @@ ul, li {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(330deg, #f6d365 0%, #fda085 100%);
-  background-size: cover;
+  background-image: url("https://raw.githubusercontent.com/yogicat/over-eats-project/develop/src/assets/images/bg-left.png"),
+    url("https://raw.githubusercontent.com/yogicat/over-eats-project/develop/src/assets/images/bg-right.png");
+  width: 100%;
+  background-position-x: -10%, 110%;
+  background-size: 40% auto;
+  background-repeat: no-repeat, no-repeat;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  animation: bgIn 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) 1;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
 }
 
 .App-title {
   margin: 0;
   font-weight: 300;
-  font-size: 46px;
+  font-size: 56px;
 }
 
 button {
@@ -58,7 +85,7 @@ button:hover {
 }
 
 .arrow {
-  border: solid white;
+  border: solid orange;
   border-width: 0 6px 6px 0;
   width: 30px;
   height: 30px;

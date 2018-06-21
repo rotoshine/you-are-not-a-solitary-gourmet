@@ -67,6 +67,5 @@ export const joinParty = async(partyId, userId) => {
 
 export default {
   addParty,
-  partyJoin,
   findTodayParties
 }
