@@ -4,17 +4,48 @@
   
 }
 
-.parties {
+.PartyList__parties {
   display: flex;
   justify-content: center;
   flex-wrap: nowrap;
 }
 
-.party {
+.PartyList__party {
+  position: relative;
   width: 33%;
-  height: 200px;
   border-radius: 6px;
   padding: 20px;
   margin: 10px;
   border: 1px solid darkorange;
+}
+
+.PartyList__partyContent {
+  height: 330px;
+  overflow-y: auto
+}
+
+.PartyList__partyButtons {
+  position: absolute;
+  bottom: 10px
+}
+
+.PartyList__label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.PartyList__label--partyMembers {
+  margin-top: -25px
+}
+
+.PartyList__joinnersPhoto {
+  display: inline-block;
+}
+
+.PartyList__joinners img {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
 }

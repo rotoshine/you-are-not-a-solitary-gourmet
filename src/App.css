@@ -69,3 +69,9 @@ button:hover {
   position: absolute;
   bottom: 40px;
 }
+
+.App__contents {
+  width: 100%;
+  max-width: 1366px;
+  margin: 0 auto;
+}
