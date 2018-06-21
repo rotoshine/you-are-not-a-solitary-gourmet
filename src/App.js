@@ -3,9 +3,12 @@ import UserContext from './context/UserContext'
 import GoogleLoginButton from './GoogleLoginButton'
 import logo from './logo.svg';
 import FBTest from './FBTest'
-import './App.css';
 
-import { findTodayParties } from './utils/partyUtils'
+import { findTodayParties,  } from './utils/partyUtils'
+import { findCommentsByPartyId } from './utils/commentUtils'
+import CommentTestForm from './CommentTestForm';
+
+import './App.css';
 
 const { firebase } = window
 
@@ -21,7 +24,9 @@ class App extends Component {
 
     const parties = await findTodayParties()
 
-    console.log(parties)
+    parties.forEach(async (party) => {
+      console.log(await findCommentsByPartyId(party.id))
+    })
     this.setState({
       parties: parties
     })
@@ -63,6 +68,11 @@ class App extends Component {
         </div>
         <FBTest />
         {this.state.parties.map(party => JSON.stringify(party))}
+        <UserContext.Consumer>
+          {user => (
+            <CommentTestForm user={user}/>
+          )}
+        </UserContext.Consumer>
       </UserContext.Provider>
     );
   }
