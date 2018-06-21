@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import UserContext from './context/UserContext'
 import GoogleLoginButton from './GoogleLoginButton'
 import logo from './logo.svg';
 import FBTest from './FBTest'
 
-import { findTodayParties,  } from './utils/partyUtils'
+import { findTodayParties  } from './utils/partyUtils'
 import { findCommentsByPartyId } from './utils/commentUtils'
 import CommentTestForm from './CommentTestForm';
 
 import './App.css';
 import { addUserIfNotExist } from './utils/userUtils';
+import PartyList from './PartyList'
+
+import './App.css'
 
 const { firebase } = window
 
@@ -63,25 +66,28 @@ class App extends Component {
       <UserContext.Provider value={user}>
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
+            <h1 className="App-title">you are not a solitary gourmet</h1>
+            <p className="App-intro">
+              오늘도 혼자인가요? <em>안 고독한 미식가</em>와 함께 더 이상 혼자 먹지 마세요.
+            </p>
+            <span className="arrow"></span>
+            { user === null && <GoogleLoginButton /> }
+            { user !== null && <button className="signIn" onClick={this.handleSignOut}>Logout</button> }
           </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-          { user === null && <GoogleLoginButton /> }
-          { user !== null && <button onClick={this.handleSignOut}>Logout</button> }
+          <PartyList
+            parties={this.state.parties}
+          />
         </div>
         <FBTest />
-        {this.state.parties.map(party => JSON.stringify(party))}
         <UserContext.Consumer>
           {user => (
             <CommentTestForm user={user}/>
           )}
         </UserContext.Consumer>
+        {/* {this.state.parties.map(party => JSON.stringify(party))} */}
       </UserContext.Provider>
-    );
+    )
   }
 }
 
-export default App;
+export default App

@@ -1,28 +1,71 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+em {
+  font-style: normal;
   color: white;
 }
 
+h3 {
+  font-style:none;
+  font-weight: 300;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.App {
+  width: 100%;
+}
+
+.App-header {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(330deg, #f6d365 0%, #fda085 100%);
+  background-size: cover;
+}
+
 .App-title {
-  font-size: 1.5em;
+  margin: 0;
+  font-weight: 300;
+  font-size: 46px;
 }
 
-.App-intro {
-  font-size: large;
+button {
+  width: 120px;
+  height: 40px;
+  border-radius: 4px;
+  border: 0px;
+  background-color: orange;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px 1px #00000040;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+button:hover {
+  background-color: yellow;
+}
+
+.signIn {
+  margin: 20px;
+}
+
+.arrow {
+  border: solid white;
+  border-width: 0 6px 6px 0;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  position: absolute;
+  bottom: 40px;
 }

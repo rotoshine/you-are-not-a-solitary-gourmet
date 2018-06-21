@@ -9,7 +9,7 @@ export default class GoogleLoginButton extends Component {
 
   render () {
     return (
-      <button type="button" onClick={this.handleSignInClick}>SignIn with google</button>
+      <button className="signIn" type="button" onClick={this.handleSignInClick}>Google Sign In</button>
     )
   }
 }

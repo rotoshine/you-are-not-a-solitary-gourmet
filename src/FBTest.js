@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import partyUtils from './utils/partyUtils'
 
+
 export default class FBTest extends Component {
   state = {
     form: {
@@ -60,7 +61,7 @@ export default class FBTest extends Component {
             onChange={(e) => this.handleFormChange('partyTime', e.target.value)}
           />
           <textarea value={form.description} onChange={e => this.handleFormChange('description', e.target.value)} />
-          <button>submit</button>
+          <button className="submit">submit</button>
         </form>
       </div>
     )
