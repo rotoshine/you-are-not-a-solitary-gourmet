@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import UserContext from './context/UserContext'
 import GoogleLoginButton from './GoogleLoginButton'
-import logo from './logo.svg';
 import FBTest from './FBTest'
 
 import { findTodayParties  } from './utils/partyUtils'
@@ -11,8 +10,6 @@ import CommentTestForm from './CommentTestForm';
 import './App.css';
 import { addUserIfNotExist } from './utils/userUtils';
 import PartyList from './PartyList'
-
-import './App.css'
 
 const { firebase } = window
 

@@ -3,13 +3,26 @@ const { firebase } = window
 const db = firebase.firestore()
 
 export const addParty = async (party) => {
-  const { category, title, destinationName, partyTime, description } = party
+  const { 
+    category, 
+    title, 
+    destinationName, 
+    partyTime, 
+    dueDateTime,
+    description,
+    isDelivery,
+    maxPartyMember = 0
+  } = party
+
   const addedParty = await db.collection('parties').add({
     category,
     title,
     destinationName,
     partyTime: new Date(partyTime).getTime(),
-    description
+    dueDateTime: new Date(dueDateTime),
+    description,
+    isDelivery,
+    maxPartyMember
   })
 
   return addedParty
