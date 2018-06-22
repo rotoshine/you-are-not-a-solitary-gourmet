@@ -12,8 +12,17 @@
 }
 
 .close-button {
-  
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 20px;
+  position: absolute;
+  right: 10px;
 }
+
+.close-button:hover {
+  background-color: transparent;
+}
+
 .MakeParty-group {
   width: 600px;
   height: 700px;
@@ -25,6 +34,7 @@
 .MakeParty-form {
   display: flex;
   flex-direction: column;
+  margin: 40px 10px;
 }
 
 .MakeParty-form input {

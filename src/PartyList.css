@@ -5,62 +5,51 @@
   margin: 0 auto;
 }
 
-.parties {
+.PartyList__parties {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   max-width: 1200px;
 }
 
-.party {
-  width: 30%;
-  /* height: 200px; */
+.PartyList__party {
+  position: relative;
+  width: 32%;
   border-radius: 6px;
   padding: 10px;
-  margin: 20px 10px;
+  margin: 20px 0px;
   flex-wrap: wrap;
   border: 1px solid darkorange;
 }
 
-.party-title {
-
+.PartyList__partyContent {
+  height: 330px;
+  overflow-y: auto
 }
 
-.party-title h3 {
-  display: inline-block;
+.PartyList__partyButtons {
+  position: absolute;
+  bottom: 0px;
+  right: 2px;
+}
+
+.PartyList__label {
+  font-weight: bold;
   margin-right: 10px;
 }
 
-.party-category {
-  display: inline;
-  background: #cacaca;
-  font-size: 12px;
-  border-radius: 2px;
-  padding: 4px 10px;
-  margin-right: 4px;
-  color: white;
+.PartyList__label--partyMembers {
+  margin-top: -25px
 }
 
-.party-nav-group {
-  margin-bottom: 60px;
-}
-
-.party-nav {
-  border: 1px solid #d6d6d6;
-  border-radius: 4px;
-  line-height: 40px;
+.PartyList__joinnersPhoto {
   display: inline-block;
+}
+
+.PartyList__joinners img {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
   margin-right: 10px;
-  padding: 0 14px;
-  font-size: 14px;
-  color: #717171;
-  cursor: pointer;
-}
-
-.party-nav:hover {
-  background-color: #d6d6d6;
-}
-
-.party-make {
-  background-color: #d6d6d6;
 }

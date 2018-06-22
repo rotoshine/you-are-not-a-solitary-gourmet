@@ -27,9 +27,7 @@ class MakeParty extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-
     console.log(this.state.form)
-
     partyUtils.addParty(this.state.form)
   }
 
@@ -42,7 +40,7 @@ class MakeParty extends Component {
         <div className="MakeParty-group">
           <button
             className="close-button"
-            onClick={this.props.handleCloseButton}
+            onClick={this.props.handleClose}
           >x</button>
           <form 
             className="MakeParty-form"

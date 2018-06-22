@@ -1,72 +1,90 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
-import MakeParty from './MakeParty'
+import GoogleLoginButton from './GoogleLoginButton'
+import DueCountDown from './DueCountDown'
+
+import MakeParty  from './MakeParty'
 
 import './PartyList.css'
 
 class PartyList extends Component {
-
   state = {
     isOpen: false
   }
+  handleJoinPartyClick = (party) => {
+    const { user, onJoinParty } = this.props
 
-  handleCloseButton = () => {
-    this.setState({ isOpen: false })
+    if (user) {
+      onJoinParty(party.id, user.email)
+    }
   }
-
-  makeNewParty = () => {
+  handleClick = () => {
     this.setState({ isOpen: true })
   }
 
+  handleClose = () => {
+    this.setState({ isOpen: false })
+  }
   render() {
-    const { parties } = this.props
-    const { isOpen } = this.state
+    const { user, parties } = this.props
 
     return (
       <div className="PartyList">
+        <h3>오늘의 파티를 찾아보세요!</h3>
+        <button
+          onClick={this.handleClick}
+        >
+        파티만들기
+        </button>
         {
-          isOpen && <MakeParty
-            handleCloseButton={this.handleCloseButton} 
-            isOpen={isOpen} />
+          this.state.isOpen && <MakeParty handleClose={this.handleClose} />
         }
-        <div className="party-nav-group">
-          <h2>원하는 파티를 찾아보세요!</h2>
-          {
-            parties.map(party => (
-              <span className="party-nav">{party.category}</span>
-            ))
-          }
-          <button
-            className="party-make"
-            onClick={this.makeNewParty}
-          >파티만들기
-          </button>
-        </div>
-        <div>
-          <h2>오늘의 파티 전체보기</h2>
-          <ul className="parties">
-            { parties.map(party => (
-              <li className="party">
-                <div className="party-desc">
-                  <div className="party-title">
-                    <h3>{party.title}</h3>
-                    <span className="party-category">{party.category}</span>
-                    <span className="party-category">{party.maxPartyMember} 명</span>
-                    {
-                      party.isDelivery && <span className="party-category">배달</span>
-                    }
+        <ul className="PartyList__parties">
+          {parties.map(party => (
+            <li key={party.id} className="PartyList__party">
+              <div className="PartyList__partyContent">
+                <h3>[{party.category}] {party.title}</h3>
+                <p>{party.description}</p>
+                <p>
+                  <span className="PartyList__label">먹으러 갈 곳</span>
+                  <span>{party.destinationName}</span>
+                </p>
+                <p>
+                  <span className="PartyList__label">모집 마감 시간</span>
+                  <span>{moment(party.dueDateTime).format('YYYY.MM.DD HH:mm')}</span>
+                </p>
+                {party.maxPartyMember > 0 ? (
+                  <p>
+                    <span className="PartyList__label">모집 멤버수</span>
+                    <span>{party.maxPartyMember} 중 {party.joinners.length} 명이 모였습니다.</span>
+                  </p>
+                ) : (
+                    <span>멤버 모집 제한이 없습니다.</span>
+                  )
+                }
+                <p><DueCountDown dueDateTime={party.dueDateTime} /></p>
+                <div className="PartyList__joinners">
+                  <span className="PartyList__label PartyList__label--partyMembers">파티원</span>
+                  <div className="PartyList__joinnersPhoto">
+                    {party.joinners.map((joinner) => (
+                      <img src={joinner.photoURL} alt={joinner.displayName} />
+                    ))}
                   </div>
-                  {/* <p>{party.dueDateTime}</p> */}
-                  <p>{party.description}</p>
-                  <p>위치: {party.destinationName}</p>
-                  <button>참석하기</button>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-  
-        {parties.map(party => JSON.stringify(party))}
+                <div className="PartyList__partyButtons">
+                  {
+                    user ? (
+                      <button onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>
+                    ) : (
+                        <GoogleLoginButton />
+                      )
+                  }
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }

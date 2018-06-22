@@ -1,10 +1,11 @@
+import Promise from 'bluebird'
+
 const { firebase } = window
 
 const db = firebase.firestore()
 
 export const addUser = async (user) => {
   const addedUser = await db.collection('users').add(user)
-
   return addedUser
 }
 
@@ -12,8 +13,10 @@ export const addUserIfNotExist = async(user) => {
   const alreadyAddedUser = await findByEmail(user.email)
 
   if(!alreadyAddedUser) {
-    addUser(user)
+    return addUser(user)
   }
+
+  return null
 }
 
 export const findOneById = async(id) => {
@@ -27,13 +30,23 @@ export const findOneById = async(id) => {
 }
 
 export const findByIds = async(ids) => {
-  return ids.map(async(id) => await findOneById(id))
+  if(!ids || ids.length === 0) {
+    return new Promise((resolve) => {
+      resolve([])
+    })
+  }
+  return Promise.map(ids, async(id) => await findOneById(id))
+}
+
+export const findByEmails = async(emails) => {
+  return Promise.map(emails, async(email) => await findByEmail(email))  
 }
 
 export const findByEmail = async(email) => {
   const querySnapshot = await db.collection('users').where('email', '==', email).get()
 
   if (querySnapshot && querySnapshot.size > 0) {
+    console.log(querySnapshot.docs[0].data())
     return querySnapshot.docs[0].data()
   }
 }

@@ -66,18 +66,17 @@ ul, li {
 }
 
 button {
-  width: 120px;
-  height: 40px;
+  padding: 10px;
   border-radius: 4px;
   border: 0px;
   background-color: orange;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   box-shadow: 0px 2px 4px 1px #00000040;
 }
 
 button:hover {
-  background-color: yellow;
+  background-color: rgb(255, 145, 0);
 }
 
 .signIn {
@@ -95,4 +94,10 @@ button:hover {
   -webkit-transform: rotate(45deg);
   position: absolute;
   bottom: 40px;
+}
+
+.App__contents {
+  width: 100%;
+  max-width: 1366px;
+  margin: 0 auto;
 }
