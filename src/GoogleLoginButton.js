@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
+const { firebase } = window
 
 export default class GoogleLoginButton extends Component {
   handleSignInClick = () => {
-    const { firebase } = window
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(provider)
   }

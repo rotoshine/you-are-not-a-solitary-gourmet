@@ -1,5 +1,4 @@
 const { firebase } = window
-
 const db = firebase.firestore()
 
 export const addComment = async (comment) => {

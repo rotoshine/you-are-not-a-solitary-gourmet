@@ -43,8 +43,8 @@ ul, li {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("https://raw.githubusercontent.com/yogicat/over-eats-project/develop/src/assets/images/bg-left.png"),
-    url("https://raw.githubusercontent.com/yogicat/over-eats-project/develop/src/assets/images/bg-right.png");
+  background-image: url("/images/bg-left.png"),
+    url("/images/bg-right.png");
   width: 100%;
   background-position-x: -10%, 110%;
   background-size: 40% auto;

@@ -25,9 +25,6 @@ export default class FBTest extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(this.state.form)
-
     partyUtils.addParty(this.state.form)
   }
 

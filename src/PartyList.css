@@ -6,31 +6,48 @@
 }
 
 .PartyList__parties {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  padding: 0;
   max-width: 1200px;
 }
 
 .PartyList__party {
-  position: relative;
   width: 32%;
-  border-radius: 6px;
+  padding: 10px;  
+  display: inline-block;
+}
+
+.PartyList__partyContent {  
   padding: 10px;
-  margin: 20px 0px;
-  flex-wrap: wrap;
+  box-sizing: border-box;    
+  position: relative;  
+  height: 330px;
+  overflow-y: auto;
+  border-radius: 6px;  
+  margin-right: 5px;
   border: 1px solid darkorange;
 }
 
-.PartyList__partyContent {
-  height: 330px;
-  overflow-y: auto
+@media screen and (max-width: 800px) {
+  .PartyList__party {    
+    width: 50%;
+  }
+
+  .PartyList__partyContent {
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .PartyList__party {    
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .PartyList__partyButtons {
   position: absolute;
-  bottom: 0px;
-  right: 2px;
+  bottom: 5px;
+  right: 5px;
 }
 
 .PartyList__label {

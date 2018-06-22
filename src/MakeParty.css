@@ -37,12 +37,35 @@
   margin: 40px 10px;
 }
 
+.MakeParty-form label {
+  font-weight: 700;
+  padding-right: 10px;
+  display: inline-block;
+  width: 30%;
+  text-align: right;
+}
 .MakeParty-form input {
-  line-height: 3;
+  width: 70%;
+  padding-left: 5px;
+  font-size: 20px;
   margin: 10px 0;
 }
 
 .submit {
   margin: 0 auto;
   margin-top: 40px;
+}
+
+.MakeParty-form input::-webkit-input-placeholder {
+  font-size: 18px;
+}
+
+.MakeParty-form textarea {
+  font-size: 20px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.MakeParty-form textarea::-webkit-input-placeholder {
+  font-size: 20px;
 }

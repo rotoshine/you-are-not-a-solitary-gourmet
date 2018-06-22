@@ -5,6 +5,11 @@ const { firebase } = window
 
 const db = firebase.firestore()
 
+export const findById = async(partyId) => {
+  const querySnapshot = await db.collection('parties').doc(partyId).get()
+  return querySnapshot.data()
+}
+
 export const addParty = async (party) => {
   const {
     category,
@@ -14,7 +19,8 @@ export const addParty = async (party) => {
     dueDateTime,
     description,
     isDelivery,
-    maxPartyMember = 0
+    maxPartyMember = 0,
+    joinners = []
   } = party
 
   const addedParty = await db.collection('parties').add({
@@ -25,7 +31,8 @@ export const addParty = async (party) => {
     dueDateTime: new Date(dueDateTime),
     description,
     isDelivery,
-    maxPartyMember
+    maxPartyMember,
+    joinners
   })
 
   return addedParty
@@ -38,7 +45,7 @@ export const findTodayParties = async () => {
     const parties = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id
-    }))
+    })).filter((party) => new Date(party.partyTime) > new Date())
 
     return await Promise.map(parties, async(party) => {
       const joinners = await findByEmails(party.joinners)
@@ -53,13 +60,8 @@ export const findTodayParties = async () => {
   return []
 }
 
-export const joinParty = async (partyId, email) => {
-  console.log(partyId, email)
-  const querySnapshot = await db.collection('parties').doc(partyId).get()
-
-  const party = querySnapshot.data()
-
-  console.log(party)
+export const joinParty = async (partyId, email) => {  
+  const party = await findById(partyId)
 
   let updateParty = null
   if (!party.joinners || party.joinners.length === 0) {
@@ -82,8 +84,20 @@ export const joinParty = async (partyId, email) => {
   }
 }
 
+export const leaveParty = async(partyId, email) => {
+  const party = await findById(partyId)  
+  const { joinners } = party
+
+  if (joinners && joinners.length > 0 && joinners.includes(email)) {
+    joinners.splice(joinners.indexOf(email), 1)
+
+    await db.collection('parties').doc(partyId).set(party)
+  }
+}
+
 export default {
   addParty,
   joinParty,
+  leaveParty,
   findTodayParties
 }

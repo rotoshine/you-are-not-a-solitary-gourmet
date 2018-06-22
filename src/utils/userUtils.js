@@ -1,7 +1,6 @@
 import Promise from 'bluebird'
 
 const { firebase } = window
-
 const db = firebase.firestore()
 
 export const addUser = async (user) => {
@@ -46,7 +45,6 @@ export const findByEmail = async(email) => {
   const querySnapshot = await db.collection('users').where('email', '==', email).get()
 
   if (querySnapshot && querySnapshot.size > 0) {
-    console.log(querySnapshot.docs[0].data())
     return querySnapshot.docs[0].data()
   }
 }
