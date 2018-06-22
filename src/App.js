@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as firebase from 'firebase';
 
 import PartyList from './PartyList'
 import GoogleLoginButton from './GoogleLoginButton'
@@ -9,23 +8,7 @@ import { addUserIfNotExist } from './utils/userUtils';
 
 import './App.css';
 
-require('dotenv').config()
-
-const {
-  REACT_APP_FIREBASE_API_KEY,
-  REACT_APP_FIREBASE_AUTH_DOMAIN,
-  REACT_APP_FIREBASE_DATABASE_URL,
-  REACT_APP_FIREBASE_PROJECT_ID
-} = process.env
-
-firebase.initializeApp({
-  apiKey: REACT_APP_FIREBASE_API_KEY,
-  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: REACT_APP_FIREBASE_PROJECT_ID
-})
-
-window.firebase = firebase
+const { firebase } = window
 
 class App extends Component {
   state = {
@@ -35,8 +18,7 @@ class App extends Component {
     parties: null
   }
 
-  async componentDidMount() {
-    await firebase.auth().getRedirectResult()
+  async componentDidMount() {    
     await this.loadCurrentUser()
 
     await this.fetchParties()
@@ -68,7 +50,7 @@ class App extends Component {
         email,
         displayName,
         photoURL
-      })     
+      })
 
       this.setState({
         user: {
@@ -87,7 +69,7 @@ class App extends Component {
     })
   }
 
-  handleMakeParty = async(party) => {
+  handleMakeParty = async (party) => {
     const { user } = this.state
 
     party.joinners = [

@@ -31,7 +31,13 @@ class PartyList extends Component {
   }
 
   handleClick = () => {
-    this.setState({ isOpen: true })
+    const { user } = this.props
+
+    if (!user) {
+      alert('로그인이 필요합니다!')
+    } else{
+      this.setState({ isOpen: true })
+    }
   }
 
   handleClose = () => {
