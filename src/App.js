@@ -3,63 +3,50 @@ import React, { Component } from 'react'
 import PartyList from './PartyList'
 import GoogleLoginButton from './GoogleLoginButton'
 
-import { findTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
-import { addUserIfNotExist } from './utils/userUtils';
+import firebase from './utils/firebase'
+import { subscribeTodayParties, unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
+import { loadCurrentUser } from './utils/userUtils';
 
 import './App.css';
 
-const { firebase } = window
 
 class App extends Component {
   state = {
     initialize: false,
     user: null,
+    userInitialized: false,
     nowPartiesLoading: false,
     parties: null
   }
 
-  async componentDidMount() {    
-    await this.loadCurrentUser()
+  async componentDidMount() {
+    const user = await loadCurrentUser()
 
-    await this.fetchParties()
+    await this.asyncSetState({
+      userInitialized: true
+    })
 
-    this.setState({
+    await this.asyncSetState({
+      user
+    })
+
+    subscribeTodayParties((parties) => {
+      this.setState({
+        parties
+      })
+    })
+
+    await this.asyncSetState({
       initialize: true
     })
   }
 
+  componentWillUnmount() {
+    unsubscribeTodayParties()
+  }
+
   async asyncSetState(state) {
     return new Promise((resolve) => this.setState(state, resolve))
-  }
-
-  async fetchParties() {
-    await this.asyncSetState({ nowPartiesLoading: true })
-    const parties = await findTodayParties()
-    await this.asyncSetState({
-      parties,
-      nowPartiesLoading: false
-    })
-  }
-
-  async loadCurrentUser() {
-    const { currentUser } = firebase.auth()
-    if (currentUser !== null) {
-      const { displayName, email, photoURL } = currentUser
-
-      await addUserIfNotExist({
-        email,
-        displayName,
-        photoURL
-      })
-
-      this.setState({
-        user: {
-          email,
-          displayName,
-          photoURL
-        }
-      })
-    }
   }
 
   handleSignOut = async () => {
@@ -76,22 +63,19 @@ class App extends Component {
       user.email
     ]
 
-    await addParty(party)
-    await this.fetchParties()
+    await addParty(party, user)
   }
 
   handleJoinPartyClick = async (partyId, email) => {
     await joinParty(partyId, email)
-    await this.fetchParties()
   }
 
   handleLeavePartyClick = async (partyId, email) => {
     await leaveParty(partyId, email)
-    await this.fetchParties()
   }
 
   render() {
-    const { initialize, nowPartiesLoading, user, parties } = this.state
+    const { initialize, userInitialized, nowPartiesLoading, user, parties } = this.state
 
     return (
       <div className="App">
@@ -101,8 +85,9 @@ class App extends Component {
             오늘도 혼자인가요? <em>안 고독한 미식가</em>와 함께 더 이상 혼자 먹지 마세요.
         </p>
           <span className="arrow"></span>
-          {user === null && <GoogleLoginButton />}
-          {user !== null && (
+          {!userInitialized && 'Loading...'}
+          {userInitialized && user === null && <GoogleLoginButton />}
+          {userInitialized && user !== null && (
             <div>
               Hello! {user.displayName}
               <button className="signIn" onClick={this.handleSignOut}>Logout</button>

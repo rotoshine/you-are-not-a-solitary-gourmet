@@ -1,0 +1,51 @@
+.PartyComments {
+  flex: 1;
+}
+
+.PartyComments__list {
+  padding: 5px;
+}
+
+.PartyComments__comment {
+  display: flex;
+  flex-direction: row;
+}
+
+.PartyComments__comment img {
+  width: 25px;
+  height: 25px;
+  border-radius: 13px;
+  margin-right: 5px;
+}
+
+.PartyComments__commentUser {
+  margin-right: 3px;  
+}
+
+.PartyComments__commentContent {
+  flex: 1;
+}
+
+.PartyComments__actions {
+  width: 50px;
+  padding-left: 5px;
+  text-align: right;
+}
+
+.PartyComments__actions button {
+  width: 25px;
+  height: 25px;
+}
+
+.PartyComments__comment--input {
+  border-top: 1px solid #999;
+  padding-top: 5px;
+}
+
+.PartyComments__comment--input form {
+  flex: 1;
+}
+
+.PartyComments__comment--input form input {
+  width: 100%;
+}

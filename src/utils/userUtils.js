@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
+import firebase from './firebase'
+import db from './firestore'
 
-const { firebase } = window
-const db = firebase.firestore()
 
 export const addUser = async (user) => {
   const addedUser = await db.collection('users').add(user)
@@ -49,12 +49,54 @@ export const findByEmail = async(email) => {
   }
 }
 
+export const signIn = () => {
+  const { auth } = firebase
+  const { Auth, GoogleAuthProvider } = auth
+  const provider = new GoogleAuthProvider()  
+  
+  auth().setPersistence(Auth.Persistence.LOCAL)  
+  auth().signInWithRedirect(provider)
+}
 
+export const loadCurrentUser = async() => {  
+  try {
+    const result = await firebase.auth().getRedirectResult()
+        
+    let user;
+    if (result && result.credential) {
+      user = result.user
+    } else {
+      user = firebase.auth().currentUser      
+    }
+    
+    if (user) {      
+      const { displayName, email, photoURL } = user
+
+      await addUserIfNotExist({
+        email,
+        displayName,
+        photoURL
+      })
+
+      return {
+        displayName,
+        email,
+        photoURL
+      }
+    }
+  } catch(e) {
+    console.log(e)
+  }
+
+  return null
+}
 
 export default {
   addUser,
   addUserIfNotExist,
   findOneById,
   findByIds,
-  findByEmail
+  findByEmail,
+  signIn,
+  loadCurrentUser
 }

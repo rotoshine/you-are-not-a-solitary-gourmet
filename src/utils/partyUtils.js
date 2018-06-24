@@ -1,16 +1,28 @@
 import Promise from 'bluebird'
+import db from './firestore'
 import { findByEmails } from './userUtils'
 
-const { firebase } = window
+const querySnapshotToArray = async (querySnapshot) => {
+  const parties = querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id
+  }))
 
-const db = firebase.firestore()
+  return await Promise.map(parties, async (party) => {
+    const joinners = await findByEmails(party.joinners)
 
-export const findById = async(partyId) => {
+    return {
+      ...party,
+      joinners
+    }
+  })
+}
+export const findById = async (partyId) => {
   const querySnapshot = await db.collection('parties').doc(partyId).get()
   return querySnapshot.data()
 }
 
-export const addParty = async (party) => {
+export const addParty = async (party, user) => {
   const {
     category,
     title,
@@ -27,51 +39,50 @@ export const addParty = async (party) => {
     category,
     title,
     destinationName,
-    partyTime: new Date(partyTime).getTime(),
+    partyTime: new Date(partyTime),
     dueDateTime: new Date(dueDateTime),
     description,
     isDelivery,
     maxPartyMember,
-    joinners
+    joinners,
+    createdBy: user.email,
+    createdAt: new Date()
   })
 
   return addedParty
 }
 
+export const subscribeTodayParties = (callback) => {
+  db.collection('parties').where('partyTime', '>', new Date())
+    .onSnapshot(async (querySnapshot) => {
+      callback(await querySnapshotToArray(querySnapshot))
+    })
+}
+
+export const unsubscribeTodayParties = () => {
+  return db.collection('parties').onSnapshot(function () { })
+}
+
 export const findTodayParties = async () => {
-  const querySnapshot = await db.collection('parties').get()
+  const querySnapshot = await db.collection('parties').where('partyTime', '>', new Date()).get()
 
   if (querySnapshot) {
-    const parties = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id
-    })).filter((party) => new Date(party.partyTime) > new Date())
-
-    return await Promise.map(parties, async(party) => {
-      const joinners = await findByEmails(party.joinners)
-
-      return {
-        ...party,
-        joinners
-      }
-    })
+    return await querySnapshotToArray(querySnapshot)
   }
 
   return []
 }
 
-export const joinParty = async (partyId, email) => {  
+export const joinParty = async (partyId, email) => {
   const party = await findById(partyId)
 
   let updateParty = null
   if (!party.joinners || party.joinners.length === 0) {
     updateParty = {
-      ...party,
       joinners: [email]
     }
   } else if (!party.joinners.includes(email)) {
     updateParty = {
-      ...party,
       joinners: [
         ...party.joinners,
         email
@@ -80,12 +91,12 @@ export const joinParty = async (partyId, email) => {
   }
 
   if (updateParty) {
-    await db.collection('parties').doc(partyId).set(updateParty)
+    await db.collection('parties').doc(partyId).update(updateParty)
   }
 }
 
-export const leaveParty = async(partyId, email) => {
-  const party = await findById(partyId)  
+export const leaveParty = async (partyId, email) => {
+  const party = await findById(partyId)
   const { joinners } = party
 
   if (joinners && joinners.length > 0 && joinners.includes(email)) {
@@ -99,5 +110,7 @@ export default {
   addParty,
   joinParty,
   leaveParty,
-  findTodayParties
+  findTodayParties,
+  subscribeTodayParties,
+  unsubscribeTodayParties
 }
