@@ -31,6 +31,21 @@ class MakeParty extends Component {
     const { form } = this.state
     const { onMakeParty, onClose } = this.props
 
+    const { dueDateTime, partyTime } = form
+    
+    const current = new Date()
+
+    // TODO form validation 붙이자    
+    if (dueDateTime < current) {
+      alert('마감일은 오늘 이전일 수 없습니다.')
+      return
+    } 
+
+    if (partyTime < current) {
+      alert('파티일은 오늘 이전일 수 없습니다.')
+      return
+    }
+
     await onMakeParty(form)
 
     onClose()

@@ -19,17 +19,29 @@ class App extends Component {
     parties: null
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.initializeUser()
+    this.initializeParties()
+  }
+
+  componentWillUnmount() {
+    unsubscribeTodayParties()
+  }
+
+  async asyncSetState(state) {
+    return new Promise((resolve) => this.setState(state, resolve))
+  }
+
+  async initializeUser() {
     const user = await loadCurrentUser()
 
     await this.asyncSetState({
-      userInitialized: true
-    })
-
-    await this.asyncSetState({
+      userInitialized: true,
       user
     })
+  }
 
+  async initializeParties() {
     subscribeTodayParties((parties) => {
       this.setState({
         parties
@@ -39,14 +51,6 @@ class App extends Component {
     await this.asyncSetState({
       initialize: true
     })
-  }
-
-  componentWillUnmount() {
-    unsubscribeTodayParties()
-  }
-
-  async asyncSetState(state) {
-    return new Promise((resolve) => this.setState(state, resolve))
   }
 
   handleSignOut = async () => {

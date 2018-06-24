@@ -118,7 +118,7 @@ class PartyList extends Component {
                 <div className="PartyList__joinners">
                   <span className="PartyList__label PartyList__label--partyMembers">파티원</span>
                   <div className="PartyList__joinnersPhoto">
-                    {party.joinners.map((joinner, i) => (
+                    {party.joinners && party.joinners.map((joinner, i) => (
                       <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
                     ))}
                   </div>
