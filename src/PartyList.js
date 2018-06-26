@@ -134,7 +134,7 @@ class PartyList extends Component {
                 <div className="PartyList__partyButtons">
                   {this.renderPartyJoinButton(party)}
                 </div>                
-              {/* <PartyComments user={user} partyId={party.id} /> */}
+              <PartyComments user={user} partyId={party.id} />
               </div>
             </div>
           ))}

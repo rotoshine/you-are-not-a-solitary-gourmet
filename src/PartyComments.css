@@ -1,14 +1,18 @@
 .PartyComments {
   flex: 1;
+  border-top: 1px solid #bfbfbf;
+  padding-top: 12px;
 }
 
 .PartyComments__list {
-  padding: 5px;
+  padding: 0px;
+  font-size: 14px;
 }
 
 .PartyComments__comment {
   display: flex;
   flex-direction: row;
+  margin: 10px 0;
 }
 
 .PartyComments__comment img {
@@ -32,13 +36,8 @@
   text-align: right;
 }
 
-.PartyComments__actions button {
-  width: 25px;
-  height: 25px;
-}
-
 .PartyComments__comment--input {
-  border-top: 1px solid #999;
+  /* border-top: 1px solid #999; */
   padding-top: 5px;
 }
 
@@ -48,4 +47,9 @@
 
 .PartyComments__comment--input form input {
   width: 100%;
+}
+
+.comment-text {
+  line-height: 31px;
+  font-size: 12px;
 }
