@@ -54,13 +54,14 @@ class PartyList extends Component {
       if (this.alreadyJoin(party)) {
         return (
           <button type="button"
+            className="btn btn-outline-success"
             onClick={() => onLeaveParty(party.id, user.email)}>참여 취소하기</button>
         )
       } else if (!this.alreadyJoin(party) && this.alreadyDeadline(party)) {
         return <span>저런! 파티 마감시간이 지났네요 :( </span>
       }
 
-      return (<button onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
+      return (<button className="btn btn-outline-success" onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
     }
   }
 
@@ -89,34 +90,41 @@ class PartyList extends Component {
 
     return (
       <div className="PartyList">
-        <h3>오늘의 파티를 찾아보세요!</h3>
-        <button
-          onClick={this.handleClick}
-        >
-          파티만들기
-        </button>
+        <div className="PartyList-header">
+          <h3>오늘의 파티를 찾아보세요!</h3>
+          <button
+            className="btn btn-outline-success"
+            onClick={this.handleClick}
+          >
+            파티만들기
+          </button>
+        </div>
         {
           this.state.isOpen && <MakeParty onClose={this.handleClose} onMakeParty={onMakeParty} />
         }
-        <ul className="PartyList__parties">
+        <div className="PartyList__parties row">
           {parties.length === 0 && <h4>저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
           {parties.map(party => (
-            <li key={party.id} className="PartyList__party">
-              <div className="PartyList__partyContent">
-                <h3>[{party.category}] {party.title}</h3>
-                <p>{party.description}</p>
-                <p>
-                  <span className="PartyList__label">먹으러 갈 곳</span>
-                  <span>{party.destinationName}</span>
-                </p>
-                <p>
-                  <span className="PartyList__label">모집 마감 시간</span>
-                  <span>{moment(party.dueDateTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
-                </p>
-                {this.renderMemberLimit(party)}
-                <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+            <div key={party.id} className="PartyList__party card border-light col-md-4">
+              <div className="PartyList__partyContent card-body">
+                <h5 className="card-title">[{party.category}] {party.title}</h5>
+                <div className="card-text">
+                  <p className="PartyList__desc">{party.description}</p>
+                  <div className="PartyList__info">
+                    <p>
+                      <span className="PartyList__label">먹으러 갈 곳: </span>
+                      <span>{party.destinationName}</span>
+                    </p>
+                    <p>
+                      <span className="PartyList__label">모집 마감 시간: </span>
+                      <span>{moment(party.dueDateTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
+                    </p>
+                    {this.renderMemberLimit(party)}
+                    <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+                  </div>
+                </div>
                 <div className="PartyList__joinners">
-                  <span className="PartyList__label PartyList__label--partyMembers">파티원</span>
+                  <span className="PartyList__label PartyList__label--partyMembers">파티원: </span>
                   <div className="PartyList__joinnersPhoto">
                     {party.joinners && party.joinners.map((joinner, i) => (
                       <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
@@ -126,11 +134,11 @@ class PartyList extends Component {
                 <div className="PartyList__partyButtons">
                   {this.renderPartyJoinButton(party)}
                 </div>                
-              </div>
               <PartyComments user={user} partyId={party.id} />
-            </li>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     )
   }

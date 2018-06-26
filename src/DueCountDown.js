@@ -29,7 +29,7 @@ export default class DueCountDown extends Component {
 
     return (
       <div className="DueCountDown">
-        <span>마감까지 {moment.utc(moment(dueCountDown).diff(moment(now))).format('HH:mm:ss')} 남았습니다!</span>
+        <span>마감까지 <span className="DueCountDown__time">{moment.utc(moment(dueCountDown).diff(moment(now))).format('HH:mm:ss')}</span> 남았습니다!</span>
       </div>
     )
   }

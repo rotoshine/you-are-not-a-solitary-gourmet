@@ -1,48 +1,36 @@
-.PartyList {
-  padding: 20px;
-  height: 100vh;
-  max-width: 1024px;
-  margin: 0 auto;
-}
-
-.PartyList__parties {
-  padding: 0;
-  max-width: 1024px;
-}
-
-.PartyList__party {  
-  padding: 10px;
-  margin-bottom: 10px;
+.PartyList-header {
   display: flex;
-  flex-direction: row;
-  box-sizing: border-box;    
-  border: 1px solid darkorange;
+  justify-content: space-between;
+  margin-bottom: 2rem;
 }
 
-@media screen and (max-width: 800px) {
-  .PartyList__party {
-    flex-direction: column;
-  }
+.PartyList__party {
+  margin: 0.5rem 0.2rem;
+  min-height: 400px;
+  box-shadow: 0px 4px 6px 2px #6666662e;
 }
 
 .PartyList__partyContent {
-  flex: 1;
-  margin-bottom: 10px;
-  padding: 10px;
-  position: relative;  
-  overflow-y: auto;
-  border-radius: 6px;  
-  margin-right: 5px;  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-
-.PartyList__label {
-  font-weight: bold;
-  margin-right: 10px;
+.PartyList__desc {
+  height: 80px;
+  border-bottom: 1px solid #9E9E9E;
+  font-size: 14px;
 }
 
-.PartyList__label--partyMembers {
-  margin-top: -25px
+.PartyList__info p {
+  margin-bottom: 0.4rem;
+}
+
+.PartyList__joinners {
+  margin: 0.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .PartyList__joinnersPhoto {
@@ -55,4 +43,8 @@
   border-radius: 20px;
   border: 1px solid #ccc;
   margin-right: 10px;
+} 
+
+.DueCountDown__time {
+  color: #FF5722;
 }

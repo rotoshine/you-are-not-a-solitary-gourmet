@@ -25,7 +25,7 @@
 
 .MakeParty-group {
   width: 600px;
-  height: 700px;
+  min-height: 700px;
   background: white;
   padding: 20px;
   position: relative;

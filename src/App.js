@@ -84,32 +84,45 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">you are not a solitary gourmet</h1>
-          <p className="App-intro">
-            오늘도 혼자인가요? <em>안 고독한 미식가</em>와 함께 더 이상 혼자 먹지 마세요.
-        </p>
-          <span className="arrow"></span>
-          {!userInitialized && 'Loading...'}
-          {userInitialized && user === null && <GoogleLoginButton />}
-          {userInitialized && user !== null && (
-            <div>
-              Hello! {user.displayName}
-              <button className="signIn" onClick={this.handleSignOut}>Logout</button>
+          <nav className="App-nav">
+            <div className="App-intro">
+              <div className="App-container container">
+                <h2 className="jumbotron-heading">안 고독한 미식가</h2>
+                  {!userInitialized && 'Loading...'}
+                  {userInitialized && user === null && (
+                  <div>
+                    <p className="lead">그대여 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
+                    <GoogleLoginButton />
+                  </div>
+                  )}
+                  {userInitialized && user !== null && (
+                    <div>
+                      <p className="lead">{user.displayName}, 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
+                      <form className="form-inline my-2 my-lg-0">
+                        <button className="btn btn-success my-2" onClick={this.handleSignOut}>Logout</button>
+                      </form>
+                    </div>
+                  )}
+              </div>
             </div>
-          )}
+          </nav>
         </header>
-        <div className="App__contents">
-          {(!initialize || nowPartiesLoading) && <span>Loading..</span>}
-          {parties && (
-            <PartyList
-              user={user}
-              parties={parties}
-              onMakeParty={this.handleMakeParty}
-              onJoinParty={this.handleJoinPartyClick}
-              onLeaveParty={this.handleLeavePartyClick}
-            />
-          )}
-        </div>
+        <main>
+          <div className="App__contents album py-5 bg-light">
+            <div className="container">
+            {(!initialize || nowPartiesLoading) && <span>Loading..</span>}
+            {parties && (
+              <PartyList
+                user={user}
+                parties={parties}
+                onMakeParty={this.handleMakeParty}
+                onJoinParty={this.handleJoinPartyClick}
+                onLeaveParty={this.handleLeavePartyClick}
+              />
+            )}
+            </div>
+          </div>
+        </main> 
       </div>
     )
   }

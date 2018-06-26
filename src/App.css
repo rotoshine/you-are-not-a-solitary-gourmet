@@ -1,103 +1,28 @@
-* {
-  box-sizing: border-box;
-}
-
-em {
-  font-style: normal;
-  color: orange;
-}
-
-h3 {
-  font-style:none;
-  font-weight: 300;
-}
-
-ul, li {
-  list-style: none;
-}
-
-.App {
-  width: 100%;
-}
-
-@keyframes bgIn {
-  0% {
-    opacity: 0;
-    background-position-x: -100%, 200%;
-  }
-  50% {
-    background-position-x: -10%, 200%;
-    background-position-y: 0%, 70%;
-  }
-  100% {
-    opacity: 1;
-    background-position-x: -10%, 110%;
-    background-position-y: 0%, 70%;
-  }
-}
-
-.App-header {
-  text-align: center;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-image: url("/images/bg-left.png"),
-    url("/images/bg-right.png");
-  width: 100%;
-  background-position-x: -10%, 110%;
-  background-size: 40% auto;
-  background-repeat: no-repeat, no-repeat;
+.App-intro {
+  background-image: url("/images/angomi3.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  animation: bgIn 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) 1;
-  animation-fill-mode: forwards;
-  animation-delay: 1s;
-}
-
-.App-title {
-  margin: 0;
-  font-weight: 300;
-  font-size: 56px;
-}
-
-button {
-  padding: 10px;
-  border-radius: 4px;
-  border: 0px;
-  background-color: orange;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0px 2px 4px 1px #00000040;
-}
-
-button:hover {
-  background-color: rgb(255, 145, 0);
-}
-
-.signIn {
-  margin: 20px;
-}
-
-.arrow {
-  border: solid orange;
-  border-width: 0 6px 6px 0;
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  position: absolute;
-  bottom: 40px;
+  border-radius: 0;
+  height: 500px;
+  padding: 4rem 2rem;
 }
 
 .App__contents {
+  height: 100vh;
+}
+
+.App-container {
+  color: white;
+  margin-top: 200px;
+}
+
+.App-navbar {
   width: 100%;
-  max-width: 1366px;
-  margin: 0 auto;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: white;
 }

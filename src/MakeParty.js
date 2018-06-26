@@ -59,7 +59,7 @@ class MakeParty extends Component {
       <div className="MakeParty-overlay">
         <div className="MakeParty-group">
           <button
-            className="close-button"
+            className="btn btn-outline-success"
             onClick={this.props.onClose}
           >x</button>
           <form
@@ -133,7 +133,7 @@ class MakeParty extends Component {
               placeholder="파티를 설명해주세요!"
               rows={8}
               value={form.description} onChange={e => this.handleFormChange('description', e.target.value)} />
-            <button className="submit">파티를 만듭니다!</button>
+            <button className="btn btn-outline-success">파티를 만듭니다!</button>
           </form>
         </div>
       </div>

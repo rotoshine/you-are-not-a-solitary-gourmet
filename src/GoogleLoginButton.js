@@ -4,7 +4,7 @@ import { signIn } from './utils/userUtils'
 export default class GoogleLoginButton extends Component {
   render () {
     return (
-      <button className="signIn" type="button" onClick={() => signIn()}>Google Sign In</button>
+      <button className="btn btn-success my-2" type="button" onClick={() => signIn()}>Sign In</button>
     )
   }
 }
