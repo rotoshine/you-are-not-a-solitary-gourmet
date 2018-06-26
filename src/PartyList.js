@@ -68,7 +68,7 @@ class PartyList extends Component {
   renderMemberLimit(party) {
     const { maxPartyMember, joinners } = party
     if (maxPartyMember === 0) {
-      return <span>멤버 모집 제한이 없습니다.</span>
+      return <p><span>멤버 모집 제한이 없습니다.</span></p>
     } else {
       const joinnedMemberCount = joinners.length
 
@@ -134,7 +134,7 @@ class PartyList extends Component {
                 <div className="PartyList__partyButtons">
                   {this.renderPartyJoinButton(party)}
                 </div>                
-              <PartyComments user={user} partyId={party.id} />
+              {/* <PartyComments user={user} partyId={party.id} /> */}
               </div>
             </div>
           ))}

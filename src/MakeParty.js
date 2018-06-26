@@ -58,10 +58,13 @@ class MakeParty extends Component {
     return (
       <div className="MakeParty-overlay">
         <div className="MakeParty-group">
-          <button
-            className="btn btn-outline-success"
-            onClick={this.props.onClose}
-          >x</button>
+          <div className="MakeParty-title">
+            <h3>파티를 만들어보세요!</h3>
+            <button
+              className="btn btn-outline-success"
+              onClick={this.props.onClose}
+            >닫기</button>
+          </div>
           <form
             className="MakeParty-form"
             onSubmit={this.handleSubmit}>

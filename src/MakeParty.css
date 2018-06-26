@@ -11,44 +11,43 @@
   left: 0;
 }
 
-.close-button {
-  background-color: transparent;
-  box-shadow: none;
-  font-size: 20px;
-  position: absolute;
-  right: 10px;
-}
-
-.close-button:hover {
-  background-color: transparent;
+.MakeParty-title  {
+  display: flex;
+  justify-content: space-between;
 }
 
 .MakeParty-group {
   width: 600px;
-  min-height: 700px;
   background: white;
-  padding: 20px;
+  padding: 40px 20px;
   position: relative;
 }
 
 .MakeParty-form {
   display: flex;
   flex-direction: column;
-  margin: 40px 10px;
+  margin-top: 60px;
+  padding: 0 10px;
 }
 
 .MakeParty-form label {
-  font-weight: 700;
+  font-weight: 400;
   padding-right: 10px;
   display: inline-block;
   width: 30%;
-  text-align: right;
+  text-align: left;
+  font-size: 16px;
 }
+
 .MakeParty-form input {
   width: 70%;
   padding-left: 5px;
-  font-size: 20px;
+  font-size: 16px;
+  line-height: 1.5;
   margin: 10px 0;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #bbbbbb;
 }
 
 .submit {
@@ -61,11 +60,17 @@
 }
 
 .MakeParty-form textarea {
-  font-size: 20px;
-  border-radius: 5px;
-  padding: 5px;
+  z-index: auto;
+  position: relative;
+  margin: 10px 0 40px 0;
+  padding: 10px;
+  height: 120px;
+  line-height: 1.5;
+  font-size: 16px;
+  transition: none;
+  background: transparent !important;
 }
 
 .MakeParty-form textarea::-webkit-input-placeholder {
-  font-size: 20px;
+  font-size: 16px;
 }
