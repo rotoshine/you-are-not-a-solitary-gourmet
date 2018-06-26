@@ -68,7 +68,7 @@ export default class PartyComments extends Component {
           {comments && comments.map((comment, i) => (
             <li key={i} className="PartyComments__comment">
               <img src={comment.user.photoURL} alt={`${comment.user.displayName} profile`} />
-              <div className="PartyComments__commentUser comment-text">{user.displayName}</div>
+              <div className="PartyComments__commentUser comment-text">{comment.user.displayName}</div>
               <div className="PartyComments__commentContent comment-text">{comment.content}</div>
               <div className="partyComments__createdAt comment-text">{comment.createdAt ? moment().fromNow(comment.createdAt.toDate()) : '작성 중'}</div>
               <div className="PartyComments__actions">
