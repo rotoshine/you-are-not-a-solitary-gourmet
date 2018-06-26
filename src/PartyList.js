@@ -105,7 +105,7 @@ class PartyList extends Component {
         <div className="PartyList__parties row">
           {parties.length === 0 && <h4>저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
           {parties.map(party => (
-            <div key={party.id} className="PartyList__party card border-light col-md-4">
+            <div key={party.id} className="PartyList__party card border-light col-md-6 col-lg-4">
               <div className="PartyList__partyContent card-body">
                 <h5 className="card-title">[{party.category}] {party.title}</h5>
                 <div className="card-text">
