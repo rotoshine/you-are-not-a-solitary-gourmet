@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
 
 import PartyList from './PartyList'
 import GoogleLoginButton from './GoogleLoginButton'
@@ -9,7 +10,8 @@ import { loadCurrentUser } from './utils/userUtils';
 
 import './App.css';
 
-
+@inject('partyStore')
+@observer
 class App extends Component {
   state = {
     initialize: false,
@@ -42,11 +44,7 @@ class App extends Component {
   }
 
   async initializeParties() {
-    subscribeTodayParties((parties) => {
-      this.setState({
-        parties
-      })
-    })
+    this.props.partyStore.initializeParties()
 
     await this.asyncSetState({
       initialize: true
@@ -79,7 +77,8 @@ class App extends Component {
   }
 
   render() {
-    const { initialize, userInitialized, nowPartiesLoading, user, parties } = this.state
+    const { initialize, userInitialized, nowPartiesLoading, user } = this.state
+    const { parties } = this.props.partyStore
 
     return (
       <div className="App">
