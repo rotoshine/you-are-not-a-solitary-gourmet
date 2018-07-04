@@ -20,7 +20,7 @@ class PartyList extends Component {
   }
 
   alreadyDeadline = (party) => {
-    return new Date(party.dueDateTime).getTime() < new Date().getTime()
+    return party.dueDateTime.toDate() < new Date()
   }
 
   handleJoinPartyClick = (party) => {
@@ -57,7 +57,7 @@ class PartyList extends Component {
             className="btn btn-outline-success"
             onClick={() => onLeaveParty(party.id, user.email)}>참여 취소하기</button>
         )
-      } else if (!this.alreadyJoin(party) && this.alreadyDeadline(party)) {
+      } else if (this.alreadyDeadline(party)) {
         return <span>저런! 파티 마감시간이 지났네요 :( </span>
       }
 
