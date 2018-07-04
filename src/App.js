@@ -5,7 +5,7 @@ import PartyList from './PartyList'
 import GoogleLoginButton from './GoogleLoginButton'
 
 import firebase from './utils/firebase'
-import { subscribeTodayParties, unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
+import { unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
 import { loadCurrentUser } from './utils/userUtils';
 
 import './App.css';

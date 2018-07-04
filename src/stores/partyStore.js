@@ -6,7 +6,7 @@ class PartyStore {
 
   @action initializeParties() {
     subscribeTodayParties((parties) => {
-      this.parties = [...this.parties, ...parties]
+      this.parties = [...parties]
     })
   }
 }
