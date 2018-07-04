@@ -8,7 +8,17 @@ import firebase from './utils/firebase'
 import { unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
 import { loadCurrentUser } from './utils/userUtils';
 
+import MakeParty from './MakeParty'
+
 import './App.css';
+
+const CATEGORIES = [
+  { name: '점심', emoji: '🌮', color: '#FFB16B'},
+  { name: '저녁', emoji: '🥘', color: '#FA6BFF' },
+  { name: '간식', emoji: '☕️', color: '#FF6C72' },
+  { name: '문화생활', emoji: '🍿', color: '#525FFF' },
+  { name: '기타', emoji: '🎉', color: '#66BB66' },
+]
 
 @inject('partyStore')
 @observer
@@ -18,7 +28,8 @@ class App extends Component {
     user: null,
     userInitialized: false,
     nowPartiesLoading: false,
-    parties: null
+    parties: null,
+    isOpen: false,
   }
 
   componentDidMount() {
@@ -49,6 +60,20 @@ class App extends Component {
     await this.asyncSetState({
       initialize: true
     })
+  }
+
+  handleClick = () => {
+    const { user } = this.state
+
+    if (!user) {
+      alert('로그인이 필요합니다!')
+    } else {
+      this.setState({ isOpen: true })
+    }
+  }
+
+  handleClose = () => {
+    this.setState({ isOpen: false })
   }
 
   handleSignOut = async () => {
@@ -82,33 +107,65 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
           <nav className="App-nav">
-            <div className="App-intro">
-              <div className="App-container container">
-                <h2 className="jumbotron-heading">안 고독한 미식가</h2>
-                  {!userInitialized && 'Loading...'}
-                  {userInitialized && user === null && (
-                  <div>
-                    <p className="lead">그대여 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
-                    <GoogleLoginButton />
-                  </div>
-                  )}
-                  {userInitialized && user !== null && (
-                    <div>
-                      <p className="lead">{user.displayName}, 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
-                      <form className="form-inline my-2 my-lg-0">
-                        <button className="btn btn-success my-2" onClick={this.handleSignOut}>Logout</button>
-                      </form>
-                    </div>
-                  )}
-              </div>
-            </div>
+            <ul className="nav container">
+              <li className="nav__title nav-item">
+                <a className="nav-link" href="#">안 고독한 미식가</a>
+              </li>
+              <li className="nav__login nav-item">
+                <GoogleLoginButton />
+              </li>
+            </ul>
           </nav>
-        </header>
-        <main>
-          <div className="App__contents album py-5 bg-light">
-            <div className="container">
+        <div className="App-intro">
+          <div className="App__container container">
+              {!userInitialized && 'Loading...'}
+              {userInitialized && user === null && (
+              <div>
+                <h2 className="App__container-header">오늘도 혼자인가요? <br />더이상 혼자 먹지 마세요.</h2>
+                <p className="lead">파티에 참여해 보세요. 원하는 파티가 없다면 직접 만드는건 어떤가요?</p>
+                <button
+                  className="App__button btn btn-big"
+                  onClick={this.handleClick}
+                >
+                  파티 만들기
+                </button>
+              </div>
+              )}
+              {userInitialized && user !== null && (
+                <div>
+                <h2 className="App__container-header">{user.displayName} 🍔<br />오늘도 혼자인가요? <br />더이상 혼자 먹지 마세요.</h2>
+                <p className="lead">파티에 참여해 보세요. 원하는 파티가 없다면 직접 만드는건 어떤가요?</p>
+                <button
+                  className="App__button btn btn-outline-dark"
+                  onClick={this.handleClick}
+                >
+                  파티 만들기
+                </button>
+                </div>
+              )}
+          </div>
+        </div>
+        <main className="container">
+          {
+            this.state.isOpen && <MakeParty onClose={this.handleClose} onMakeParty={this.handleMakeParty} />
+          }
+          <div className="App__contents album py-5">
+            <h3 className="App__contents-title">어떤파티를 찾나요? 🎉</h3>
+            <ul className="App__categories">
+              {CATEGORIES.map( item =>  (
+                  <li
+                    key={item.name}
+                    style={{ backgroundColor: item.color }}
+                    className="App__category">
+                    <p className="category-emoji">{item.emoji}</p>
+                    <p className="category-title">{item.name}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div className="App__contents album py-5">
             {(!initialize || nowPartiesLoading) && <span>Loading..</span>}
             {parties && (
               <PartyList
@@ -119,7 +176,6 @@ class App extends Component {
                 onLeaveParty={this.handleLeavePartyClick}
               />
             )}
-            </div>
           </div>
         </main> 
       </div>

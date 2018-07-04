@@ -1,21 +1,39 @@
+.App {
+  background: white;
+  background: linear-gradient(180deg, rgba(221,221,221,1) 0%, rgba(255,255,255,1) 39%);
+}
+
 .App-intro {
-  background-image: url("/images/angomi3.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top center;
   margin: 0 auto;
-  border-radius: 0;
-  height: 500px;
+  height: 760px;
   padding: 4rem 2rem;
 }
 
-.App__contents {
-  height: 100vh;
+.nav__title {
+  color: black;
 }
 
-.App-container {
-  color: white;
+.nav__login {
+  margin-left: auto;
+}
+
+.App__button {
+  /* padding: 20px 30px; */
+  border-radius: 6px;
+  border: 0 !important;
+  box-shadow: 0px 4px 20px #00000021;
+  width: 200px;
+  height: 50px;
+  font-size: 1.2rem !important;
+}
+
+.App__container {
   margin-top: 200px;
+}
+
+.App__container-header {
+  font-size: 4.0rem;
+  color: black;
 }
 
 .App-navbar {
@@ -25,4 +43,49 @@
   top: 0;
   left: 0;
   color: white;
+}
+
+.App__contents-title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 20px 0;
+}
+
+.App__categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.App__category {
+  width: 200px;
+  height: 200px;
+  margin: 0 14px 14px 0;
+  box-shadow: 0px 4px 16px #00000020;
+  padding: 20px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.App__category:hover {
+  box-shadow: 0px 10px 20px 3px #00000020;
+  transition: all 0.2s ease;
+  transform: translateY(-3px);
+}
+
+.category-emoji {
+  font-size: 3rem;
+  line-height: 3rem;
+  margin-bottom: 2px;
+}
+
+.category-title {
+  color: white;
+  font-weight: 300;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
 }

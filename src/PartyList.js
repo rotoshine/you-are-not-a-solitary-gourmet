@@ -6,12 +6,18 @@ import DueCountDown from './DueCountDown'
 
 import MakeParty from './MakeParty'
 import PartyComments from './PartyComments'
+import PartyModal from './PartyModal'
 
 import './PartyList.css'
 
 class PartyList extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
+    party: '',
+  }
+
+  handleClick = (party) => {
+    this.setState({ isOpen: true, party })
   }
 
   alreadyJoin(party) {
@@ -29,20 +35,6 @@ class PartyList extends Component {
     if (user) {
       onJoinParty(party.id, user.email)
     }
-  }
-
-  handleClick = () => {
-    const { user } = this.props
-
-    if (!user) {
-      alert('로그인이 필요합니다!')
-    } else {
-      this.setState({ isOpen: true })
-    }
-  }
-
-  handleClose = () => {
-    this.setState({ isOpen: false })
   }
 
   renderPartyJoinButton(party) {
@@ -87,25 +79,21 @@ class PartyList extends Component {
 
   render() {
     const { user, parties, onMakeParty } = this.props
-
+    const { isOpen } = this.state
+  
     return (
       <div className="PartyList">
         <div className="PartyList-header">
-          <h3>오늘의 파티를 찾아보세요!</h3>
-          <button
-            className="btn btn-outline-success"
-            onClick={this.handleClick}
-          >
-            파티만들기
-          </button>
+          <h3 className="App__contents-title">금주의 파티 👀</h3>
         </div>
-        {
-          this.state.isOpen && <MakeParty onClose={this.handleClose} onMakeParty={onMakeParty} />
-        }
-        <div className="PartyList__parties row">
+        <div className="PartyList__parties">
           {parties.length === 0 && <h4>저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
           {parties.map(party => (
-            <div key={party.id} className="PartyList__party card border-light col-md-6 col-lg-4">
+            <div 
+              key={party.id}
+              className="PartyList__party"
+              onClick={() => this.handleClick(party)}
+            >
               <div className="PartyList__partyContent card-body">
                 <h5 className="card-title">[{party.category}] {party.title}</h5>
                 <div className="card-text">
