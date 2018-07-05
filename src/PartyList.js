@@ -6,7 +6,7 @@ import DueCountDown from './DueCountDown'
 
 import MakeParty from './MakeParty'
 import PartyComments from './PartyComments'
-import PartyModal from './PartyModal'
+// import PartyModal from './PartyModal'
 
 import './PartyList.css'
 
