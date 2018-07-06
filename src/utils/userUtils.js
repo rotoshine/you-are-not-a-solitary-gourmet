@@ -91,6 +91,10 @@ export const loadCurrentUser = async() => {
   return null
 }
 
+export const handleSignOut = async () => {
+  await firebase.auth().signOut()
+}
+
 export default {
   addUser,
   addUserIfNotExist,
@@ -98,5 +102,6 @@ export default {
   findByIds,
   findByEmail,
   signIn,
-  loadCurrentUser
+  loadCurrentUser,
+  handleSignOut
 }
