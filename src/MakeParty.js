@@ -25,6 +25,7 @@ class MakeParty extends Component {
       }
     })
   }
+  
   handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -59,84 +60,135 @@ class MakeParty extends Component {
       <div className="MakeParty-overlay">
         <div className="MakeParty-group">
           <div className="MakeParty-title">
-            <h3>파티를 만들어보세요!</h3>
+            <h3>🎉 파티 만들기</h3>
             <button
-              className="btn btn-outline-success"
+              className="btn btn-sm btn-light onclick"
               onClick={this.props.onClose}
             >닫기</button>
           </div>
           <form
             className="MakeParty-form"
             onSubmit={this.handleSubmit}>
-            <div>
-              <label htmlFor="category">카테고리</label>
+            <div className="form-row">
+            <div className="form-group col-sm-9">
+              <label
+                htmlFor="title">
+                파티 제목
+              </label>
               <input
-                id="category"
                 type="text"
-                placeholder="카테고리를 입력해 주세요 (점심, 저녁, 간식)"
-                value={form.category}
-                onChange={(e) => this.handleFormChange('category', e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="title">파티 제목</label>
-              <input
+                className="MakeParty__form-control form-control"
                 id="title"
-                type="text"
-                placeholder="무엇을 하는 파티인가요?"
+                placeholder="파티제목" 
                 value={form.title}
                 onChange={(e) => this.handleFormChange('title', e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="destinationName">행선지</label>
+            <div className="form-group col-sm-3">
+              <label htmlFor="isDelivery">배달음식?</label>
               <input
-                id="destinationName"
+                className="MakeParty__form-control form-control"
+                type="radio"
+                name="isDelivery"
+                id="isDelivery"
+                value={form.isDelivery}
+                onChange={(e) => this.handleFormChange('isDelivery', e.target.checked)}
+              />
+            </div>
+            </div>
+              <div className="form-group">
+                <label
+                  htmlFor="category"
+                >
+                카테고리
+                </label>
+                <div className="MakeParty__inline">
+                {['점심', '저녁', '간식', '기타'].map(
+                    (category) => (
+                      <div 
+                        key={category}
+                        className="MakeParty__checkbox form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="categoryOptions"
+                          id="category"
+                          value={category}
+                          checked={form.category === category}
+                          onChange={(e) => this.handleFormChange('category', e.target.value)}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="category"
+                        >
+                          {category}
+                        </label>
+                      </div>
+                    )
+                  )
+                }
+              </div>
+            </div>
+            <div className="form-row">
+            <div className="form-group col-sm-9">
+              <label
+                htmlFor="destinationName">
+                행선지
+              </label>
+              <input
                 type="text"
-                placeholder="식당, 장소 이름을 입력해 주세요"
+                className="MakeParty__form-control form-control"
+                id="title"
+                placeholder="식당, 장소이름을 입력해 주세요" 
                 value={form.destinationName}
                 onChange={(e) => this.handleFormChange('destinationName', e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="partyTime">언제 먹나요?</label>
+            <div className="form-group col-sm-3">
+              <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
+              <input
+                id="maxPartyMember"
+                className="MakeParty__form-control form-control"
+                type="number"
+                value={form.maxPartyMember}
+                onChange={(e) => this.handleFormChange('maxPartyMember', e.target.value)}
+              />
+            </div>
+            </div>
+            <div className="form-row">
+            <div className="form-group col-sm-6">
+              <label
+                htmlFor="partyTime">언제 먹나요?</label>
               <input
                 id="partyTime"
+                className="MakeParty__form-control form-control"
                 type="datetime-local"
                 placeholder="언제 먹나요?"
                 value={form.partyTime}
                 onChange={(e) => this.handleFormChange('partyTime', e.target.value)}
               />
             </div>
-            <div>
+            <div className="form-group col-sm-6">
               <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
               <input
                 id="dueDateTime"
+                className="MakeParty__form-control form-control"
                 type="datetime-local"
                 placeholder="파티 모집 마감시간은 언제인가요?"
                 value={form.dueDateTime}
                 onChange={(e) => this.handleFormChange('dueDateTime', e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="maxPartyMember">파티 모집 인원</label>
-              <input
-                id="maxPartyMember"
-                type="number"
-                placeholder="몇명까지 모을건가요? 0인 경우 무제한입니다."
-                value={form.maxPartyMember}
-                onChange={(e) => this.handleFormChange('maxPartyMember', e.target.value)}
-              />
             </div>
-            <div>
-              <label htmlFor="isDelivery">배달음식인가요?</label>
-              <input type="checkbox" id="isDelivery" value={form.isDelivery} onChange={(e) => this.handleFormChange('isDelivery', e.target.checked)} />
+            <div className="form-group">
+              <label htmlFor="description">자세한 정보를 입력하세요</label>
+              <textarea
+                placeholder="파티를 설명해주세요!"
+                className="MakeParty__form-control form-control"
+                rows={8}
+                value={form.description} onChange={e => this.handleFormChange('description', e.target.value)} />
             </div>
-            <textarea
-              placeholder="파티를 설명해주세요!"
-              rows={8}
-              value={form.description} onChange={e => this.handleFormChange('description', e.target.value)} />
-            <button className="btn btn-outline-success">파티를 만듭니다!</button>
+            <button className="MakeParty__button btn">파티를 만듭니다!</button>
           </form>
         </div>
       </div>

@@ -66,27 +66,40 @@ export default class PartyComments extends Component {
             <li>이 파티에 대한 댓글이 하나도 없네요.</li>
           )}
           {comments && comments.map((comment, i) => (
-            <li key={i} className="PartyComments__comment">
-              <img src={comment.user.photoURL} alt={`${comment.user.displayName} profile`} />
-              <div className="PartyComments__commentUser comment-text">{comment.user.displayName}</div>
-              <div className="PartyComments__commentContent comment-text">{comment.content}</div>
-              <div className="partyComments__createdAt comment-text">{comment.createdAt ? moment().fromNow(comment.createdAt.toDate()) : '작성 중'}</div>
-              <div className="PartyComments__actions">
-                {user && comment.createdBy === user.email &&
-                  <button className="btn btn-sm btn-light" onClick={() => this.handleCommentRemoveClick(comment.id, i)}>x</button>
-                }
+            <li key={i} className="PartyComments__comment PartyComments__comment--input">
+              <img
+                src={comment.user.photoURL}
+                alt={`${comment.user.displayName} profile`}
+              />
+              <div className="PartyComments__group">
+                <div className="PartyComments__commentUser comment-text">
+                  <span>{comment.user.displayName}</span>
+                  {user && comment.createdBy === user.email &&
+                    <button className="btn btn-sm btn-light" onClick={() => this.handleCommentRemoveClick(comment.id, i)}>삭제</button>
+                  }
+                </div>
+                <div className="PartyComments__commentContent comment-text">
+                  <p className="PartyComments__commentline">{comment.content}</p>
+                  <div className="partyComments__createdAt comment-text">
+                    {comment.createdAt ? moment().fromNow(comment.createdAt.toDate()) : '작성 중'}
+                  </div>
+                </div>
               </div>
             </li>
           ))}
           {user &&
             <li className="PartyComments__comment PartyComments__comment--input">
               <img src={user.photoURL} alt={`${user.displayName} profile`} />
-              <div className="PartyComments__commentUser">{user.displayName}</div>
-              <form onSubmit={this.handleAddComment}>
-                <input type="text" value={insertedComment}
-                  onChange={(e) => this.setState({ insertedComment: e.target.value })}
-                />
-              </form>
+              <div className="PartyComments__group">
+                <form onSubmit={this.handleAddComment}>
+                  <input
+                    type="text"
+                    className="MakeParty__form-control form-control"
+                    value={insertedComment}
+                    onChange={(e) => this.setState({ insertedComment: e.target.value })}
+                  />
+                </form>
+              </div>
             </li>
           }
         </ul>

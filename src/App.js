@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyList from './PartyList'
@@ -102,56 +102,76 @@ class App extends Component {
   }
 
   render() {
-    const { initialize, userInitialized, nowPartiesLoading, user } = this.state
+    const {
+      initialize,
+      userInitialized,
+      nowPartiesLoading,
+      user,
+      isOpen
+    } = this.state
+
     const { parties } = this.props.partyStore
 
     return (
       <div className="App">
-          <nav className="App-nav">
-            <ul className="nav container">
-              <li className="nav__title nav-item">
-                <a className="nav-link" href="#">안 고독한 미식가</a>
-              </li>
-              <li className="nav__login nav-item">
-                <GoogleLoginButton />
-              </li>
-            </ul>
-          </nav>
-        <div className="App-intro">
-          <div className="App__container container">
-              {!userInitialized && 'Loading...'}
-              {userInitialized && user === null && (
-              <div>
-                <h2 className="App__container-header">오늘도 혼자인가요? <br />더이상 혼자 먹지 마세요.</h2>
-                <p className="lead">파티에 참여해 보세요. 원하는 파티가 없다면 직접 만드는건 어떤가요?</p>
-                <button
-                  className="App__button btn btn-big"
-                  onClick={this.handleClick}
-                >
-                  파티 만들기
-                </button>
-              </div>
-              )}
-              {userInitialized && user !== null && (
-                <div>
-                <h2 className="App__container-header">{user.displayName} 🍔<br />오늘도 혼자인가요? <br />더이상 혼자 먹지 마세요.</h2>
-                <p className="lead">파티에 참여해 보세요. 원하는 파티가 없다면 직접 만드는건 어떤가요?</p>
-                <button
-                  className="App__button btn btn-outline-dark"
-                  onClick={this.handleClick}
-                >
-                  파티 만들기
-                </button>
-                </div>
-              )}
+        {!userInitialized && (
+        <div className="App__constraint">
+          <div className="App__intro">
+            <div className="App__container container">
+              <h2 className="App__container-header">'안 고독한 미식가🔥'</h2>
+              <p className="App__text">안고미 클라우드에서 데이터를 긁어오는중 삐리리~</p>
+            </div>
           </div>
         </div>
-        <main className="container">
-          {
-            this.state.isOpen && <MakeParty onClose={this.handleClose} onMakeParty={this.handleMakeParty} />
-          }
-          <div className="App__contents album py-5">
-            <h3 className="App__contents-title">어떤파티를 찾나요? 🎉</h3>
+        )}
+        {userInitialized && user === null && (
+        <div className="App__constraint">
+            <div className="App__header">
+              <GoogleLoginButton />
+            </div>
+          <div className="App__intro">
+            <div className="App__container container">
+              <small>안 고독한 미식가</small>
+              <h2 className="App__container-header">오늘도 혼자인가요?</h2>
+              <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
+              <p className="App__text">다양한 파티에 참여해보세요. 로그인 후 이용할 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+        )}
+        {userInitialized && user !== null && (
+          <div className="App">
+            {isOpen && (
+              <MakeParty 
+                onMakeParty={this.handleMakeParty}
+                onClose={this.handleClose}
+              />
+            )}
+            
+            <div className="App__header">
+              <button
+                  className="App__button"
+                  onClick={this.handleClick}
+                >
+                  파티만들기
+              </button>
+              <button
+                  className="App__button"
+                  onClick={this.handleSignOut}
+                >
+                  로그아웃
+              </button>
+            </div>
+          <div className="App__intro App__intro-member">
+            <div className="App__container container">
+              <small>안 고독한 미식가</small>
+              <h2 className="App__container-header">오늘도 혼자인가요?</h2>
+              <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
+              <p className="App__text">원하는 파티가 없다구요? 직업 파티를 만들어보세요.</p>
+            </div>
+          </div>
+          <div className="App__contents container album py-5">
+            <h3 className="App__text-black">어떤파티를 찾나요? 🎉</h3>
             <ul className="App__categories">
               {CATEGORIES.map( item =>  (
                   <li
@@ -165,7 +185,10 @@ class App extends Component {
               }
             </ul>
           </div>
-          <div className="App__contents album py-5">
+          <div className="App__contents container album py-5">
+            <div>
+            <h3 className="App__text-black">다가오는 파티 👀</h3>
+            </div>
             {(!initialize || nowPartiesLoading) && <span>Loading..</span>}
             {parties && (
               <PartyList
@@ -177,8 +200,9 @@ class App extends Component {
               />
             )}
           </div>
-        </main> 
-      </div>
+          </div>
+        )}
+        </div>
     )
   }
 }

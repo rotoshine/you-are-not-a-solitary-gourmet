@@ -28,15 +28,19 @@ export default class DueCountDown extends Component {
     const { dueCountDown, now } = this.state
 
     if (dueCountDown < now) {
-      return null
+      return (
+        <span className="DueCountDown">
+          마감시간 지났군요😢
+        </span>
+      )
     }
 
     const durationTime = moment.duration(moment(dueCountDown).diff(moment(now))).humanize()
 
     return (
-      <div className="DueCountDown">
-        <span>마감까지 <span className="DueCountDown__time">{durationTime}</span> 남았습니다!</span>
-      </div>
+      <span className="DueCountDown">
+        마감까지 <em className="DueCountDown__time">{durationTime}</em> 남았습니다!
+      </span>
     )
   }
 }

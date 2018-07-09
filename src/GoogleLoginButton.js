@@ -4,7 +4,12 @@ import { signIn } from './utils/userUtils'
 export default class GoogleLoginButton extends Component {
   render () {
     return (
-      <a className="nav-link" onClick={() => signIn()}>Sign In</a>
+      <button
+        className="App__button nav-link"
+        onClick={() => signIn()}
+      >
+        로그인
+      </button>
     )
   }
 }

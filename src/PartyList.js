@@ -6,6 +6,7 @@ import DueCountDown from './DueCountDown'
 
 import MakeParty from './MakeParty'
 import PartyComments from './PartyComments'
+import PartyDetail from './PartyDetail'
 // import PartyModal from './PartyModal'
 
 import './PartyList.css'
@@ -17,7 +18,12 @@ class PartyList extends Component {
   }
 
   handleClick = (party) => {
+    console.log('clicked')
     this.setState({ isOpen: true, party })
+  }
+
+  handleClose = (e) => {
+    this.setState({ isOpen: false })
   }
 
   alreadyJoin(party) {
@@ -37,7 +43,7 @@ class PartyList extends Component {
     }
   }
 
-  renderPartyJoinButton(party) {
+  renderPartyJoinButton = (party) => {
     const { user, onLeaveParty } = this.props
 
     if (!user) {
@@ -46,83 +52,88 @@ class PartyList extends Component {
       if (this.alreadyJoin(party)) {
         return (
           <button type="button"
-            className="btn btn-outline-success"
+            className="PartyDetail__button"
             onClick={() => onLeaveParty(party.id, user.email)}>참여 취소하기</button>
         )
       } else if (this.alreadyDeadline(party)) {
         return <span>저런! 파티 마감시간이 지났네요 :( </span>
       }
 
-      return (<button className="btn btn-outline-success" onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
+      return (<button className="PartyDetail__button" onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
     }
   }
 
   renderMemberLimit(party) {
     const { maxPartyMember, joinners } = party
     if (maxPartyMember === 0) {
-      return <p><span>멤버 모집 제한이 없습니다.</span></p>
+      return <span>무제한 멤버</span>
     } else {
       const joinnedMemberCount = joinners.length
 
       if (maxPartyMember > joinnedMemberCount) {
         return (
-          <p>
-            <span className="PartyList__label">모집 멤버수</span>
-            <span><strong>{party.maxPartyMember}</strong> 명 중 <strong>{party.joinners.length}</strong> 명이 모였습니다.</span>
-          </p>
+          <span>총 {party.maxPartyMember}명</span>
         )
       } else if (maxPartyMember === joinnedMemberCount) {
-        return <span>파티 멤버 {joinners.length} 명 모집이 완료되었습니다.</span>
+        return <span>인원마감</span>
       }
     }
   }
 
   render() {
     const { user, parties, onMakeParty } = this.props
-    const { isOpen } = this.state
+    const { isOpen, party } = this.state
   
     return (
       <div className="PartyList">
-        <div className="PartyList-header">
-          <h3 className="App__contents-title">금주의 파티 👀</h3>
-        </div>
+        {isOpen && party && (
+          <PartyDetail 
+            party={party}
+            renderMemberLimit={this.renderMemberLimit}
+            renderPartyJoinButton={this.renderPartyJoinButton}
+            user={user}
+            handleClose={this.handleClose}
+          />
+        )}
         <div className="PartyList__parties">
-          {parties.length === 0 && <h4>저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
+          {parties.length === 0 && <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
           {parties.map(party => (
             <div 
               key={party.id}
               className="PartyList__party"
               onClick={() => this.handleClick(party)}
             >
-              <div className="PartyList__partyContent card-body">
-                <h5 className="card-title">[{party.category}] {party.title}</h5>
+              <div className="PartyList__partyContent">
+                <div className="PartyList__tags">
+                  {party.category && (
+                    <span className="PartyList__tag">{party.category}</span>
+                  )}
+                  <span className="PartyList__tag">{this.renderMemberLimit(party)}</span>
+                </div>
                 <div className="card-text">
-                  <p className="PartyList__desc">{party.description}</p>
+                  <h2 className="PartyList__partyTitle">{party.title}</h2>
                   <div className="PartyList__info">
-                    <p>
-                      <span className="PartyList__label">먹으러 갈 곳: </span>
-                      <span>{party.destinationName}</span>
-                    </p>
-                    <p>
-                      <span className="PartyList__label">모집 마감 시간: </span>
-                      <span>{moment(party.dueDateTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
-                    </p>
-                    {this.renderMemberLimit(party)}
-                    <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
-                  </div>
+                    <div className="PartyList__block">
+                      <p className="PartyList__info-text">{party.destinationName}</p>
+                      <p className="PartyList__info-text">
+                        <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
+                        <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+                      </p>
+                    </div>
+                    <div className="PartyList__joinners">
+                      <span className="PartyList__joinnersPhoto">
+                        {party.joinners && party.joinners.map((joinner, i) => (
+                          <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
+                        ))}
+                      </span>
+                    </div>
+                  </div>  
                 </div>
-                <div className="PartyList__joinners">
-                  <span className="PartyList__label PartyList__label--partyMembers">파티원: </span>
-                  <div className="PartyList__joinnersPhoto">
-                    {party.joinners && party.joinners.map((joinner, i) => (
-                      <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
-                    ))}
-                  </div>
-                </div>
-                <div className="PartyList__partyButtons">
+                
+                {/* <div className="PartyList__partyButtons">
                   {this.renderPartyJoinButton(party)}
                 </div>                
-              <PartyComments user={user} partyId={party.id} />
+              <PartyComments user={user} partyId={party.id} /> */}
               </div>
             </div>
           ))}

@@ -19,15 +19,35 @@
   width: 25px;
   height: 25px;
   border-radius: 13px;
-  margin-right: 5px;
+  margin-right: 1rem;
+  margin-top: 0.2rem;
+}
+
+.PartyComments__commentline {
+  line-height: 1.5;
+  font-size: 1.6rem;
 }
 
 .PartyComments__commentUser {
-  margin-right: 3px;  
+  margin-right: 3px; 
+  position: relative;
+}
+
+.PartyComments__commentUser span {
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.PartyComments__commentUser button {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.4rem;
 }
 
 .PartyComments__commentContent {
   flex: 1;
+  line-height: 1.5 !important;
 }
 
 .PartyComments__actions {
@@ -38,7 +58,8 @@
 
 .PartyComments__comment--input {
   /* border-top: 1px solid #999; */
-  padding-top: 5px;
+  /* border-bottom: 1px solid #99999970; */
+  padding-bottom: 1rem;
 }
 
 .PartyComments__comment--input form {
@@ -53,3 +74,16 @@
   line-height: 31px;
   font-size: 12px;
 }
+
+.PartyComments__group {
+  width: 100%;
+}
+
+.partyComments__createdAt {
+  color: gray;
+}
+
+.PartyDetail__partyContent .PartyList__tags {
+  position: relative;
+}
+

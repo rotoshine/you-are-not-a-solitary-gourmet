@@ -14,63 +14,67 @@
 .MakeParty-title  {
   display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  align-items: flex-start;
+  position: relative;
+}
+
+.MakeParty-title h3 {
+  font-size: 3rem;
 }
 
 .MakeParty-group {
   width: 600px;
   background: white;
-  padding: 40px 20px;
+  padding: 4rem 3rem;
   position: relative;
+  border-radius: 6px;
 }
 
 .MakeParty-form {
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
   padding: 0 10px;
+  font-size: 1.6rem;
+  line-height: 2;
 }
 
-.MakeParty-form label {
-  font-weight: 400;
-  padding-right: 10px;
-  display: inline-block;
-  width: 30%;
-  text-align: left;
-  font-size: 16px;
+.MakeParty__inline {
+  display: flex;
+  justify-content: space-between;
 }
 
-.MakeParty-form input {
-  width: 70%;
-  padding-left: 5px;
-  font-size: 16px;
-  line-height: 1.5;
-  margin: 10px 0;
-  border: 0;
-  border-radius: 0;
-  border-bottom: 1px solid #bbbbbb;
+.MakeParty__button {
+  background: #FF7744;
+  border: #FF7744;
+  color: white;
+  padding: 1.4rem 0 !important;
+  box-shadow: 0px 2px 16px rgba(255, 119, 68, 0.5);
+  font-size: 1.4rem !important;
+  transition: all 0.4s ease;
+
 }
 
-.submit {
-  margin: 0 auto;
-  margin-top: 40px;
+.MakeParty__button:hover {
+  transform: scale(0.98);
 }
 
-.MakeParty-form input::-webkit-input-placeholder {
-  font-size: 18px;
+.MakeParty__form-control.form-control {
+  padding-left: 1.6rem;
+  font-size: 1.8rem;
+  line-height: 4rem;
 }
 
-.MakeParty-form textarea {
-  z-index: auto;
-  position: relative;
-  margin: 10px 0 40px 0;
-  padding: 10px;
-  height: 120px;
-  line-height: 1.5;
-  font-size: 16px;
-  transition: none;
-  background: transparent !important;
+textarea {
+  height: 20rem !important;
 }
 
-.MakeParty-form textarea::-webkit-input-placeholder {
-  font-size: 16px;
+@media screen and (max-width: 540px) {
+  .MakeParty-group {
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
 }
