@@ -87,3 +87,11 @@
   position: relative;
 }
 
+.PartyComments__nocomment {
+  font-size: 1.4rem;
+  padding: 1rem 0;
+  color: gray;
+  text-align: center;
+  font-weight: 300;
+  font-style: italic;
+}

@@ -3,11 +3,7 @@ import moment from 'moment'
 
 import GoogleLoginButton from './GoogleLoginButton'
 import DueCountDown from './DueCountDown'
-
-import MakeParty from './MakeParty'
-import PartyComments from './PartyComments'
 import PartyDetail from './PartyDetail'
-// import PartyModal from './PartyModal'
 
 import './PartyList.css'
 
@@ -81,7 +77,7 @@ class PartyList extends Component {
   }
 
   render() {
-    const { user, parties, onMakeParty } = this.props
+    const { user, parties } = this.props
     const { isOpen, party } = this.state
   
     return (
@@ -129,11 +125,6 @@ class PartyList extends Component {
                     </div>
                   </div>  
                 </div>
-                
-                {/* <div className="PartyList__partyButtons">
-                  {this.renderPartyJoinButton(party)}
-                </div>                
-              <PartyComments user={user} partyId={party.id} /> */}
               </div>
             </div>
           ))}

@@ -36,22 +36,51 @@ class AuthenticateHeader extends Component<Props> {
 
     return (
       <div className="AuthenticateHeader">
-        <h2 className="jumbotron-heading">안 고독한 미식가</h2>
-        {!userInitialized && 'Loading...'}
-        {userInitialized && !user && (
-          <div>
-            <p className="lead">그대여 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
-            <GoogleLoginButton />
+        {!userInitialized && (
+        <div className="App__constraint">
+          <div className="App__intro">
+            <div className="App__container container">
+              <h2 className="App__container-header">'안 고독한 미식가🔥'</h2>
+              <p className="App__text">안고미 클라우드에서 데이터를 긁어오는중 삐리리~</p>
+            </div>
           </div>
+        </div>
         )}
-        {userInitialized && user && (
-          <div>
-            <p className="lead">{user.displayName}, 오늘도 혼자인가요? 안 고독한 미식가와 함께 더 이상 혼자 먹지 마세요.</p>
-            <form className="form-inline my-2 my-lg-0">
-              <button className="btn btn-success my-2" onClick={signOut}>Logout</button>
-            </form>
+        {userInitialized && user === null && (
+        <div className="App__constraint">
+            <div className="App__header">
+              <GoogleLoginButton />
+            </div>
+          <div className="App__intro">
+            <div className="App__container container">
+              <small>안 고독한 미식가</small>
+              <h2 className="App__container-header">오늘도 혼자인가요?</h2>
+              <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
+              <p className="App__text">다양한 파티에 참여해보세요. 로그인 후 이용할 수 있습니다.</p>
+            </div>
           </div>
+        </div>
         )}
+        {userInitialized && user !== null && (
+          <div className="App">
+            <div className="App__header">
+              <button
+                className="App__button"
+                onClick={signOut}
+              >
+                로그아웃
+              </button>
+            </div>
+            <div className="App__intro App__intro-member">
+              <div className="App__container container">
+                <small>안 고독한 미식가</small>
+                <h2 className="App__container-header">오늘도 혼자인가요?</h2>
+                <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
+                <p className="App__text">원하는 파티가 없다구요? 직업 파티를 만들어보세요.</p>
+              </div>
+            </div>
+          </div>
+          )}
       </div>
     )
   }

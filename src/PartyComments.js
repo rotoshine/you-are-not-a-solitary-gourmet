@@ -63,7 +63,7 @@ export default class PartyComments extends Component {
       <div className="PartyComments">
         <ul className="PartyComments__list">
           {comments && comments.length === 0 && (
-            <li>이 파티에 대한 댓글이 하나도 없네요.</li>
+            <li className="PartyComments__nocomment">😢 이 파티에 대한 댓글이 하나도 없네요.</li>
           )}
           {comments && comments.map((comment, i) => (
             <li key={i} className="PartyComments__comment PartyComments__comment--input">

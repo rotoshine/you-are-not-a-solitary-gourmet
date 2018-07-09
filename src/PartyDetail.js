@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
-import GoogleLoginButton from './GoogleLoginButton'
 import DueCountDown from './DueCountDown'
-
-import MakeParty from './MakeParty'
 import PartyComments from './PartyComments'
-// import PartyModal from './PartyModal'
 
 import './PartyList.css'
 

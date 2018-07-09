@@ -155,7 +155,7 @@
 }
 
 
-@media screen and (max-width: 540px) {
+@media screen and (max-width: 600px) {
   .PartyDetail-group {
     border-radius: 0;
     width: 100%;

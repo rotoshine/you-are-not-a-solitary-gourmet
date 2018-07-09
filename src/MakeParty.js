@@ -88,7 +88,7 @@ class MakeParty extends Component {
               <label htmlFor="isDelivery">배달음식?</label>
               <input
                 className="MakeParty__form-control form-control"
-                type="radio"
+                type="checkbox"
                 name="isDelivery"
                 id="isDelivery"
                 value={form.isDelivery}
