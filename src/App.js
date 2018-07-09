@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyList from './PartyList'
-import GoogleLoginButton from './GoogleLoginButton'
+import AuthenticateHeader from './AuthenticateHeader'
 
 import firebase from './utils/firebase'
 import { unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
@@ -21,11 +21,11 @@ const CATEGORIES = [
 ]
 
 @inject('partyStore')
+@inject('partyStore', 'userStore')
 @observer
 class App extends Component {
   state = {
     initialize: false,
-    user: null,
     userInitialized: false,
     nowPartiesLoading: false,
     parties: null,
@@ -33,7 +33,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.initializeUser()
     this.initializeParties()
   }
 
@@ -45,16 +44,11 @@ class App extends Component {
     return new Promise((resolve) => this.setState(state, resolve))
   }
 
-  async initializeUser() {
-    const user = await loadCurrentUser()
-
-    await this.asyncSetState({
-      userInitialized: true,
-      user
-    })
-  }
-
   async initializeParties() {
+    this.setState({
+      nowPartiesLoading: true,
+    })
+
     this.props.partyStore.initializeParties()
 
     await this.asyncSetState({
@@ -79,7 +73,9 @@ class App extends Component {
   handleSignOut = async () => {
     await firebase.auth().signOut()
     this.setState({
-      user: null
+      user: null,
+      initialize: true,
+      nowPartiesLoading: false,
     })
   }
 
@@ -106,14 +102,15 @@ class App extends Component {
       initialize,
       userInitialized,
       nowPartiesLoading,
-      user,
       isOpen
     } = this.state
 
     const { parties } = this.props.partyStore
+    const { user } = this.props.userStore
 
     return (
       <div className="App">
+        <AuthenticateHeader />
         {!userInitialized && (
         <div className="App__constraint">
           <div className="App__intro">
