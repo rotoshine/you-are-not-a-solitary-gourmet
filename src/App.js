@@ -2,13 +2,12 @@ import React, { Component, Fragment } from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyList from './PartyList'
+import MakeParty from './MakeParty'
 import AuthenticateHeader from './AuthenticateHeader'
 
 import firebase from './utils/firebase'
 import { unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
 import { loadCurrentUser } from './utils/userUtils';
-
-import MakeParty from './MakeParty'
 
 import './App.css';
 

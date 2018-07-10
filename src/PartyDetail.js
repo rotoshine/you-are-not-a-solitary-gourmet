@@ -40,6 +40,9 @@ class PartyDetail extends Component {
                       <span>일시 | </span>
                       <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
                     </p>
+                    <p className="PartyList__info-text">
+                      <span><strong>{party.maxPartyMember}</strong> 명 중 <strong>{party.joinners.length}</strong> 명이 모였습니다.</span>
+                    </p>
                   </div>
                   <div className="PartyDetail__block">
                   <h5>파티 설명</h5>
@@ -53,8 +56,7 @@ class PartyDetail extends Component {
                       <span className="PartyList__joinnersPhoto">
                         {party.joinners && party.joinners.map((joinner, i) => (
                           <Fragment>
-                          <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
-                          <span>{joinner.displayName}</span>
+                            <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
                           </Fragment>
                         ))}
                       </span>
