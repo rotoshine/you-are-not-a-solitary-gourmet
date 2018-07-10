@@ -30,7 +30,7 @@ export default class DueCountDown extends Component {
     if (dueCountDown < now) {
       return (
         <span className="DueCountDown">
-          마감시간 지났군요😢
+          마감시간 지났군요<span role="img" aria-label="cry-face">😢</span>
         </span>
       )
     }

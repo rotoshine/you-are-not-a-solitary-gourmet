@@ -60,7 +60,7 @@ class MakeParty extends Component {
       <div className="MakeParty-overlay">
         <div className="MakeParty-group">
           <div className="MakeParty-title">
-            <h3>🎉 파티 만들기</h3>
+            <h3><span role="img" aria-label="tada">🎉</span> 파티 만들기</h3>
             <button
               className="btn btn-sm btn-light onclick"
               onClick={this.props.onClose}

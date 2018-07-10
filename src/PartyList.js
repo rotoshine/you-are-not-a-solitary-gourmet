@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
-import GoogleLoginButton from './GoogleLoginButton'
 import DueCountDown from './DueCountDown'
 import PartyDetail from './PartyDetail'
 

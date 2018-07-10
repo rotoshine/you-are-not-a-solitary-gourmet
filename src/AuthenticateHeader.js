@@ -40,7 +40,7 @@ class AuthenticateHeader extends Component<Props> {
         <div className="App__constraint">
           <div className="App__intro">
             <div className="App__container container">
-              <h2 className="App__container-header">'안 고독한 미식가🔥'</h2>
+              <h2 className="App__container-header">'안 고독한 미식가<span role="img" aria-label="fire">🔥</span>'</h2>
               <p className="App__text">안고미 클라우드에서 데이터를 긁어오는중 삐리리~</p>
             </div>
           </div>

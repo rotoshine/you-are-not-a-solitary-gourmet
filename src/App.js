@@ -5,9 +5,7 @@ import PartyList from './PartyList'
 import MakeParty from './MakeParty'
 import AuthenticateHeader from './AuthenticateHeader'
 
-import firebase from './utils/firebase'
 import { unsubscribeTodayParties, addParty, joinParty, leaveParty } from './utils/partyUtils'
-import { loadCurrentUser } from './utils/userUtils';
 
 import './App.css';
 
@@ -119,7 +117,7 @@ class App extends Component {
             />
           )}
           <div className="App__contents container album py-5">
-            <h3 className="App__text-black">어떤파티를 찾나요? 🎉</h3>
+            <h3 className="App__text-black">어떤파티를 찾나요? <span role="img" aria-label="tada">🎉</span></h3>
             <ul className="App__categories">
               {CATEGORIES.map( item =>  (
                   <li
@@ -135,7 +133,7 @@ class App extends Component {
           </div>
           <div className="App__contents container album py-5">
             <div>
-            <h3 className="App__text-black">다가오는 파티 👀</h3>
+            <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
             </div>
             {parties && (
               <PartyList
