@@ -104,7 +104,7 @@ class MakeParty extends Component {
                 </label>
                 <div className="MakeParty__inline">
                 {['점심', '저녁', '간식', '기타'].map(
-                    (category) => (
+                    (category, i) => (
                       <div 
                         key={category}
                         className="MakeParty__checkbox form-check form-check-inline">
@@ -112,14 +112,14 @@ class MakeParty extends Component {
                           className="form-check-input"
                           type="radio"
                           name="categoryOptions"
-                          id="category"
+                          id={`category-${i}`}
                           value={category}
                           checked={form.category === category}
                           onChange={(e) => this.handleFormChange('category', e.target.value)}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="category"
+                          htmlFor={`category-${i}`}
                         >
                           {category}
                         </label>
