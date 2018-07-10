@@ -11,7 +11,7 @@ class UserStore {
   @action async signOut() {
     await handleSignOut()
 
-    this.user = null
+    // this.user = null
   }
 }
 
