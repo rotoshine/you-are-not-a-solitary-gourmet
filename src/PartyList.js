@@ -42,21 +42,16 @@ class PartyList extends Component {
   renderPartyJoinButton = (party) => {
     const { user, onLeaveParty } = this.props
 
-    if (!user) {
-      return <GoogleLoginButton />
-    } else {
-      if (this.alreadyJoin(party)) {
-        return (
-          <button type="button"
-            className="PartyDetail__button"
-            onClick={() => onLeaveParty(party.id, user.email)}>참여 취소하기</button>
-        )
-      } else if (this.alreadyDeadline(party)) {
-        return <span>저런! 파티 마감시간이 지났네요 :( </span>
-      }
-
-      return (<button className="PartyDetail__button" onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
-    }
+    if (this.alreadyJoin(party)) {
+      return (
+        <button type="button"
+          className="PartyDetail__button"
+          onClick={() => onLeaveParty(party.id, user.email)}>참여 취소하기</button>
+      )
+    } else if (this.alreadyDeadline(party)) {
+      return <span>저런! 파티 마감시간이 지났네요 :( </span>
+    }  
+    return (<button className="PartyDetail__button" onClick={() => this.handleJoinPartyClick(party)}>파티합류!</button>)
   }
 
   renderMemberLimit(party) {

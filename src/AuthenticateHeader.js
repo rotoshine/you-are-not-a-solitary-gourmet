@@ -46,7 +46,7 @@ class AuthenticateHeader extends Component<Props> {
           </div>
         </div>
         )}
-        {userInitialized && user === null && (
+        {userInitialized && !user && (
         <div className="App__constraint">
             <div className="App__header">
               <GoogleLoginButton />
@@ -61,15 +61,17 @@ class AuthenticateHeader extends Component<Props> {
           </div>
         </div>
         )}
-        {userInitialized && user !== null && (
+        {userInitialized && user && (
           <div className="App">
             <div className="App__header">
-              <button
-                className="App__button"
-                onClick={signOut}
-              >
-                로그아웃
-              </button>
+              <form>
+                <button
+                  className="App__button"
+                  onClick={signOut}
+                >
+                  로그아웃
+                </button>
+              </form>
             </div>
             <div className="App__intro App__intro-member">
               <div className="App__container container">

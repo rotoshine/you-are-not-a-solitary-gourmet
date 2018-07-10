@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 
 import DueCountDown from './DueCountDown'
@@ -27,7 +27,8 @@ class PartyDetail extends Component {
                 <h2 className="PartyList__partyTitle">{party.title}</h2>
                 <div className="PartyList__partyButtons">
                   {renderPartyJoinButton(party)}
-                </div>  
+                </div>
+                <DueCountDown dueDateTime={party.dueDateTime.toDate()} />  
                 <div className="PartyDetail__info">
                   <div className="PartyDetail__block">
                     <h5>파티 상세 정보</h5>
@@ -38,6 +39,9 @@ class PartyDetail extends Component {
                     <p className="PartyList__info-text">
                       <span>일시 | </span>
                       <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
+                    </p>
+                    <p className="PartyList__info-text">
+                      <span><strong>{party.maxPartyMember}</strong> 명 중 <strong>{party.joinners.length}</strong> 명이 모였습니다.</span>
                     </p>
                   </div>
                   <div className="PartyDetail__block">
@@ -51,12 +55,13 @@ class PartyDetail extends Component {
                     <div className="PartyList__joinners">
                       <span className="PartyList__joinnersPhoto">
                         {party.joinners && party.joinners.map((joinner, i) => (
-                          <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
+                          <Fragment>
+                            <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
+                          </Fragment>
                         ))}
                       </span>
                     </div>
                   </div>
-                  
                 </div>                                
                 <PartyComments user={user} partyId={party.id} />
               </div>
