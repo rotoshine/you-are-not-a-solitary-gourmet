@@ -53,13 +53,14 @@ class PartyDetail extends Component {
                   <div className="PartyDetail__block">
                     <h5>누가 오나요?</h5>
                     <div className="PartyList__joinners">
-                      <span className="PartyList__joinnersPhoto">
+                      <div className="PartyList__joinnersPhoto">
                         {party.joinners && party.joinners.map((joinner, i) => (
-                          <Fragment>
-                            <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
-                          </Fragment>
+                          <span className="PartyList__joinnerGroup" key={i}>
+                            <img src={joinner.photoURL} alt={joinner.displayName} />
+                            <em>{joinner.displayName}</em>
+                          </span>
                         ))}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 </div>                                

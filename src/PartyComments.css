@@ -81,6 +81,7 @@
 
 .partyComments__createdAt {
   color: gray;
+  line-height: 1 !important;
 }
 
 .PartyDetail__partyContent .PartyList__tags {
