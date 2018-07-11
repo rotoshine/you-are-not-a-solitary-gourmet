@@ -5,8 +5,7 @@ class DestinationsStore {
   @observable destinations = {}
 
   @action initializeDestinations() {
-    subscribeDestinations((destinations) => {
-      console.log('receive', destinations)
+    subscribeDestinations((destinations) => {      
       this.destinations = [...destinations]
     })
   }

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { inject, observer } from 'mobx-react'
-import DevTools from 'mobx-react-devtools'
 
 import PartyList from './PartyList'
 import MakeParty from './MakeParty'
@@ -150,8 +149,7 @@ class App extends Component {
               </div>
             </Fragment>            
           )
-        }
-        <DevTools />
+        }        
       </div>
     )
   }
