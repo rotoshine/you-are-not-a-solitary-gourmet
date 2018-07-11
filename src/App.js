@@ -67,15 +67,6 @@ class App extends Component {
     this.setState({ isOpen: false })
   }
 
-  // handleSignOut = async () => {
-  //   await firebase.auth().signOut()
-  //   this.setState({
-  //     user: null,
-  //     initialize: true,
-  //     nowPartiesLoading: false,
-  //   })
-  // }
-
   handleMakeParty = async (party) => {
     const { user } = this.props.userStore
 

@@ -55,9 +55,9 @@ class PartyDetail extends Component {
                     <div className="PartyList__joinners">
                       <div className="PartyList__joinnersPhoto">
                         {party.joinners && party.joinners.map((joinner, i) => (
-                          <span className="PartyList__joinnerGroup" key={i}>
+                          <span className="PartyList__joinnerGroup tooltip-joinner" key={i}>
                             <img src={joinner.photoURL} alt={joinner.displayName} />
-                            <em>{joinner.displayName}</em>
+                            <span className="tooltiptext-joinner">{joinner.displayName}</span>
                           </span>
                         ))}
                       </div>

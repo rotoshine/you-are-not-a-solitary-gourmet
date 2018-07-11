@@ -201,3 +201,25 @@ em {
     font-size: 1.4rem;
   }
 }
+
+.tooltip-joinner {
+  position: relative;
+}
+
+.tooltiptext-joinner {
+  visibility: hidden;
+  width: 120%;
+  background-color: #673ab7;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 109%;
+  margin-left: -100%;
+}
+
+.tooltip-joinner:hover .tooltiptext-joinner {
+  visibility: visible;
+}

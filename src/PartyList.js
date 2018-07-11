@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { find } from 'lodash'
 
 import DueCountDown from './DueCountDown'
 import PartyDetail from './PartyDetail'
@@ -9,12 +10,11 @@ import './PartyList.css'
 class PartyList extends Component {
   state = {
     isOpen: false,
-    party: '',
+    partyId: '',
   }
 
-  handleClick = (party) => {
-    console.log('clicked')
-    this.setState({ isOpen: true, party })
+  handleClick = (partyId) => {
+    this.setState({ isOpen: true, partyId })
   }
 
   handleClose = (e) => {
@@ -72,13 +72,13 @@ class PartyList extends Component {
 
   render() {
     const { user, parties } = this.props
-    const { isOpen, party } = this.state
+    const { isOpen, partyId } = this.state
   
     return (
       <div className="PartyList">
-        {isOpen && party && (
+        {isOpen && (
           <PartyDetail 
-            party={party}
+            party={find(parties, {'id': partyId })}
             renderMemberLimit={this.renderMemberLimit}
             renderPartyJoinButton={this.renderPartyJoinButton}
             user={user}
@@ -91,7 +91,7 @@ class PartyList extends Component {
             <div 
               key={party.id}
               className="PartyList__party"
-              onClick={() => this.handleClick(party)}
+              onClick={() => this.handleClick(party.id)}
             >
               <div className="PartyList__partyContent">
                 <div className="PartyList__tags">
@@ -111,11 +111,14 @@ class PartyList extends Component {
                       </p>
                     </div>
                     <div className="PartyList__joinners">
-                      <span className="PartyList__joinnersPhoto">
+                      <div className="PartyList__joinnersPhoto">
                         {party.joinners && party.joinners.map((joinner, i) => (
-                          <img key={i} src={joinner.photoURL} alt={joinner.displayName} />
+                          <span className="PartyList__joinnerGroup tooltip-joinner" key={i}>
+                            <img src={joinner.photoURL} alt={joinner.displayName} />
+                            <span className="tooltiptext-joinner">{joinner.displayName}</span>
+                          </span>
                         ))}
-                      </span>
+                      </div>
                     </div>
                   </div>  
                 </div>

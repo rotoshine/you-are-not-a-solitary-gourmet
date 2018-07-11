@@ -78,7 +78,7 @@ class AuthenticateHeader extends Component<Props> {
                 <small>안 고독한 미식가</small>
                 <h2 className="App__container-header">오늘도 혼자인가요?</h2>
                 <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
-                <p className="App__text">원하는 파티가 없다구요? 직업 파티를 만들어보세요.</p>
+                <p className="App__text">원하는 파티가 없다구요? 직접 파티를 만들어보세요.</p>
               </div>
             </div>
           </div>
