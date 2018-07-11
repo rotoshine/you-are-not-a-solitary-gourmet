@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import db from './firestore'
 import { findByEmails } from './userUtils'
+import { isValidSlackHook, notifyToSlack } from './slack'
 
 const querySnapshotToArray = async (querySnapshot) => {
   const parties = querySnapshot.docs.map((doc) => ({
@@ -49,6 +50,10 @@ export const addParty = async (party, user) => {
     createdAt: new Date()
   })
 
+  if (isValidSlackHook()) {
+    await notifyToSlack(`${title} 파티가 만들어졌어요! 파티 장소는 ${destinationName} 입니다!`)
+  }
+  
   return addedParty
 }
 
