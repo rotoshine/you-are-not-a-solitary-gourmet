@@ -1,0 +1,12 @@
+{
+  "extends": ["tslint-config-airbnb"],
+  "linterOptions": {        
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "semicolon": [true, "never"]
+  }
+}
