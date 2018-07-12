@@ -5,7 +5,6 @@ import 'moment/locale/ko'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { Provider } from 'mobx-react'
 
 import Root from './Root'
 import registerServiceWorker from './registerServiceWorker'

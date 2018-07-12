@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 
 import MakeParty from '../MakeParty'
 
-import { addParty } from '../utils/partyUtils'
+import { saveParty } from '../utils/partyUtils'
 
 @inject('userStore')
 @observer
@@ -15,7 +15,7 @@ class MakePartyContainer extends Component {
       user.email
     ]
 
-    await addParty(party, user)
+    await saveParty(party, user)
   }
 
   render() {
