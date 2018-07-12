@@ -6,7 +6,7 @@ import PartyList from '../PartyList'
 import { asyncSetState } from '../utils/misc'
 import {
   unsubscribeTodayParties,
-  addParty,
+  saveParty,
   joinParty,
   leaveParty
 } from '../utils/partyUtils'
@@ -47,7 +47,7 @@ class PartyListContainer extends Component<Props> {
       user.email
     ]
 
-    await addParty(party, user)
+    await saveParty(party, user)
   }
 
   handleJoinPartyClick = async (partyId, email) => {
