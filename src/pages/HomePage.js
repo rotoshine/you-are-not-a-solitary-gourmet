@@ -1,31 +1,32 @@
 // @flow
-import React, { Component, Fragment } from 'react'
+import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyListContainer from '../containers/PartyListContainer'
 import MakePartyContainer from '../containers/MakePartyContainer'
-import MakeParty from '../MakeParty'
-import PartyList from '../PartyList'
 
-const CATEGORIES = [
-  { name: '점심', emoji: '🌮', color: '#FFB16B'},
-  { name: '저녁', emoji: '🥘', color: '#FA6BFF' },
-  { name: '간식', emoji: '☕️', color: '#FF6C72' },
-  { name: '문화생활', emoji: '🍿', color: '#525FFF' },
-  { name: '기타', emoji: '🎉', color: '#66BB66' },
-]
+/*
+type Props = {
+  userStore: IUserStore,
+  partyStore: IPartyStore,
+}
+
+type State = {
+  isOpen: boolean,
+}
+*/
 
 @inject('userStore', 'partyStore')
 @observer
-class HomePage extends Component<Props> {
+class HomePage extends React.Component {
   state = {
     isOpen: false,
   }
 
   handleClick = () => {
-    const { isExsitUser } = this.props.userStore
+    const { isExistUser } = this.props.userStore
 
-    if (!isExsitUser) {
+    if (!isExistUser) {
       alert('로그인이 필요합니다!')
     } else {
       this.setState({ isOpen: true })
@@ -37,9 +38,6 @@ class HomePage extends Component<Props> {
   }
 
   render() {
-    const { isExsitUser } = this.props.userStore
-    const { parties } = this.props.partyStore
-
     return (
       <div className="HomePage">
         <button

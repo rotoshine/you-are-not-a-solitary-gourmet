@@ -32,7 +32,7 @@ class AuthenticateHeader extends Component<Props> {
 
   render() {
     const { userInitialized } = this.state
-    const { isExsitUser, signOut } = this.props.userStore
+    const { isExistUser, signOut } = this.props.userStore
 
     return (
       <div className="AuthenticateHeader">
@@ -46,7 +46,7 @@ class AuthenticateHeader extends Component<Props> {
             </div>
           </div>
         )}
-        {userInitialized && !isExsitUser && (
+        {userInitialized && !isExistUser && (
           <div className="App__constraint">
               <div className="App__header">
                 <GoogleLoginButton />
@@ -61,7 +61,7 @@ class AuthenticateHeader extends Component<Props> {
             </div>
           </div>
         )}
-        {userInitialized && isExsitUser && (
+        {userInitialized && isExistUser && (
           <div className="App">
             <div className="App__header">
               <form>

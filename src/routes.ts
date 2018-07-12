@@ -8,7 +8,7 @@ export const appRoutes = [
     component: HomePage,
     path: '/',
     exact: true,
-  }
+  },
 ]
 
 export const rootRoute = [
@@ -22,5 +22,5 @@ export const rootRoute = [
     id: '403',
     component: PageNotFound,
     path: null,
-  }
+  },
 ]
