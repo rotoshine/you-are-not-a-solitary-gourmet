@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AutoComplete from 'react-autocomplete'
 
 import './MakeParty.css'
 
@@ -25,22 +26,22 @@ class MakeParty extends Component {
       }
     })
   }
-  
+
   handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const { form } = this.state
     const { onMakeParty, onClose } = this.props
 
     const { dueDateTime, partyTime } = form
-    
+
     const current = new Date()
 
     // TODO form validation 붙이자    
     if (dueDateTime < current) {
       alert('마감일은 오늘 이전일 수 없습니다.')
       return
-    } 
+    }
 
     if (partyTime < current) {
       alert('파티일은 오늘 이전일 수 없습니다.')
@@ -52,6 +53,17 @@ class MakeParty extends Component {
     onClose()
   }
 
+  destinationsToAutocompleteData() {
+    const { destinations } = this.props
+
+    if (!destinations) {
+      return []
+    }
+
+    return destinations.map((destination) => ({
+      label: destination.id
+    }))
+  }
   render() {
 
     const { form } = this.state
@@ -70,115 +82,133 @@ class MakeParty extends Component {
             className="MakeParty-form"
             onSubmit={this.handleSubmit}>
             <div className="form-row">
-            <div className="form-group col-sm-9">
-              <label
-                htmlFor="title">
-                파티 제목
-              </label>
-              <input
-                type="text"
-                className="MakeParty__form-control form-control"
-                id="title"
-                placeholder="파티제목" 
-                value={form.title}
-                onChange={(e) => this.handleFormChange('title', e.target.value)}
-              />
-            </div>
-            <div className="form-group col-sm-3">
-              <label htmlFor="isDelivery">배달음식?</label>
-              <input
-                className="MakeParty__form-control form-control"
-                type="checkbox"
-                name="isDelivery"
-                id="isDelivery"
-                value={form.isDelivery}
-                onChange={(e) => this.handleFormChange('isDelivery', e.target.checked)}
-              />
-            </div>
-            </div>
-              <div className="form-group">
+              <div className="form-group col-sm-9">
                 <label
-                  htmlFor="category"
-                >
+                  htmlFor="title">
+                  파티 제목
+              </label>
+                <input
+                  type="text"
+                  className="MakeParty__form-control form-control"
+                  id="title"
+                  placeholder="파티제목"
+                  value={form.title}
+                  autoComplete="off"
+                  onChange={(e) => this.handleFormChange('title', e.target.value)}
+                />
+              </div>
+              <div className="form-group col-sm-3">
+                <label htmlFor="isDelivery">배달음식?</label>
+                <input
+                  className="MakeParty__form-control form-control"
+                  type="checkbox"
+                  name="isDelivery"
+                  id="isDelivery"
+                  value={form.isDelivery}
+                  onChange={(e) => this.handleFormChange('isDelivery', e.target.checked)}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label
+                htmlFor="category"
+              >
                 카테고리
                 </label>
-                <div className="MakeParty__inline">
+              <div className="MakeParty__inline">
                 {['점심', '저녁', '간식', '기타'].map(
-                    (category, i) => (
-                      <div 
-                        key={category}
-                        className="MakeParty__checkbox form-check form-check-inline">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="categoryOptions"
-                          id={`category-${i}`}
-                          value={category}
-                          checked={form.category === category}
-                          onChange={(e) => this.handleFormChange('category', e.target.value)}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`category-${i}`}
-                        >
-                          {category}
-                        </label>
-                      </div>
-                    )
+                  (category, i) => (
+                    <div
+                      key={category}
+                      className="MakeParty__checkbox form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="categoryOptions"
+                        id={`category-${i}`}
+                        value={category}
+                        checked={form.category === category}
+                        onChange={(e) => this.handleFormChange('category', e.target.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`category-${i}`}
+                      >
+                        {category}
+                      </label>
+                    </div>
                   )
+                )
                 }
               </div>
             </div>
             <div className="form-row">
-            <div className="form-group col-sm-9">
-              <label
-                htmlFor="destinationName">
-                행선지
+              <div className="form-group col-sm-9">
+                <label
+                  htmlFor="destinationName">
+                  행선지
               </label>
-              <input
-                type="text"
-                className="MakeParty__form-control form-control"
-                id="title"
-                placeholder="식당, 장소이름을 입력해 주세요" 
-                value={form.destinationName}
-                onChange={(e) => this.handleFormChange('destinationName', e.target.value)}
-              />
-            </div>
-            <div className="form-group col-sm-3">
-              <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
-              <input
-                id="maxPartyMember"
-                className="MakeParty__form-control form-control"
-                type="number"
-                value={form.maxPartyMember}
-                onChange={(e) => this.handleFormChange('maxPartyMember', e.target.value)}
-              />
-            </div>
+                <AutoComplete
+                  inputProps={{
+                    className: 'MakeParty__form-control form-control',
+                    id: 'destinationName',
+                    placeholder: '식당, 장소이름을 입력해 주세요',
+                  }}
+                  wrapperStyle={{
+                    width: '100%',
+                    position: 'absolute',
+                    zIndex: 20,
+                  }}
+                  getItemValue={(item) => item.label}
+                  items={this.destinationsToAutocompleteData()}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      key={item.label}
+                      className="MakeParty__autocompleteItem"
+                      style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                      {item.label}
+                    </div>
+                  )}
+                  value={form.destinationName}
+                  onChange={(e) => this.handleFormChange('destinationName', e.target.value)}
+                  onSelect={(value) => this.handleFormChange('destinationName', value)}
+                />
+              </div>
+              <div className="form-group col-sm-3">
+                <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
+                <input
+                  id="maxPartyMember"
+                  className="MakeParty__form-control form-control"
+                  type="number"
+                  value={form.maxPartyMember}
+                  onChange={(e) => this.handleFormChange('maxPartyMember', e.target.value)}
+                />
+              </div>
             </div>
             <div className="form-row">
-            <div className="form-group col-sm-6">
-              <label
-                htmlFor="partyTime">언제 먹나요?</label>
-              <input
-                id="partyTime"
-                className="MakeParty__form-control form-control"
-                type="datetime-local"
-                placeholder="언제 먹나요?"
-                value={form.partyTime}
-                onChange={(e) => this.handleFormChange('partyTime', e.target.value)}
-              />
-            </div>
-            <div className="form-group col-sm-6">
-              <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
-              <input
-                id="dueDateTime"
-                className="MakeParty__form-control form-control"
-                type="datetime-local"
-                placeholder="파티 모집 마감시간은 언제인가요?"
-                value={form.dueDateTime}
-                onChange={(e) => this.handleFormChange('dueDateTime', e.target.value)}
-              />
-            </div>
+              <div className="form-group col-sm-6">
+                <label
+                  htmlFor="partyTime">언제 먹나요?</label>
+                <input
+                  id="partyTime"
+                  className="MakeParty__form-control form-control"
+                  type="datetime-local"
+                  placeholder="언제 먹나요?"
+                  value={form.partyTime}
+                  onChange={(e) => this.handleFormChange('partyTime', e.target.value)}
+                />
+              </div>
+              <div className="form-group col-sm-6">
+                <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
+                <input
+                  id="dueDateTime"
+                  className="MakeParty__form-control form-control"
+                  type="datetime-local"
+                  placeholder="파티 모집 마감시간은 언제인가요?"
+                  value={form.dueDateTime}
+                  onChange={(e) => this.handleFormChange('dueDateTime', e.target.value)}
+                />
+              </div>
             </div>
             <div className="form-group">
               <label htmlFor="description">자세한 정보를 입력하세요</label>

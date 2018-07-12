@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import db from './firestore'
 import { findByEmails } from './userUtils'
 import { isValidSlackHook, notifyToSlack } from './slack'
+import { saveDestination } from './destination'
 
 const querySnapshotToArray = async (querySnapshot) => {
   const parties = querySnapshot.docs.map((doc) => ({
@@ -23,7 +24,7 @@ export const findById = async (partyId) => {
   return querySnapshot.data()
 }
 
-export const addParty = async (party, user) => {
+export const saveParty = async (party, user) => {
   const {
     category,
     title,
@@ -36,7 +37,7 @@ export const addParty = async (party, user) => {
     joinners = []
   } = party
 
-  const addedParty = await db.collection('parties').add({
+  const savedParty = await db.collection('parties').add({
     category,
     title,
     destinationName,
@@ -53,8 +54,10 @@ export const addParty = async (party, user) => {
   if (isValidSlackHook()) {
     await notifyToSlack(`${title} 파티가 만들어졌어요! 파티 장소는 ${destinationName} 입니다!`)
   }
+
+  await saveDestination(destinationName)
   
-  return addedParty
+  return savedParty
 }
 
 export const subscribeTodayParties = (callback) => {
@@ -112,7 +115,7 @@ export const leaveParty = async (partyId, email) => {
 }
 
 export default {
-  addParty,
+  saveParty,
   joinParty,
   leaveParty,
   findTodayParties,

@@ -66,6 +66,18 @@
   line-height: 1.5 !important;
 }
 
+.MakeParty__autocomplete {
+  
+}
+
+.MakeParty__autocompleteItem {
+  padding-left: 1.6rem;
+  padding-right: 1.6.rem;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
 textarea {
   height: 20rem !important;
 }
