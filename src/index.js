@@ -4,17 +4,13 @@ import 'moment/locale/ko'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'mobx-react'
 
-import App from './App'
+import Root from './Root'
 import registerServiceWorker from './registerServiceWorker'
-import stores from './stores'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render((
-  <Provider {...stores}>
-    <App />
-  </Provider>
+  <Root />
 ), document.getElementById('root'))
 registerServiceWorker();
