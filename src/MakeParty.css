@@ -78,6 +78,14 @@
   cursor: pointer;
 }
 
+.MakeParty-form-delivery {
+  margin-top: 38px;
+}
+
+.MakeParty-form-delivery .MakeParty__form-control {
+  width: 16px !important;
+}
+
 textarea {
   height: 20rem !important;
 }
