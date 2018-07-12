@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyList from '../PartyList'
@@ -8,19 +8,30 @@ import {
   unsubscribeTodayParties,
   saveParty,
   joinParty,
-  leaveParty
-} from '../utils/partyUtils'
+  leaveParty,
+} from '../utils/party'
+
+/*
+type Props = {
+  partyStore: IPartyStore,
+  userStore: IUserStore,
+}
+
+type State = {
+  initialize: boolean,
+  nowPartiesLoading: boolean,
+}*/
 
 @inject('partyStore', 'userStore')
 @observer
-class PartyListContainer extends Component<Props> {
+class PartyListContainer extends React.Component {
   state = {
     initialize: false,
     nowPartiesLoading: false,
   }
 
   componentDidMount() {
-    this.initializeParties()
+    this.initializeParties()    
   }
 
   componentWillUnmount() {
@@ -44,7 +55,7 @@ class PartyListContainer extends Component<Props> {
     const { user } = this.props.userStore
 
     party.joinners = [
-      user.email
+      user.email,
     ]
 
     await saveParty(party, user)
@@ -63,7 +74,7 @@ class PartyListContainer extends Component<Props> {
     const { parties } = this.props.partyStore
     const { initialize } = this.state
 
-    return initialize && (
+    return initialize && user && (
       <div className="PartyListContainer App__contents container album py-5">
         <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
         {parties && (

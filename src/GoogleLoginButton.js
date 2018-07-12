@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { signIn } from './utils/userUtils'
+import { signIn } from './utils/user'
 
 export default class GoogleLoginButton extends Component {
   render () {

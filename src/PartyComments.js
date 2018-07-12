@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-import { subscribeComments, unsubscibeComments, addComment, removeComment } from './utils/commentUtils'
+import { subscribeComments, unsubscibeComments, addComment, removeComment } from './utils/comment'
 
 import './PartyComments.css'
 

@@ -1,14 +1,12 @@
 import { action, observable } from 'mobx'
 import { subscribeDestinations } from '../utils/destination'
 
-class DestinationsStore {
-  @observable destinations = {}
+export default class DestinationsStore implements IDestinationsStore {
+  @observable destinations: Destination[] = []
 
   @action initializeDestinations() {
-    subscribeDestinations((destinations) => {      
+    subscribeDestinations((destinations: Destination[]) => {
       this.destinations = [...destinations]
     })
   }
 }
-
-export default new DestinationsStore()

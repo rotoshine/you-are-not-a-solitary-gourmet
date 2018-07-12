@@ -4,7 +4,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": ["es2016", "dom", "es2015.promise"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -16,8 +16,18 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "experimentalDecorators": true
   },
+  "files": [
+    "./types/images.d.ts",
+    "./types/bluebird-shim.d.ts",
+    "./types/model.d.ts",
+    "./types/stores.d.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "build",
