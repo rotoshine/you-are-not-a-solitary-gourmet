@@ -1,16 +1,17 @@
 declare interface IPartyStore {
-  parties: Party[]
+  initialized: boolean,
+  parties: Party[] | null
   initializeParties(): void
 }
 
 declare interface IUserStore {
-  user: User
+  user: User | null
   initializeUser(): void
   isExistUser(): boolean
   signOut(): void
 }
 
 declare interface IDestinationsStore {
-  destinations: Destination[]
+  destinations: Destination[] | null
   initializeDestinations(): void
 }

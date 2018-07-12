@@ -70,14 +70,26 @@ class PartyListContainer extends React.Component {
   }
 
   render() {
-    const { user, isExistUser } = this.props.userStore
-    const { parties } = this.props.partyStore
     const { initialize } = this.state
+
+    const { user, isExistUser } = this.props.userStore
+    const { initialized, parties } = this.props.partyStore
+    const initializedParty = this.props.partyStore.initialized
 
     return initialize && isExistUser && (
       <div className="PartyListContainer App__contents container album py-5">
-        <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
-        {parties && (
+        {
+          !initializedParty && (
+            <h3 className="App__text-black">파티를 불러오는 중</h3>
+          )
+        }
+        {
+          initializedParty && parties && (
+            <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
+          )
+        }
+
+        {initializedParty && parties && (
           <PartyList
             user={user}
             parties={parties}
