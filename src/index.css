@@ -21,3 +21,11 @@ ul, li {
 button {
   cursor: pointer;
 }
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: white !important;
+}
