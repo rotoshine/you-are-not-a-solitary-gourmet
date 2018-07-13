@@ -6,6 +6,8 @@ import DueCountDown from './DueCountDown'
 import PartyComments from './PartyComments'
 import PartyJoinButton from './PartyJoinButton'
 
+import { ESC } from './utils/keycodes'
+
 import { Overlay } from './CommonStyledComponents'
 import {
   PartyTitle,
@@ -56,8 +58,6 @@ const PartyJoinButtonWrapper = styled.div`
   margin: 20px 0;
 `
 
-const ESC_KEY_CODE = 27
-
 class PartyDetail extends Component {
   componentDidMount() {
     document.body.classList.add('modal-open');
@@ -72,8 +72,8 @@ class PartyDetail extends Component {
   }
 
   handleKeyPress = (evt) => {
-    if (evt.keyCode !== ESC_KEY_CODE) return
-    this.props.handleClose()
+    if (evt.keyCode !== ESC) return
+    this.handleClose()
   }
 
   handleClickOverlay = (evt) => {
@@ -92,7 +92,7 @@ class PartyDetail extends Component {
     } = this.props
 
     return (
-      <Overlay onClick={this.handleClickOverlay}>
+      <Overlay onClick={this.handleClose}>
         <PartyDetailGroup onClick={(evt) => evt.stopPropagation()}>
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
