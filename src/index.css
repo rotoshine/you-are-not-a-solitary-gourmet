@@ -14,10 +14,18 @@ body {
   font-size: 1rem;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 ul, li {
   list-style: none;
 }
 
 button {
   cursor: pointer;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: white !important;
 }

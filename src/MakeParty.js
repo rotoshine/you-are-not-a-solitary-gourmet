@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import AutoComplete from 'react-autocomplete'
+import Flatpickr from 'react-flatpickr'
 
 import './MakeParty.css'
+import 'flatpickr/dist/themes/light.css'
 
 class MakeParty extends Component {
   state = {
@@ -9,7 +11,7 @@ class MakeParty extends Component {
       category: '',
       title: '',
       destinationName: '',
-      partyTime: '',
+      partyTime: new Date(),
       dueDateTime: '',
       description: '',
       isDelivery: false,
@@ -64,9 +66,19 @@ class MakeParty extends Component {
       label: destination.id
     }))
   }
+
+  componentDidMount() {
+    document.body.classList.add('modal-open');
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('modal-open');
+  }
+
+
   render() {
 
-    const { form } = this.state
+    const { form, date } = this.state
 
     return (
       <div className="MakeParty-overlay">
@@ -82,6 +94,7 @@ class MakeParty extends Component {
             className="MakeParty-form"
             onSubmit={this.handleSubmit}>
             <div className="form-row">
+            
               <div className="form-group col-sm-9">
                 <label
                   htmlFor="title">
@@ -97,16 +110,16 @@ class MakeParty extends Component {
                   onChange={(e) => this.handleFormChange('title', e.target.value)}
                 />
               </div>
-              <div className="form-group col-sm-3">
-                <label htmlFor="isDelivery">배달음식?</label>
+              <div className="form-group col-sm-3 MakeParty-form-delivery">
                 <input
-                  className="MakeParty__form-control form-control"
+                  className="MakeParty__form-control form-control form-check-inline"
                   type="checkbox"
                   name="isDelivery"
                   id="isDelivery"
                   value={form.isDelivery}
                   onChange={(e) => this.handleFormChange('isDelivery', e.target.checked)}
                 />
+                <label htmlFor="isDelivery">배달음식?</label>
               </div>
             </div>
             <div className="form-group">
@@ -114,7 +127,7 @@ class MakeParty extends Component {
                 htmlFor="category"
               >
                 카테고리
-                </label>
+              </label>
               <div className="MakeParty__inline">
                 {['점심', '저녁', '간식', '기타'].map(
                   (category, i) => (
@@ -155,7 +168,7 @@ class MakeParty extends Component {
                     placeholder: '식당, 장소이름을 입력해 주세요',
                   }}
                   wrapperStyle={{
-                    width: '100%',
+                    width: 'calc(100% - 10px)',
                     position: 'absolute',
                     zIndex: 20,
                   }}
@@ -189,25 +202,39 @@ class MakeParty extends Component {
               <div className="form-group col-sm-6">
                 <label
                   htmlFor="partyTime">언제 먹나요?</label>
-                <input
-                  id="partyTime"
+                <Flatpickr data-enable-time
                   className="MakeParty__form-control form-control"
-                  type="datetime-local"
-                  placeholder="언제 먹나요?"
                   value={form.partyTime}
-                  onChange={(e) => this.handleFormChange('partyTime', e.target.value)}
+                  options={{minDate: "today", dateFormat: "Y-m-d H:i"}}
+                  onChange={(date,str) => this.setState(prevState => ({
+                    form: {
+                        ...prevState.form,
+                        partyTime: str
+                    }
+                }))}
                 />
               </div>
               <div className="form-group col-sm-6">
                 <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
-                <input
+                <Flatpickr data-enable-time
+                  className="MakeParty__form-control form-control"
+                  value={form.dueDateTime}
+                  options={{maxDate: `${form.partyTime}`, dateFormat: "Y-m-d H:i"}}
+                  onChange={(date,str) => this.setState(prevState => ({
+                      form: {
+                          ...prevState.form,
+                          dueDateTime: str
+                      }
+                  }))}
+                />
+                {/* <input
                   id="dueDateTime"
                   className="MakeParty__form-control form-control"
                   type="datetime-local"
                   placeholder="파티 모집 마감시간은 언제인가요?"
                   value={form.dueDateTime}
                   onChange={(e) => this.handleFormChange('dueDateTime', e.target.value)}
-                />
+                /> */}
               </div>
             </div>
             <div className="form-group">
