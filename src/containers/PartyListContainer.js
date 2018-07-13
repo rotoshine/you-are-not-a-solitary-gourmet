@@ -31,7 +31,7 @@ class PartyListContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.initializeParties()    
+    this.initializeParties()
   }
 
   componentWillUnmount() {
