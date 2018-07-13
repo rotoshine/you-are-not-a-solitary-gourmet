@@ -77,7 +77,6 @@ class PartyDetail extends Component {
   }
 
   handleClickOverlay = (evt) => {
-    if (evt.target.classList.value.indexOf('Overlay') < 0) return
     this.props.handleClose()
   }
 
@@ -93,7 +92,7 @@ class PartyDetail extends Component {
 
     return (
       <Overlay onClick={this.handleClickOverlay}>
-        <PartyDetailGroup>
+        <PartyDetailGroup onClick={(evt) => evt.stopPropagation()}>
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
             <PartyTag>{renderMemberLimit(party)}</PartyTag>
