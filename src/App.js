@@ -15,6 +15,7 @@ class App extends Component {
     return (
       <div className="App">
         <AuthenticateHeader/>
+        <Switch>
           {appRoutes.map(route => (
             <Route
               key={route.path}
@@ -23,6 +24,7 @@ class App extends Component {
               component={route.component}
             />
           ))}
+        </Switch>
       </div>
     )
   }

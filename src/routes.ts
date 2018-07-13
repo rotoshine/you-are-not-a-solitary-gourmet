@@ -9,6 +9,16 @@ export const appRoutes = [
     path: '/',
     exact: true,
   },
+  {
+    id: 'Parties',
+    component: HomePage,
+    path: '/parties/:id',
+  },
+  {
+    id: '404',
+    component: PageNotFound,
+    path: null,
+  },
 ]
 
 export const rootRoute = [
@@ -16,11 +26,5 @@ export const rootRoute = [
     id: 'App',
     component: App,
     path: '/',
-    exact: true,
-  },
-  {
-    id: '403',
-    component: PageNotFound,
-    path: null,
   },
 ]
