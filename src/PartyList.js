@@ -136,7 +136,7 @@ class PartyList extends Component {
             onLeaveParty={onLeaveParty}
           />
         )}
-        {parties !== null && parties.length === 0 && <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
+        {parties && parties.length === 0 && <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
         {parties.map(party => (
           <PartyItem
             key={party.id}

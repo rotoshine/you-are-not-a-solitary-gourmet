@@ -1,6 +1,6 @@
 declare interface IPartyStore {
-  initialized: boolean,
-  parties: Party[] | null
+  initialized: boolean
+  parties: Party[]
   initializeParties(): void
 }
 
