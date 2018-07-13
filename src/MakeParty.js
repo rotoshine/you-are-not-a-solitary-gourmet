@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import AutoComplete from 'react-autocomplete'
 import Flatpickr from 'react-flatpickr'
 
+import { ESC } from './utils/keycodes'
+
 import './MakeParty.css'
 import 'flatpickr/dist/themes/light.css'
 
@@ -39,7 +41,7 @@ class MakeParty extends Component {
 
     const current = new Date()
 
-    // TODO form validation 붙이자    
+    // TODO form validation 붙이자
     if (dueDateTime < current) {
       alert('마감일은 오늘 이전일 수 없습니다.')
       return
@@ -69,19 +71,31 @@ class MakeParty extends Component {
 
   componentDidMount() {
     document.body.classList.add('modal-open');
+
+    document.body.addEventListener('keyup', this.handleKeyPress)
   }
 
   componentWillUnmount() {
     document.body.classList.remove('modal-open');
+
+    document.body.removeEventListener('keyup', this.handleKeyPress)
+  }
+
+  handleKeyPress = (evt) => {
+    if (evt.keyCode !== ESC) return
+    this.handleClose()
+  }
+
+  handleClose = (evt) => {
+    this.props.onClose()
   }
 
   render() {
-
     const { form } = this.state
 
     return (
-      <div className="MakeParty-overlay">
-        <div className="MakeParty-group">
+      <div className="MakeParty-overlay" onClick={this.handleClose}>
+        <div className="MakeParty-group" onClick={(evt) => evt.stopPropagation()}>
           <div className="MakeParty-title">
             <h3><span role="img" aria-label="tada">🎉</span> 파티 만들기</h3>
             <button
