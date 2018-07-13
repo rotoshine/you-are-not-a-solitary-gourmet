@@ -70,11 +70,11 @@ class PartyListContainer extends React.Component {
   }
 
   render() {
-    const { user } = this.props.userStore
+    const { user, isExistUser } = this.props.userStore
     const { parties } = this.props.partyStore
     const { initialize } = this.state
 
-    return initialize && user && (
+    return initialize && isExistUser && (
       <div className="PartyListContainer App__contents container album py-5">
         <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
         {parties && (
