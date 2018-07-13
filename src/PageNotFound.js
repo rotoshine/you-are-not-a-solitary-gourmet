@@ -1,8 +1,4 @@
-// @flow
 import React from 'react'
-
-type Props = {
-}
 
 const PageNotFound = () => (
   <div className="PageNotFound">
