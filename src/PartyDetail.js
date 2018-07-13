@@ -76,6 +76,11 @@ class PartyDetail extends Component {
     this.props.handleClose()
   }
 
+  handleClickOverlay = (evt) => {
+    if (evt.target.classList.value.indexOf('Overlay') < 0) return
+    this.props.handleClose()
+  }
+
   render() {
     const {
       party,
@@ -87,7 +92,7 @@ class PartyDetail extends Component {
     } = this.props
 
     return (
-      <Overlay onClick={handleClose}>
+      <Overlay onClick={this.handleClickOverlay}>
         <PartyDetailGroup>
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
