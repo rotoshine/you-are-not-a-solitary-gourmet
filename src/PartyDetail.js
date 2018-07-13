@@ -77,6 +77,10 @@ class PartyDetail extends Component {
   }
 
   handleClickOverlay = (evt) => {
+<<<<<<< HEAD
+=======
+    if (evt.target.classList.value.indexOf('Overlay') < 0) return
+>>>>>>> 7b85a99... Fix handle click overlay behaviour
     this.props.handleClose()
   }
 
@@ -92,7 +96,11 @@ class PartyDetail extends Component {
 
     return (
       <Overlay onClick={this.handleClickOverlay}>
+<<<<<<< HEAD
         <PartyDetailGroup onClick={(evt) => evt.stopPropagation()}>
+=======
+        <PartyDetailGroup>
+>>>>>>> 7b85a99... Fix handle click overlay behaviour
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
             <PartyTag>{renderMemberLimit(party)}</PartyTag>
