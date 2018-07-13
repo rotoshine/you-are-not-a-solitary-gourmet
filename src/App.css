@@ -223,3 +223,11 @@ em {
 .tooltip-joinner:hover .tooltiptext-joinner {
   visibility: visible;
 }
+
+a.Link {
+  color: inherit !important;
+}
+
+a.Link:hover {
+  text-decoration: none;
+}

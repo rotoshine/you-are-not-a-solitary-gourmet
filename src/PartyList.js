@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Switch, Route, Link, withRouter } from 'react-router-dom'
 import moment from 'moment'
 import styled from 'styled-components'
 import { find } from 'lodash'
@@ -72,17 +73,8 @@ const PartyJoinnerGroup = styled.span`
 `
 
 class PartyList extends Component {
-  state = {
-    isOpen: false,
-    partyId: '',
-  }
-
-  handleClick = (partyId) => {
-    this.setState({ isOpen: true, partyId })
-  }
-
   handleClose = (e) => {
-    this.setState({ isOpen: false })
+    this.props.history.push('/')
   }
 
   alreadyJoin(party) {
@@ -121,63 +113,69 @@ class PartyList extends Component {
 
   render() {
     const { user, parties, onLeaveParty } = this.props
-    const { isOpen, partyId } = this.state
 
     return (
       <div className="PartyList">
-        {isOpen && (
-          <PartyDetail
-            party={find(parties, { 'id': partyId })}
-            renderMemberLimit={this.renderMemberLimit}
-            renderPartyJoinButton={this.renderPartyJoinButton}
-            user={user}
-            handleClose={this.handleClose}
-            onJoinParty={this.handleJoinPartyClick}
-            onLeaveParty={onLeaveParty}
+        <Switch>
+          <Route
+            path="/parties/:partyId"
+            render={({ match }) => (
+              <PartyDetail
+                party={find(parties, { 'id': match.params.partyId })}
+                parties={parties}
+                renderMemberLimit={this.renderMemberLimit}
+                renderPartyJoinButton={this.renderPartyJoinButton}
+                user={user}
+                handleClose={this.handleClose}
+                onJoinParty={this.handleJoinPartyClick}
+                onLeaveParty={onLeaveParty}
+              />
+            )}
           />
-        )}
+        </Switch>
         {parties && parties.length === 0 && <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
         {parties.map(party => (
-          <PartyItem
-            key={party.id}
-            className="PartyList__party"
-            onClick={() => this.handleClick(party.id)}
-          >
-            <PartyItemContents>
-              <div>
-                {party.category && (
-                  <PartyTag>{party.category}</PartyTag>
-                )}
-                <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
-              </div>
-              <div className="card-text">
-                <PartyTitle>{party.title}</PartyTitle>
-                <PartyItemInfo>
-                  <div className="PartyList__block">
-                    <PartyItemInfoText>{party.destinationName}</PartyItemInfoText>
-                    <PartyItemInfoText>
-                      <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
-                      <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
-                    </PartyItemInfoText>
-                  </div>
-                  <PartyJoinners>
-                    <PartyJoinnerPhoto>
-                      {party.joinners && party.joinners.map((joinner, i) => (
-                        <PartyJoinnerGroup key={i} className="tooltip-joinner" >
-                          <img src={joinner.photoURL} alt={joinner.displayName} />
-                          <span className="tooltiptext-joinner">{joinner.displayName}</span>
-                        </PartyJoinnerGroup>
-                      ))}
-                    </PartyJoinnerPhoto>
-                  </PartyJoinners>
-                </PartyItemInfo>
-              </div>
-            </PartyItemContents>
-          </PartyItem>
+          <Link className="Link" to={`/parties/${party.id}`}>
+            <PartyItem
+              key={party.id}
+              className="PartyList__party"
+            >
+              <PartyItemContents>
+                <div>
+                  {party.category && (
+                    <PartyTag>{party.category}</PartyTag>
+                  )}
+                  <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
+                </div>
+                <div className="card-text">
+                  <PartyTitle>{party.title}</PartyTitle>
+                  <PartyItemInfo>
+                    <div className="PartyList__block">
+                      <PartyItemInfoText>{party.destinationName}</PartyItemInfoText>
+                      <PartyItemInfoText>
+                        <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
+                        <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+                      </PartyItemInfoText>
+                    </div>
+                    <PartyJoinners>
+                      <PartyJoinnerPhoto>
+                        {party.joinners && party.joinners.map((joinner, i) => (
+                          <PartyJoinnerGroup key={i} className="tooltip-joinner" >
+                            <img src={joinner.photoURL} alt={joinner.displayName} />
+                            <span className="tooltiptext-joinner">{joinner.displayName}</span>
+                          </PartyJoinnerGroup>
+                        ))}
+                      </PartyJoinnerPhoto>
+                    </PartyJoinners>
+                  </PartyItemInfo>
+                </div>
+              </PartyItemContents>
+            </PartyItem>
+          </Link>
         ))}
       </div>
     )
   }
 }
 
-export default PartyList
+export default withRouter(PartyList)
