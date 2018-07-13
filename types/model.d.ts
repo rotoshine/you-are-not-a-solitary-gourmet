@@ -13,10 +13,9 @@ declare type Party = {
   dueDateTime: string,
   maxPartyMember: number,
   partyTime: Date,
-  joinners: string[], 
+  joinners: string[],
   createdAt: Date,
   createdBy: string,
-  
 }
 
 declare type Destination = {
