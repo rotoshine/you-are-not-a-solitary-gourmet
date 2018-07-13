@@ -116,7 +116,7 @@ class PartyDetail extends Component {
                 </PartyItemInfoText>
                 <PartyItemInfoText>
                   <span>일시 | </span>
-                  <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
+                  <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD ddd HH:mm')}</span>
                 </PartyItemInfoText>
                 <PartyItemInfoText>
                   <span><strong>{party.maxPartyMember}</strong> 명 중 <strong>{party.joinners.length}</strong> 명이 모였습니다.</span>
