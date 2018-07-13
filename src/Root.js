@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { Provider } from 'mobx-react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
