@@ -25,12 +25,12 @@ const PartyDetailGroup = styled.div`
   max-height: 90%;
   overflow-y: scroll;
 
-  @media screen and (max-width: 600px) {    
+  @media screen and (max-width: 600px) {
     border-radius: 0;
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-    max-height: 100%;    
+    max-height: 100%;
   }
 `
 
@@ -56,13 +56,24 @@ const PartyJoinButtonWrapper = styled.div`
   margin: 20px 0;
 `
 
+const ESC_KEY_CODE = 27
+
 class PartyDetail extends Component {
   componentDidMount() {
     document.body.classList.add('modal-open');
+
+    document.body.addEventListener('keyup', this.handleKeyPress)
   }
 
   componentWillUnmount() {
     document.body.classList.remove('modal-open');
+
+    document.body.removeEventListener('keyup', this.handleKeyPress)
+  }
+
+  handleKeyPress = (evt) => {
+    if (evt.keyCode !== ESC_KEY_CODE) return
+    this.props.handleClose()
   }
 
   render() {
@@ -76,7 +87,7 @@ class PartyDetail extends Component {
     } = this.props
 
     return (
-      <Overlay>
+      <Overlay onClick={handleClose}>
         <PartyDetailGroup>
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
