@@ -16,7 +16,7 @@ type State = {
 }
 */
 
-@inject('userStore', 'partyStore')
+@inject('userStore')
 @observer
 class HomePage extends React.Component {
   state = {
@@ -38,14 +38,18 @@ class HomePage extends React.Component {
   }
 
   render() {
+    const { isExistUser } = this.props.userStore
+
     return (
       <div className="HomePage">
-        <button
-          className="App__button make"
-          onClick={this.handleClick}
-        >
-          파티만들기
-        </button>
+        {isExistUser && (
+          <button
+            className="App__button make"
+            onClick={this.handleClick}
+          >
+            파티만들기
+          </button>)
+        }
         {this.state.isOpen && (
           <MakePartyContainer
             onClose={this.handleClose}
