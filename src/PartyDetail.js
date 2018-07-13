@@ -8,6 +8,14 @@ import './PartyList.css'
 
 class PartyDetail extends Component {
 
+  componentDidMount() {
+    document.body.classList.add('modal-open');
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('modal-open');
+  }
+
   render() {
     const { party, renderMemberLimit, renderPartyJoinButton, user, handleClose } = this.props
     
