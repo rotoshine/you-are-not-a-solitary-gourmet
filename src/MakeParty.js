@@ -86,7 +86,7 @@ class MakeParty extends Component {
     this.handleClose()
   }
 
-  handleClose = (evt) => {
+  handleClose = () => {
     this.props.onClose()
   }
 
