@@ -1,22 +1,23 @@
-import React from 'react'
+import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 
 import MakeParty from '../MakeParty'
 
 import { saveParty } from '../utils/party'
 
-/* 
 type Props = {
-  userStore: IUserStore,
-  onClose: Function,
+  userStore?: IUserStore,
+  onClose: () => void,
 }
-*/
 
-@inject('userStore')
+@inject((allStores: IAllStore) => ({
+  userStore: allStores.userStore as IUserStore,
+}))
 @observer
-class MakePartyContainer extends React.Component {
-  handleMakeParty = async (party) => {
-    const { user } = this.props.userStore
+class MakePartyContainer extends React.Component<Props> {
+  handleMakeParty = async (party: Party) => {
+    const { user } = this.props.userStore!
+    if (!user) return
 
     party.joinners = [
       user.email,

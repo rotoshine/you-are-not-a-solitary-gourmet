@@ -4,20 +4,17 @@ import { inject, observer } from 'mobx-react'
 import PartyListContainer from '../containers/PartyListContainer'
 import MakePartyContainer from '../containers/MakePartyContainer'
 
-/*
 type Props = {
   userStore: IUserStore,
-  partyStore: IPartyStore,
 }
 
 type State = {
   isOpen: boolean,
 }
-*/
 
 @inject('userStore')
 @observer
-class HomePage extends React.Component {
+class HomePage extends React.Component<Props, State> {
   state = {
     isOpen: false,
   }
