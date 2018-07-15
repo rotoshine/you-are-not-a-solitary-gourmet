@@ -10,8 +10,7 @@ const querySnapshotToArray = (querySnapshot: any) => (
     .sort((a: PartyComment, b: PartyComment) => a.createdAt.toDate() > b.createdAt.toDate())
 )
 
-export const addComment = async (comment: PartyComment) => {
-  const { partyId, content, user } = comment
+export const savePartyComment = async (partyId: string, content: string, user: User) => {
   const addedCommemt = await firestore.collection('comments').add({
     partyId,
     user,
@@ -35,7 +34,7 @@ export const findCommentsByPartyId = async (partyId: string) => {
   }
 }
 
-export const removeComment = async (commentId: string) => {
+export const removePartyComment = async (commentId: string) => {
   await firestore.collection('comments').doc(commentId).update({
     isDisplay: false,
   })
@@ -54,9 +53,9 @@ export const unsubscibeComments = () => {
 }
 
 export default {
-  addComment,
+  savePartyComment,
   findCommentsByPartyId,
-  removeComment,
+  removePartyComment,
   subscribeComments,
   unsubscibeComments,
 }

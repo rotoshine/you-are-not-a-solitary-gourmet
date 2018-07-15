@@ -37,6 +37,7 @@ declare type Destination = {
 }
 
 declare type PartyComment = {
+  id: string,
   partyId: string,
   content: string,
   isDisplay: boolean,

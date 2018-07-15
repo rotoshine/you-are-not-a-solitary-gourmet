@@ -8,6 +8,8 @@ import PartyDetailPage from './pages/PartyDetailPage'
 
 import AuthenticateHeader from './AuthenticateHeader'
 
+import { unsubscribeDestinations } from './utils/destination'
+
 import './App.css'
 
 interface Props { }
@@ -24,6 +26,10 @@ class App extends React.Component<Props> {
     const { destinationsStore } = this.props as InjectedProps
 
     destinationsStore.initializeDestinations()
+  }
+
+  componentWillUnmount() {
+    unsubscribeDestinations()
   }
 
   render() {

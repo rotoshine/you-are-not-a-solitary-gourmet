@@ -30,28 +30,6 @@ class PartyDetailPage extends React.Component<Props> {
     document.body.removeEventListener('keyup', this.handleKeyUp)
   }
 
-  renderMemberLimit(party: Party) {
-    const { maxPartyMember, fetchedJoinners } = party
-
-    if (!fetchedJoinners) {
-      return false
-    }
-
-    if (maxPartyMember === 0) {
-      return <span>무제한 멤버</span>
-    }
-
-    const joinnedMemberCount = fetchedJoinners.length
-
-    if (maxPartyMember > joinnedMemberCount) {
-      return (
-        <span>총 {party.maxPartyMember}명</span>
-      )
-    }
-
-    return <span>인원마감</span>
-  }
-
   close() {
     this.props.history.push('/')
   }
@@ -88,7 +66,6 @@ class PartyDetailPage extends React.Component<Props> {
             <PartyDetail
               party={party}
               user={user}
-              renderMemberLimit={this.renderMemberLimit}
               onJoinParty={(partyId: string, email: string) => joinParty(partyId, email)}
               onLeaveParty={(partyId: string, email: string) => leaveParty(partyId, email)}
             />

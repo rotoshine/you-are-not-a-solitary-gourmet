@@ -14,7 +14,7 @@ export const Overlay = styled.div`
 `
 
 export const CenterText = styled.div`
-  width: 300px;  
+  width: 300px;
   background: white;
   padding: 4rem 3rem;
   position: relative;

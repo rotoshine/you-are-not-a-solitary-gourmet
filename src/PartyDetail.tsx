@@ -19,7 +19,6 @@ import {
 type Props = {
   party: Party,
   user: User | null,
-  renderMemberLimit: Function,
   onJoinParty: Function,
   onLeaveParty: Function,
 }
@@ -61,7 +60,7 @@ const Block = styled.div`
 
 const HeaderButton = styled.button`
   right: 1rem;
-  font-size: 1.4rem !important;handleClickOverlay
+  font-size: 1.4rem !important;
 `
 
 const PartyJoinButtonWrapper = styled.div`
@@ -69,10 +68,31 @@ const PartyJoinButtonWrapper = styled.div`
 `
 
 export default class PartyDetail extends React.Component<Props> {
+  renderMemberLimit(party: Party) {
+    const { maxPartyMember, fetchedJoinners } = party
+
+    if (!fetchedJoinners) {
+      return false
+    }
+
+    if (maxPartyMember === 0) {
+      return <span>무제한 멤버</span>
+    }
+
+    const joinnedMemberCount = fetchedJoinners.length
+
+    if (maxPartyMember > joinnedMemberCount) {
+      return (
+        <span>총 {party.maxPartyMember}명</span>
+      )
+    }
+
+    return <span>인원마감</span>
+  }
+
   render() {
     const {
       party,
-      renderMemberLimit,
       user,
       onJoinParty,
       onLeaveParty,
@@ -80,83 +100,99 @@ export default class PartyDetail extends React.Component<Props> {
 
     const isCreator = (user && user.email === party.createdBy)
 
-    return (
-      <PartyDetailGroup onClick={(evt: React.SyntheticEvent) => evt.stopPropagation()}>
-        <PartyDetailHeader>
-          <div>
-            <PartyTag>{party.category}</PartyTag>
-            <PartyTag>{renderMemberLimit(party)}</PartyTag>
-          </div>
-          <div>
-            {isCreator && (
-              <Link to={`/parties/${party.id}/edit`}>
+    if (user && party.id) {
+      return (
+        <PartyDetailGroup onClick={(evt: React.SyntheticEvent) => evt.stopPropagation()}>
+          <PartyDetailHeader>
+            <div>
+              <PartyTag>{party.category}</PartyTag>
+              <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
+              {party.isDelivery && <PartyTag>배달음식</PartyTag>}
+            </div>
+            <div>
+              {isCreator && (
+                <Link to={`/parties/${party.id}/edit`}>
+                  <HeaderButton
+                    className="btn btn-sm btn-info"
+                  >수정</HeaderButton>
+                </Link>
+              )}
+              <Link to="/">
                 <HeaderButton
-                  className="btn btn-sm btn-info"
-                >수정</HeaderButton>
+                  className="btn btn-sm btn-danger"
+                >닫기</HeaderButton>
               </Link>
-            )}
-            <Link to="/">
-              <HeaderButton
-                className="btn btn-sm btn-danger"
-              >닫기</HeaderButton>
-            </Link>
-          </div>
-        </PartyDetailHeader>
-        <div className="card-text">
-          <PartyTitle>{party.title}</PartyTitle>
-          <PartyJoinButtonWrapper>
-            <PartyJoinButton
-              user={user}
-              party={party}
-              onJoinParty={onJoinParty}
-              onLeaveParty={onLeaveParty} />
-          </PartyJoinButtonWrapper>
-          <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
-          <PartyDetailContents>
-            <Block>
-              <h5>파티 상세 정보</h5>
-              <PartyItemInfoText>
-                <span>장소 | </span>
-                <span>{party.destinationName}</span>
-              </PartyItemInfoText>
-              <PartyItemInfoText>
-                <span>일시 | </span>
-                <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD ddd HH:mm')}</span>
-              </PartyItemInfoText>
-              <PartyItemInfoText>
-                <span>
-                  <strong>{party.maxPartyMember}</strong>
-                  <span>명 중 </span>
-                  <strong>{party.joinners.length}</strong> 명이 모였습니다.
-                  </span>
-              </PartyItemInfoText>
-            </Block>
-            <Block>
-              <h5>파티 설명</h5>
-              <PartyItemInfoText>
-                <span>{party.description}</span>
-              </PartyItemInfoText>
-            </Block>
-            <Block>
-              <h5>누가 오나요?</h5>
-              <PartyJoinners>
-                <PartyJoinnerPhoto>
+            </div>
+          </PartyDetailHeader>
+          <div className="card-text">
+            <PartyTitle>{party.title}</PartyTitle>
+            <PartyJoinButtonWrapper>
+              <PartyJoinButton
+                user={user}
+                party={party}
+                onJoinParty={onJoinParty}
+                onLeaveParty={onLeaveParty} />
+            </PartyJoinButtonWrapper>
+            <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+            <PartyDetailContents>
+              <Block>
+                <h5>파티 상세 정보</h5>
+                <PartyItemInfoText>
+                  <span>장소 | </span>
+                  <span>{party.destinationName}</span>
+                </PartyItemInfoText>
+                <PartyItemInfoText>
+                  <span>일시 | </span>
+                  <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD ddd HH:mm')}</span>
+                </PartyItemInfoText>
+                <PartyItemInfoText>
                   {
-                    party.fetchedJoinners &&
-                    party.fetchedJoinners.map((fetchedJoinner: User, i: number) => (
-                      <PartyJoinnerGroup className="tooltip-joinner" key={i}>
-                        <img src={fetchedJoinner.photoURL} alt={fetchedJoinner.displayName} />
-                        <span className="tooltiptext-joinner">{fetchedJoinner.displayName}</span>
-                      </PartyJoinnerGroup>
-                    ))
+                    party.maxPartyMember === 0 &&
+                    <span>
+                      파티원 수 제한이 없는 파티입니다.
+                    </span>
                   }
-                </PartyJoinnerPhoto>
-              </PartyJoinners>
-            </Block>
-          </PartyDetailContents>
-          <PartyComments user={user} partyId={party.id} />
-        </div>
-      </PartyDetailGroup>
-    )
+                  {
+                    party.maxPartyMember > 0 &&
+                    (
+                      <span>
+                        <strong>{party.maxPartyMember}</strong>
+                        <span>명 중 </span>
+                        <strong>{party.joinners.length}</strong> 명이 모였습니다.
+                    </span>
+                    )
+                  }
+                </PartyItemInfoText>
+              </Block>
+              <Block>
+                <h5>파티 설명</h5>
+                <PartyItemInfoText>
+                  <span>{party.description}</span>
+                </PartyItemInfoText>
+              </Block>
+              <Block>
+                <h5>누가 오나요?</h5>
+                <PartyJoinners>
+                  <PartyJoinnerPhoto>
+                    {
+                      party.fetchedJoinners &&
+                      party.fetchedJoinners.map((fetchedJoinner: User, i: number) => (
+                        <PartyJoinnerGroup className="tooltip-joinner" key={i}>
+                          <img src={fetchedJoinner.photoURL} alt={fetchedJoinner.displayName} />
+                          <span className="tooltiptext-joinner">{fetchedJoinner.displayName}</span>
+                        </PartyJoinnerGroup>
+                      ))
+                    }
+                  </PartyJoinnerPhoto>
+                </PartyJoinners>
+              </Block>
+            </PartyDetailContents>
+            <PartyComments user={user} partyId={party.id} />
+          </div>
+        </PartyDetailGroup>
+      )
+    }
+
+    return null
   }
 }

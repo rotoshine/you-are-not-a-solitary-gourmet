@@ -142,6 +142,7 @@ export default class PartyList extends React.Component<Props> {
                     <PartyTag>{party.category}</PartyTag>
                   )}
                   <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
+                  {party.isDelivery && <PartyTag>배달음식</PartyTag>}
                 </div>
                 <div className="card-text">
                   <PartyTitle>{party.title}</PartyTitle>

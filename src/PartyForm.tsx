@@ -203,10 +203,10 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                   type="checkbox"
                   name="isDelivery"
                   id="isDelivery"
-                  value={String(form.isDelivery)}
+                  defaultChecked={form.isDelivery}
                   onChange={(
                     e: React.ChangeEvent<HTMLInputElement>,
-                  ) => this.handleFormChange('isDelivery', e.target.checked)}
+                  ) => this.handleFormChange('isDelivery', e.currentTarget.checked)}
                 />
               </div>
             </div>
@@ -275,7 +275,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                   value={form.destinationName}
                   onChange={
                     (e: React.ChangeEvent<HTMLInputElement>) =>
-                      this.handleFormChange('destinationName', e.target.value)}
+                      this.handleFormChange('destinationName', e.currentTarget.value)}
                   onSelect={(value: string) => this.handleFormChange('destinationName', value)}
                 />
               </div>
@@ -329,9 +329,9 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                 className="PartyForm__form-control form-control"
                 rows={8}
                 value={form.description}
-                onChange={e => this.handleFormChange('description', e.target.value)} />
+                onChange={e => this.handleFormChange('description', e.currentTarget.value)} />
             </div>
-            <button className="PartyForm__button btn">파티를 만듭니다!</button>
+            <button className="PartyForm__button btn">파티를 {form.id ? '수정합니다!' : '만듭니다!'}</button>
           </form>
         </div>
       </div>
