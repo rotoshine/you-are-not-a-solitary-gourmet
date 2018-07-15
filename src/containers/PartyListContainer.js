@@ -5,8 +5,7 @@ import PartyList from '../PartyList'
 
 import { asyncSetState } from '../utils/misc'
 import {
-  unsubscribeTodayParties,
-  saveParty,
+  unsubscribeTodayParties,  
   joinParty,
   leaveParty,
 } from '../utils/party'
@@ -25,11 +24,6 @@ type State = {
 @inject('partyStore', 'userStore')
 @observer
 class PartyListContainer extends React.Component {
-  state = {
-    initialize: false,
-    nowPartiesLoading: false,
-  }
-
   componentDidMount() {
     this.initializeParties()
   }
@@ -38,27 +32,8 @@ class PartyListContainer extends React.Component {
     unsubscribeTodayParties()
   }
 
-  async initializeParties() {
-    this.setState({
-      nowPartiesLoading: true,
-    })
-
+  async initializeParties() {   
     this.props.partyStore.initializeParties()
-
-    await asyncSetState(() => this.setState({
-      initialize: true,
-      nowPartiesLoading: false,
-    }))
-  }
-
-  handleMakeParty = async (party) => {
-    const { user } = this.props.userStore
-
-    party.joinners = [
-      user.email,
-    ]
-
-    await saveParty(party, user)
   }
 
   handleJoinPartyClick = async (partyId, email) => {
@@ -70,13 +45,11 @@ class PartyListContainer extends React.Component {
   }
 
   render() {
-    const { initialize } = this.state
-
     const { user, isExistUser } = this.props.userStore
     const { initialized, parties } = this.props.partyStore
     const initializedParty = this.props.partyStore.initialized
 
-    return initialize && isExistUser && (
+    return (
       <div className="PartyListContainer App__contents container album py-5">
         {
           !initializedParty && (
@@ -93,7 +66,6 @@ class PartyListContainer extends React.Component {
           <PartyList
             user={user}
             parties={parties}
-            onMakeParty={this.handleMakeParty}
             onJoinParty={this.handleJoinPartyClick}
             onLeaveParty={this.handleLeavePartyClick}
           />

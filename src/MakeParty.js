@@ -19,6 +19,14 @@ class MakeParty extends Component {
     }
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      form: { ...props.party },
+    }
+  }
+
   handleFormChange = (field, value) => {
     const { form } = this.state
     this.setState({

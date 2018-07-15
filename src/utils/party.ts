@@ -11,11 +11,11 @@ const querySnapshotToArray = async (querySnapshot: any) => {
   }))
 
   return await Bluebird.map(parties, async (party: Party) => {
-    const joinners = await findByEmails(party.joinners)
+    const fetchedJoinners = await findByEmails(party.joinners)
 
     return {
       ...party,
-      joinners,
+      fetchedJoinners,
     }
   })
 }
@@ -24,18 +24,18 @@ export const findById = async (partyId: string): Promise<Party | null> => {
   return <Party>querySnapshot.data()
 }
 
-export const saveParty = async (party: Party, user: User) => {
+export const saveParty = async (partyForm: PartyForm, user: User) => {
   const {
     category,
     title,
     destinationName,
-    partyTime,
-    dueDateTime,
+    partyTimeDate,
+    dueDateTimeDate,
     description,
     isDelivery,
     maxPartyMember = 0,
     joinners = [],
-  } = party
+  } = partyForm
 
   const savedParty = await firestore.collection('parties').add({
     description,
@@ -45,8 +45,8 @@ export const saveParty = async (party: Party, user: User) => {
     category,
     title,
     destinationName,
-    partyTime: new Date(partyTime),
-    dueDateTime: new Date(dueDateTime),
+    partyTime: new Date(partyTimeDate),
+    dueDateTime: new Date(dueDateTimeDate),
     createdBy: user.email,
     createdAt: new Date(),
   })
@@ -60,8 +60,12 @@ export const saveParty = async (party: Party, user: User) => {
   return savedParty
 }
 
+const createTodayPartiesQuery = () => firestore
+  .collection('parties')
+  .where('partyTime', '>', new Date())
+
 export const subscribeTodayParties = (callback: Function) => {
-  firestore.collection('parties').where('partyTime', '>', new Date())
+  createTodayPartiesQuery()
     .onSnapshot(async (querySnapshot: any) => {
       callback(await querySnapshotToArray(querySnapshot))
     })
@@ -72,9 +76,7 @@ export const unsubscribeTodayParties = () => {
 }
 
 export const findTodayParties = async () => {
-  const querySnapshot = await firestore
-    .collection('parties')
-    .where('partyTime', '>', new Date())
+  const querySnapshot = await createTodayPartiesQuery()
     .get()
 
   if (querySnapshot) {

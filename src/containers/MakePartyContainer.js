@@ -15,14 +15,14 @@ type Props = {
 @inject('userStore')
 @observer
 class MakePartyContainer extends React.Component {
-  handleMakeParty = async (party) => {
+  handleMakeParty = async (partyForm) => {
     const { user } = this.props.userStore
 
-    party.joinners = [
+    partyForm.joinners = [
       user.email,
     ]
 
-    await saveParty(party, user)
+    await saveParty(partyForm, user)
   }
 
   render() {

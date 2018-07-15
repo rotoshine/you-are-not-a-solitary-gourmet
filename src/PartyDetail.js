@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import DueCountDown from './DueCountDown'
@@ -90,12 +91,17 @@ class PartyDetail extends Component {
       onLeaveParty,
     } = this.props
 
+    const isCreator = (user.email === party.createdBy)
+
     return (
       <Overlay onClick={this.handleClickOverlay}>
         <PartyDetailGroup onClick={(evt) => evt.stopPropagation()}>
           <div className="PartyList__tags">
             <PartyTag>{party.category}</PartyTag>
             <PartyTag>{renderMemberLimit(party)}</PartyTag>
+            { isCreator && (
+              <Link to={`/parties/${party.id}/edit`}>수정</Link>
+            )}
             <CloseButton
               className="btn btn-sm btn-light"
               onClick={handleClose}

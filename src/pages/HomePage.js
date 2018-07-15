@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
+import { Switch, Route } from 'react-router-dom'
 
 import PartyListContainer from '../containers/PartyListContainer'
 import MakePartyContainer from '../containers/MakePartyContainer'
+
+import PartyDetail from '../PartyDetail'
 
 /*
 type Props = {
@@ -20,6 +23,10 @@ type State = {
 class HomePage extends React.Component {
   state = {
     isOpen: false,
+  }
+
+  componentDidUpdate() {
+
   }
 
   handleClick = () => {
@@ -49,11 +56,29 @@ class HomePage extends React.Component {
             파티만들기
           </button>)
         }
-        {this.state.isOpen && (
-          <MakePartyContainer
-            onClose={this.handleClose}
+        <Switch>
+          <Route
+            path="/parties/new"
+            render={() => {
+              <MakePartyContainer onClose={this.handleClose}/>
+            }}
           />
-        )}
+          <Route
+            path="/parties/:partyId"
+            render={({ match }) => (
+              <PartyDetail
+                party={find(parties, { 'id': match.params.partyId })}
+                parties={parties}
+                renderMemberLimit={this.renderMemberLimit}
+                renderPartyJoinButton={this.renderPartyJoinButton}
+                user={user}
+                handleClose={this.handleClose}
+                onJoinParty={this.handleJoinPartyClick}
+                onLeaveParty={onLeaveParty}
+              />
+            )}
+          />          
+        </Switch>        
         <PartyListContainer />
       </div>
     )
