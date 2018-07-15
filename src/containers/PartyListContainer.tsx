@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 
 import PartyList from '../PartyList'
@@ -11,20 +11,22 @@ import {
   leaveParty,
 } from '../utils/party'
 
-/*
 type Props = {
-  partyStore: IPartyStore,
-  userStore: IUserStore,
+  partyStore?: IPartyStore,
+  userStore?: IUserStore,
 }
 
 type State = {
   initialize: boolean,
   nowPartiesLoading: boolean,
-}*/
+}
 
-@inject('partyStore', 'userStore')
+@inject((allStores: IAllStore) => ({
+  userStore: allStores.userStore as IUserStore,
+  partyStore: allStores.partyStore as IPartyStore,
+}))
 @observer
-class PartyListContainer extends React.Component {
+class PartyListContainer extends React.Component<Props, State> {
   state = {
     initialize: false,
     nowPartiesLoading: false,
@@ -39,11 +41,13 @@ class PartyListContainer extends React.Component {
   }
 
   async initializeParties() {
+    const { initializeParties } = this.props.partyStore!
+
     this.setState({
       nowPartiesLoading: true,
     })
 
-    this.props.partyStore.initializeParties()
+    initializeParties()
 
     await asyncSetState(() => this.setState({
       initialize: true,
@@ -51,8 +55,9 @@ class PartyListContainer extends React.Component {
     }))
   }
 
-  handleMakeParty = async (party) => {
-    const { user } = this.props.userStore
+  handleMakeParty = async (party: Party) => {
+    const { user } = this.props.userStore!
+    if (!user) return
 
     party.joinners = [
       user.email,
@@ -61,20 +66,18 @@ class PartyListContainer extends React.Component {
     await saveParty(party, user)
   }
 
-  handleJoinPartyClick = async (partyId, email) => {
+  handleJoinPartyClick = async (partyId: string, email: string) => {
     await joinParty(partyId, email)
   }
 
-  handleLeavePartyClick = async (partyId, email) => {
+  handleLeavePartyClick = async (partyId: string, email: string) => {
     await leaveParty(partyId, email)
   }
 
   render() {
     const { initialize } = this.state
-
-    const { user, isExistUser } = this.props.userStore
-    const { initialized, parties } = this.props.partyStore
-    const initializedParty = this.props.partyStore.initialized
+    const { user, isExistUser } = this.props.userStore!
+    const { initializedParty, parties } = this.props.partyStore!
 
     return initialize && isExistUser && (
       <div className="PartyListContainer App__contents container album py-5">
@@ -85,7 +88,9 @@ class PartyListContainer extends React.Component {
         }
         {
           initializedParty && parties && (
-            <h3 className="App__text-black">다가오는 파티 <span role="img" aria-label="eyes">👀</span></h3>
+            <h3 className="App__text-black">
+              다가오는 파티 <span role="img" aria-label="eyes">👀</span>
+            </h3>
           )
         }
 
