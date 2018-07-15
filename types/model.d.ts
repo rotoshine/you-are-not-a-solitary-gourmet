@@ -5,35 +5,30 @@ declare type User = {
 }
 
 type FirestoreDateType = {
-  toDate: Function
+  toDate: () => Date,
 }
 
 declare type PartyCommonProps = {
+  id?: string,
   category: string,
   title: string,
   description: string,
   destinationName: string,
-  isDelivery: boolean,
-  dueDateTime: FirestoreDateType,
-  maxPartyMember: number,
-  partyTime: FirestoreDateType,
+  isDelivery: boolean,  
+  maxPartyMember: number,  
   joinners: string[],
-  fetchedJoinners?: User[],
   createdBy: string,
 }
 
 declare type Party = PartyCommonProps & {
   dueDateTime: FirestoreDateType,
   partyTime: FirestoreDateType,
-  fetchedJoinners: User[],  
+  fetchedJoinners?: User[],  
 }
 
-declare type PartyForm = PartyCommonProps & {
-  id?: string,
-  joinners: string[],
+declare type PartyFormData = PartyCommonProps & {   
   partyTimeDate: Date,
   dueDateTimeDate: Date,
-  createdAt: Date,
 }
 
 declare type Destination = {

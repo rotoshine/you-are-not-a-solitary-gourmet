@@ -1,8 +1,12 @@
 import * as Bluebird from 'bluebird'
+import * as moment from 'moment'
+
 import firestore from './firestore'
 import { findByEmails } from './user'
 import { isValidSlackHook, notifyToSlack } from './slack'
 import { saveDestination } from './destination'
+
+const COLLECTION_NAME = 'parties'
 
 const querySnapshotToArray = async (querySnapshot: any) => {
   const parties = querySnapshot.docs.map((doc: any) => ({
@@ -19,12 +23,16 @@ const querySnapshotToArray = async (querySnapshot: any) => {
     }
   })
 }
+
 export const findById = async (partyId: string): Promise<Party | null> => {
-  const querySnapshot = await firestore.collection('parties').doc(partyId).get()
-  return <Party>querySnapshot.data()
+  const querySnapshot = await firestore.collection(COLLECTION_NAME).doc(partyId).get()
+  return {
+    ...<Party>querySnapshot.data(),
+    id: querySnapshot.id,
+  }
 }
 
-export const saveParty = async (partyForm: PartyForm, user: User) => {
+export const saveParty = async (partyForm: PartyFormData, user: User) => {
   const {
     category,
     title,
@@ -37,7 +45,7 @@ export const saveParty = async (partyForm: PartyForm, user: User) => {
     joinners = [],
   } = partyForm
 
-  const savedParty = await firestore.collection('parties').add({
+  const saveOrUpdatePartyForm = {
     description,
     isDelivery,
     maxPartyMember,
@@ -49,15 +57,36 @@ export const saveParty = async (partyForm: PartyForm, user: User) => {
     dueDateTime: new Date(dueDateTimeDate),
     createdBy: user.email,
     createdAt: new Date(),
-  })
-
-  if (isValidSlackHook()) {
-    await notifyToSlack(`${title} 파티가 만들어졌어요! 파티 장소는 ${destinationName} 입니다!`)
   }
 
-  await saveDestination(destinationName)
+  if (partyForm.id) {
+    const alreadySavedParty = await firestore.collection(COLLECTION_NAME).doc(partyForm.id).get()
 
-  return savedParty
+    if (alreadySavedParty && alreadySavedParty.exists) {
+      await firestore.collection(COLLECTION_NAME).doc(partyForm.id).update(saveOrUpdatePartyForm)
+      const notifyTexts = [
+        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
+        `${window.location.origin}/parties/${partyForm.id}`,
+      ]
+      if (isValidSlackHook()) {
+        await notifyToSlack(notifyTexts.join('\n'))
+      }
+    }
+
+  } else {
+    const newPartyRef = await firestore.collection(COLLECTION_NAME).add(saveOrUpdatePartyForm)
+
+    if (isValidSlackHook()) {
+      const notifyTexts = [
+        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
+        `${window.location.origin}/parties/${newPartyRef.id}`,
+        `파티 마감 시간은 \`${moment(dueDateTimeDate).format('YYYY-MM-DD HH:mm')}\`까지 입니다.`,
+      ]
+      await notifyToSlack(notifyTexts.join('\n'))
+    }
+
+    await saveDestination(destinationName)
+  }
 }
 
 const createTodayPartiesQuery = () => firestore

@@ -12,8 +12,7 @@ type Props = {
     push: Function,
   },
   parties: Party[],
-  user: User,
-  onJoinParty: Function,
+  user: User | null,
 }
 
 const PartyTag = styled.span`
@@ -87,29 +86,30 @@ export default class PartyList extends React.Component<Props> {
 
   alreadyJoin(party: Party) {
     const { user } = this.props
-    return party.fetchedJoinners &&
-      party.fetchedJoinners.find(joinner => joinner.email === user.email)
+
+    if (user) {
+      return party.fetchedJoinners &&
+        party.fetchedJoinners.find(joinner => joinner.email === user.email)
+    }
+    return false
   }
 
   alreadyDeadline = (party: Party) => {
     return party.dueDateTime.toDate() < new Date()
   }
 
-  handleJoinPartyClick = (party: Party) => {
-    const { user, onJoinParty } = this.props
-
-    if (user) {
-      onJoinParty(party.id, user.email)
-    }
-  }
-
   renderMemberLimit(party: Party) {
-    const { maxPartyMember, joinners } = party
+    const { maxPartyMember, fetchedJoinners } = party
+
+    if (!fetchedJoinners) {
+      return null
+    }
+
     if (maxPartyMember === 0) {
       return <span>무제한 멤버</span>
     }
 
-    const joinnedMemberCount = joinners.length
+    const joinnedMemberCount = fetchedJoinners.length
 
     if (maxPartyMember > joinnedMemberCount) {
       return (
@@ -132,9 +132,8 @@ export default class PartyList extends React.Component<Props> {
           )
         }
         {parties.map(party => (
-          <Link className="Link" to={`/parties/${party.id}`}>
+          <Link key={party.id} className="Link" to={`/parties/${party.id}`}>
             <PartyItem
-              key={party.id}
               className="PartyList__party"
             >
               <PartyItemContents>

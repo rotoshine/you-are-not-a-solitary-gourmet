@@ -31,7 +31,7 @@ const PartyJoinButton = ({ party, user, onJoinParty, onLeaveParty}) => {
   } else if (isFinished(party)) {
     return <span>저런! 파티 마감시간이 지났네요 :( </span>
   }
-  return (<PartyButton onClick={() => onJoinParty(party)}>파티합류!</PartyButton>)
+  return (<PartyButton onClick={() => onJoinParty(party.id, user.email)}>파티합류!</PartyButton>)
 }
 
 export default PartyJoinButton

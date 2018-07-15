@@ -12,3 +12,16 @@ export const Overlay = styled.div`
   top: 0;
   left: 0;
 `
+
+export const CenterText = styled.div`
+  width: 300px;  
+  background: white;
+  padding: 4rem 3rem;
+  position: relative;
+  border-radius: 6px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`

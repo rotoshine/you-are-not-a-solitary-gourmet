@@ -1,17 +1,20 @@
-// @flow
-import React, { Component } from 'react'
+import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 
 import GoogleLoginButton from './GoogleLoginButton'
 
 import { asyncSetState } from './utils/misc'
 
-type Props = {
+interface Props { }
+interface InjectedProps extends Props {
+  userStore: IUserStore,
 }
 
-@inject('userStore')
+@inject((allStores: IAllStore) => ({
+  userStore: allStores.userStore as IUserStore,
+}))
 @observer
-class AuthenticateHeader extends Component<Props> {
+class AuthenticateHeader extends React.Component<Props> {
   state = {
     userInitialized: false,
   }
@@ -21,7 +24,9 @@ class AuthenticateHeader extends Component<Props> {
   }
 
   async initializeUser() {
-    await this.props.userStore.initializeUser()
+    const { userStore } = this.props as InjectedProps
+
+    await userStore.initializeUser()
 
     await asyncSetState(() => {
       this.setState({
@@ -32,7 +37,8 @@ class AuthenticateHeader extends Component<Props> {
 
   render() {
     const { userInitialized } = this.state
-    const { isExistUser, signOut } = this.props.userStore
+    const { userStore } = this.props as InjectedProps
+    const { isExistUser, signOut } = userStore
 
     return (
       <div className="AuthenticateHeader">
@@ -40,7 +46,9 @@ class AuthenticateHeader extends Component<Props> {
           <div className="App__constraint">
             <div className="App__intro">
               <div className="App__container container">
-                <h2 className="App__container-header">'안 고독한 미식가<span role="img" aria-label="fire">🔥</span>'</h2>
+                <h2 className="App__container-header">
+                  '안 고독한 미식가<span role="img" aria-label="fire">🔥</span>'
+                </h2>
                 <p className="App__text">안고미 클라우드에서 데이터를 긁어오는중 삐리리~</p>
               </div>
             </div>
@@ -48,9 +56,9 @@ class AuthenticateHeader extends Component<Props> {
         )}
         {userInitialized && !isExistUser && (
           <div className="App__constraint">
-              <div className="App__header">
-                <GoogleLoginButton />
-              </div>
+            <div className="App__header">
+              <GoogleLoginButton />
+            </div>
             <div className="App__intro">
               <div className="App__container container">
                 <small>안 고독한 미식가</small>
@@ -82,7 +90,7 @@ class AuthenticateHeader extends Component<Props> {
               </div>
             </div>
           </div>
-          )}
+        )}
       </div>
     )
   }

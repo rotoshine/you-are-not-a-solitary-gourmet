@@ -1,4 +1,4 @@
-.MakeParty-overlay {
+.PartyForm-overlay {
   position: fixed;
   z-index: 10;
   background: rgba(0,0,0,0.5);
@@ -11,7 +11,7 @@
   left: 0;
 }
 
-.MakeParty-title  {
+.PartyForm-title  {
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
@@ -20,11 +20,11 @@
   position: relative;
 }
 
-.MakeParty-title h3 {
+.PartyForm-title h3 {
   font-size: 3rem;
 }
 
-.MakeParty-group {
+.PartyForm-group {
   width: 600px;
   background: white;
   padding: 4rem 3rem;
@@ -32,7 +32,7 @@
   border-radius: 6px;
 }
 
-.MakeParty-form {
+.PartyForm-form {
   display: flex;
   flex-direction: column;
   padding: 0 10px;
@@ -40,12 +40,12 @@
   line-height: 2;
 }
 
-.MakeParty__inline {
+.PartyForm__inline {
   display: flex;
   justify-content: space-between;
 }
 
-.MakeParty__button {
+.PartyForm__button {
   background: #FF7744;
   border: #FF7744;
   color: white;
@@ -56,21 +56,21 @@
 
 }
 
-.MakeParty__button:hover {
+.PartyForm__button:hover {
   transform: scale(0.98);
 }
 
-.MakeParty__form-control.form-control {
+.PartyForm__form-control.form-control {
   padding-left: 1.6rem;
   font-size: 1.8rem;
   line-height: 1.5 !important;
 }
 
-.MakeParty__autocomplete {
+.PartyForm__autocomplete {
   
 }
 
-.MakeParty__autocompleteItem {
+.PartyForm__autocompleteItem {
   padding-left: 1.6rem;
   padding-right: 1.6.rem;
   font-size: 1.8rem;
@@ -78,11 +78,11 @@
   cursor: pointer;
 }
 
-.MakeParty-form-delivery {
+.PartyForm-form-delivery {
   margin-top: 38px;
 }
 
-.MakeParty-form-delivery .MakeParty__form-control {
+.PartyForm-form-delivery .PartyForm__form-control {
   width: 16px !important;
 }
 
@@ -91,7 +91,7 @@ textarea {
 }
 
 @media screen and (max-width: 600px) {
-  .MakeParty-group {
+  .PartyForm-group {
     border-radius: 0;
     width: 100%;
     height: 100%;
