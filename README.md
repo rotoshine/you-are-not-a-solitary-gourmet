@@ -1,4 +1,4 @@
-# 안 고독한 미식가
+# 안 고독한 미식가 [![Build Status](https://travis-ci.org/rotoshine/you-are-not-a-solitary-gourmet.svg?branch=master)](https://travis-ci.org/rotoshine/you-are-not-a-solitary-gourmet)
 
 식사, 커피타임, 각종 문화생활을 함께 할 파티를 만들고 모집하는 웹 애플리케이션
 
