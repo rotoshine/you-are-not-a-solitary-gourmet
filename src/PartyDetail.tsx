@@ -36,6 +36,7 @@ const PartyDetailGroup = styled.div`
     border-radius: 0;
     width: 100%;
     top: 0;
+    margin-bottom: 0;
   }
 `
 const PartyDetailHeader = styled.div`
