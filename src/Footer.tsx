@@ -82,7 +82,7 @@ const SecretMSG = styled.div`
 
 const Footer = () => (
   <FooterContainer>
-    <Background></Background>
+    <Background />
       <div className="container">
         <FooterContent>
           <h2 className="col-md-12">ANGOMI:안 고독한 미식가</h2>
