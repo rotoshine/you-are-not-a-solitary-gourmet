@@ -104,8 +104,8 @@ export const subscribeTodayParties = (callback: Function) => {
   createTodayPartiesQuery()
     .onSnapshot(async (querySnapshot: any) => {
       const data = await querySnapshotToArray(querySnapshot)
-      const retriever = retrieveTime()
-      const sorted = data.sort((a: any, b: any) => retriever(a) - retriever(b))
+      const retrieve = retrieveTime()
+      const sorted = data.sort((a: any, b: any) => retrieve(a) - retrieve(b))
       callback(sorted)
     })
 }
