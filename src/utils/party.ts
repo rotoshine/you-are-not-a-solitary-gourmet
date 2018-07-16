@@ -19,7 +19,7 @@ const querySnapshotToArray = async (querySnapshot: any) => {
 
     return {
       ...party,
-      fetchedJoinners,
+      fetchedJoinners: fetchedJoinners ? fetchedJoinners : [],
     }
   })
 }
@@ -96,7 +96,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
 }
 
 const createTodayPartiesQuery = () => firestore
-  .collection('parties')
+  .collection(COLLECTION_NAME)
   .where('partyTime', '>', new Date())
   .orderBy('partyTime', 'asc')
 
@@ -116,7 +116,7 @@ export const subscribeTodayParties = (callback: Function) => {
 }
 
 export const unsubscribeTodayParties = () => {
-  return firestore.collection('parties').onSnapshot(() => { })
+  return firestore.collection(COLLECTION_NAME).onSnapshot(() => { })
 }
 
 export const findTodayParties = async () => {
@@ -149,7 +149,7 @@ export const joinParty = async (partyId: string, email: string) => {
     }
 
     if (updateParty) {
-      await firestore.collection('parties').doc(partyId).update(updateParty)
+      await firestore.collection(COLLECTION_NAME).doc(partyId).update(updateParty)
     }
   }
 }
@@ -163,16 +163,31 @@ export const leaveParty = async (partyId: string, email: string) => {
     if (joinners && joinners.length > 0 && joinners.includes(email)) {
       joinners.splice(joinners.indexOf(email), 1)
 
-      await firestore.collection('parties').doc(partyId).set(party)
+      await firestore.collection(COLLECTION_NAME).doc(partyId).set(party)
     }
   }
 }
 
+export const findByCreatedByEmail = async (email: string): Promise<Party[] | any[]> => {
+  const querySnapshot = await firestore.collection(COLLECTION_NAME)
+    .where('createdBy', '==', email)
+    .orderBy('partyTime', 'asc')
+    .get()
+
+  console.log(querySnapshot)
+  if (querySnapshot) {
+    return await querySnapshotToArray(querySnapshot)
+  }
+
+  return []
+
+}
 export default {
   saveParty,
   joinParty,
   leaveParty,
   findTodayParties,
+  findByCreatedByEmail,
   subscribeTodayParties,
   unsubscribeTodayParties,
 }

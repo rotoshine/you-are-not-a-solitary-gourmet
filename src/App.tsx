@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom'
 
 import PartyListPage from './pages/PartyListPage'
 import PartyFormPage from './pages/PartyFormPage'
 import PartyDetailPage from './pages/PartyDetailPage'
+import MyPage from './pages/MyPage'
 
 import AuthenticateHeader from './AuthenticateHeader'
 import Footer from './Footer'
@@ -15,11 +16,13 @@ import './App.css'
 
 interface Props { }
 interface InjectedProps extends Props {
+  userStore: IUserStore,
   destinationsStore: IDestinationsStore,
 }
 
-@inject((allStores: IAllStore) => ({
-  destinationsStore: allStores.destinationsStore as IDestinationsStore,
+@inject((rootStore: IRootStore) => ({
+  userStore: rootStore.userStore as IUserStore,
+  destinationsStore: rootStore.destinationsStore as IDestinationsStore,
 }))
 @observer
 class App extends React.Component<Props> {
@@ -34,34 +37,48 @@ class App extends React.Component<Props> {
   }
 
   render() {
+    const { userStore } = this.props as InjectedProps
+
     return (
       <div className="App">
         <AuthenticateHeader />
-        <Router>
-          <React.Fragment>
-            <Route
-              path="/"
-              component={PartyListPage}
-            />
-            <Switch>
-              <Route
-                path="/parties/new"
-                component={PartyFormPage}
-                exact
+        {userStore!.isExistUser &&
+          <Router>
+            <React.Fragment>
+              <Route exact path="/" render={() => (
+                <Redirect to="/parties" />
+              )}
               />
-              <Route
-                path="/parties/:partyId"
-                component={PartyDetailPage}
-                exact
-              />
-              <Route
-                path="/parties/:partyId/edit"
-                component={PartyFormPage}
-                exact
-              />
-            </Switch>
-          </React.Fragment>
-        </Router>
+              <Switch>
+                <Route
+                  path="/parties/new"
+                  component={PartyFormPage}
+                  exact
+                />
+                <Route
+                  path="/parties/:partyId"
+                  component={PartyDetailPage}
+                  exact
+                />
+                <Route
+                  path="/parties/:partyId/edit"
+                  component={PartyFormPage}
+                  exact
+                />
+              </Switch>
+              <Switch>
+                <Route
+                  path="/parties"
+                  component={PartyListPage}
+                />
+                <Route
+                  paht="/me"
+                  component={MyPage}
+                />
+              </Switch>
+            </React.Fragment>
+          </Router>
+        }
         <Footer />
       </div>
     )

@@ -19,9 +19,9 @@ type State = {
   party: Party | null,
 }
 
-@inject((allStores: IAllStore) => ({
-  userStore: allStores.userStore as IUserStore,
-  destinationsStore: allStores.destinationsStore as IDestinationsStore,
+@inject((rootStore: IRootStore) => ({
+  userStore: rootStore.userStore as IUserStore,
+  destinationsStore: rootStore.destinationsStore as IDestinationsStore,
 }))
 @observer
 class PartyFormPage extends React.Component<Props, State> {
