@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- stable
+cache:
+  directories:
+  - node_modules
+script:
+- npm install
+- npm run build
+deploy:
+  provider: firebase
+  token:
+    secure: y8kEcK4Z4xQGym+rlvbCC/d5KXS8gfEelUWgdDvMxIqesEXjMyB9yPnP7VyZaolAxk9VnwVsgCm4XGiuIEOIvIRVy+RqRvgdp5vR40F/wkV4xQY5Xeufzi14xSDsmSLHBvxoFZGa/LskCH+6w/HtApanOqs8qS6AREmBhZSMBCYhyJ1FLRLxMazJG93nd3WRWrkkuicBfZqqph7T54zK2Htqt38c9lvBs2GRiJYspcUZwbr3bkRcEOr//Uh05fgLUrWVQbK0hFe7zDh2ZQsMJNUIaHOJh0WjN784UR7GNavwjTXHE4s3fjfoyDE+OL1FKHa4yHi2GKM6icQoRWmTqsb9s8tDVNDKkLw0dOCxwLJ/c7Kzj3q1aZ1L8LafT1pmVHmSoOxw5uMFWfSDrXPwkOJTRXYy5xjh88gNIuVPWCNQttHAos1mmEOLgnWzWiVK7MUe/6vlQSQo9W3gLvvwIsgA5vFhoxK3KCceY+Fd/nHWVR6DCk4w9z8M27IeIKR9Y+wl4ZOM7KYT3fuYGUQGQtVNO6C5/4L1yOxev7B8ncVpTF50kMARcxvLC79wv2wpgXagWKLfE532moEMZ/givv8lm6MUOL+m3jLcdTtrw90167tC+oTOFo/sRNcFuCBpbclQBMh9NH+LZgQ5BlyUKEkWJUsIYrnZSSA8YvQJdPU=
+  project: angomi-9e9af
+  on:
+    branch: master
