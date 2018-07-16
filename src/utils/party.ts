@@ -92,12 +92,21 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
 const createTodayPartiesQuery = () => firestore
   .collection('parties')
   .where('partyTime', '>', new Date())
+  .orderBy('partyTime', 'asc')
+  .limit(100)
+
+const retrieveTime = (now = new Date().getTime()) => (party: any): number => {
+  if (party.dueDateTime.seconds > now) return Infinity
+  return Math.abs(now - party.partyTime.seconds)
+}
 
 export const subscribeTodayParties = (callback: Function) => {
   createTodayPartiesQuery()
-    .orderBy('partyTime', 'desc')
     .onSnapshot(async (querySnapshot: any) => {
-      callback(await querySnapshotToArray(querySnapshot))
+      const data = await querySnapshotToArray(querySnapshot)
+      const retriever = retrieveTime()
+      const sorted = data.sort((a: any, b: any) => retriever(a) - retriever(b))
+      callback(sorted)
     })
 }
 
