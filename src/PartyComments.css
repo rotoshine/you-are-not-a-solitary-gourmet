@@ -29,7 +29,7 @@
 }
 
 .PartyComments__commentUser {
-  margin-right: 3px; 
+  margin-right: 3px;
   position: relative;
 }
 
@@ -95,4 +95,8 @@
   text-align: center;
   font-weight: 300;
   font-style: italic;
+}
+
+.PartyComments__comment .MakeParty__form-control {
+  font-size: 1.6rem;
 }
