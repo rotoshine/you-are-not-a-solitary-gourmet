@@ -1,11 +1,14 @@
 {
-  "indexes": [
-    {
-      "collectionId": "parties",
-      "fields": [
-        { "fieldPath": "partyTime", "mode": "DESCENDING" },
-        { "fieldPath": "createdAt", "mode": "DESCENDING" }
-      ]
-    }
-  ]
+  // Example:
+  //
+  // "indexes": [
+  //   {
+  //     "collectionId": "widgets",
+  //     "fields": [
+  //       { "fieldPath": "foo", "mode": "ASCENDING" },
+  //       { "fieldPath": "bar", "mode": "DESCENDING" }
+  //     ]
+  //   }
+  // ]
+  "indexes": []
 }
