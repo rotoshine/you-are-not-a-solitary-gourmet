@@ -4,6 +4,7 @@ import * as moment from 'moment'
 
 import DueCountDown from './DueCountDown'
 import styled from './styled-components'
+import PartyTags from './PartyTags'
 
 import { PartyTitle, PartyItemInfoText } from './PartyStyledComponents'
 
@@ -14,16 +15,6 @@ type Props = {
   parties: Party[],
   user: User | null,
 }
-
-const PartyTag = styled.span`
-  width: 60px;
-  background: orange;
-  padding: 6px 10px;
-  margin-right: 10px;
-  line-height: 26px;
-  font-size: 1.4rem;
-  border-radius: 2px;
-`
 
 const PartyItem = styled.div`
   margin: 3rem 0;
@@ -137,13 +128,7 @@ export default class PartyList extends React.Component<Props> {
               className="PartyList__party"
             >
               <PartyItemContents>
-                <div>
-                  {party.category && (
-                    <PartyTag>{party.category}</PartyTag>
-                  )}
-                  <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
-                  {party.isDelivery && <PartyTag>배달음식</PartyTag>}
-                </div>
+                <PartyTags party={party} />
                 <div className="card-text">
                   <PartyTitle>{party.title}</PartyTitle>
                   <PartyItemInfo>

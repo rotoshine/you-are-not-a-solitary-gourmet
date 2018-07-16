@@ -6,13 +6,13 @@ import * as moment from 'moment'
 import DueCountDown from './DueCountDown'
 import PartyComments from './PartyComments'
 import PartyJoinButton from './PartyJoinButton'
+import PartyTags from './PartyTags'
 
 import {
   PartyTitle,
   PartyJoinners,
   PartyJoinnerPhoto,
   PartyJoinnerGroup,
-  PartyTag,
   PartyItemInfoText,
 } from './PartyStyledComponents'
 
@@ -104,11 +104,7 @@ export default class PartyDetail extends React.Component<Props> {
       return (
         <PartyDetailGroup onClick={(evt: React.SyntheticEvent) => evt.stopPropagation()}>
           <PartyDetailHeader>
-            <div>
-              <PartyTag>{party.category}</PartyTag>
-              <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
-              {party.isDelivery && <PartyTag>배달음식</PartyTag>}
-            </div>
+            <PartyTags party={party} />
             <div>
               {isCreator && (
                 <Link to={`/parties/${party.id}/edit`}>
