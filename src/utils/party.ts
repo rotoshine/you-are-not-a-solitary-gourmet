@@ -102,6 +102,7 @@ const retrieveTime = (now = new Date().getTime()) => (party: any): number => {
 
 export const subscribeTodayParties = (callback: Function) => {
   createTodayPartiesQuery()
+    .orderBy('partyTime', 'desc')
     .onSnapshot(async (querySnapshot: any) => {
       const data = await querySnapshotToArray(querySnapshot)
       const retriever = retrieveTime()
