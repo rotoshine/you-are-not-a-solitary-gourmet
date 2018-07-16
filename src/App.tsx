@@ -7,6 +7,7 @@ import PartyFormPage from './pages/PartyFormPage'
 import PartyDetailPage from './pages/PartyDetailPage'
 
 import AuthenticateHeader from './AuthenticateHeader'
+import Footer from './Footer'
 
 import { unsubscribeDestinations } from './utils/destination'
 
@@ -61,6 +62,7 @@ class App extends React.Component<Props> {
             </Switch>
           </React.Fragment>
         </Router>
+        <Footer />
       </div>
     )
   }
