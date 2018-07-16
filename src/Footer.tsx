@@ -98,7 +98,7 @@ const Footer = () => (
             <h3>contributors</h3>
             <a
               target="_blank"
-              href="https://en.wikipedia.org/wiki/God">Alma<span>🏄</span>
+              href="https://github.com/colus001">Alma<span>🏄</span>
             </a>
             <a
               target="_blank"
