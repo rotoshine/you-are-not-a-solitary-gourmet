@@ -49,8 +49,8 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
     description,
     isDelivery,
     maxPartyMember,
-    joinners,
     category,
+    joinners,
     title,
     destinationName,
     partyTime: new Date(partyTimeDate),
@@ -63,10 +63,12 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
     const alreadySavedParty = await firestore.collection(COLLECTION_NAME).doc(partyForm.id).get()
 
     if (alreadySavedParty && alreadySavedParty.exists) {
+      delete saveOrUpdatePartyForm.joinners // joinner 초기화 버그 방지
       await firestore.collection(COLLECTION_NAME).doc(partyForm.id).update(saveOrUpdatePartyForm)
       const notifyTexts = [
         `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
         `${window.location.origin}/parties/${partyForm.id}`,
+        `파티 마감 시간은 \`${moment(dueDateTimeDate).format('YYYY-MM-DD HH:mm')}\`까지 입니다.`,
       ]
       if (isValidSlackHook()) {
         await notifyToSlack(notifyTexts.join('\n'))
@@ -78,7 +80,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
 
     if (isValidSlackHook()) {
       const notifyTexts = [
-        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
+        `\`[${category}]\` \`${title}\` 파티가 수정되었어요!`,
         `${window.location.origin}/parties/${newPartyRef.id}`,
         `파티 마감 시간은 \`${moment(dueDateTimeDate).format('YYYY-MM-DD HH:mm')}\`까지 입니다.`,
       ]
