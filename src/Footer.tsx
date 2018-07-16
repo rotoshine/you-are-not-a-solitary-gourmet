@@ -122,7 +122,7 @@ const Footer = () => (
                  남겨주세요.</p>
           </div>
           <SecretMSG className="col-md-12">
-            <strong>for our lonely friend, kingkong / 이 프로젝트를 우리의 고독한 킹콩에게 받칩니다</strong>
+            <strong>for our lonely friend, kingkong / 이 프로젝트를 우리의 고독한 킹콩에게 바칩니다.</strong>
           </SecretMSG>
         </FooterContent>
       </div>
