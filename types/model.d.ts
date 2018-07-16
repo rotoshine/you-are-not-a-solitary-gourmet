@@ -29,7 +29,7 @@ declare type PartyCommonProps = {
 declare type Party = PartyCommonProps & {
   dueDateTime: FirestoreDateType,
   partyTime: FirestoreDateType,
-  fetchedJoinners?: User[],
+  fetchedJoinners: User[] | null
 }
 
 declare type PartyFormData = PartyCommonProps & {

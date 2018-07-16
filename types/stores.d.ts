@@ -1,4 +1,4 @@
-declare interface IAllStore {
+declare interface IRootStore {
   userStore: IUserStore,
   partyStore: IPartyStore,
   destinationsStore: IDestinationsStore
@@ -7,13 +7,17 @@ declare interface IAllStore {
 declare interface IPartyStore {
   initializedParty: boolean
   parties: Party[] | null
+  myCreatedParties: Party[] | null
+  myCreatedPartiesFetchStatus: string
   initializeParties(): void
+  fetchMyCreatedParties(email: string): Promise<void>
+
 }
 
 declare interface IUserStore {
   user: User | null
+  isExistUser: boolean
   initializeUser(): void
-  isExistUser(): boolean
   signOut(): void
 }
 

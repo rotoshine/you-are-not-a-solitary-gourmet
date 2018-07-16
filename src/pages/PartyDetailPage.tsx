@@ -14,9 +14,9 @@ type Props = RouteComponentProps<any> & {
   partyStore: IPartyStore,
 }
 
-@inject((allStores: IAllStore) => ({
-  userStore: allStores.userStore as IUserStore,
-  partyStore: allStores.partyStore as IPartyStore,
+@inject((rootStore: IRootStore) => ({
+  userStore: rootStore.userStore as IUserStore,
+  partyStore: rootStore.partyStore as IPartyStore,
 }))
 @observer
 class PartyDetailPage extends React.Component<Props> {

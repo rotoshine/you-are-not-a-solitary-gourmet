@@ -10,8 +10,8 @@ interface InjectedProps extends Props {
   userStore: IUserStore,
 }
 
-@inject((allStores: IAllStore) => ({
-  userStore: allStores.userStore as IUserStore,
+@inject((rootStore: IRootStore) => ({
+  userStore: rootStore.userStore as IUserStore,
 }))
 @observer
 class AuthenticateHeader extends React.Component<Props> {
