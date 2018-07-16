@@ -93,7 +93,6 @@ const createTodayPartiesQuery = () => firestore
   .collection('parties')
   .where('partyTime', '>', new Date())
   .orderBy('partyTime', 'asc')
-  .limit(100)
 
 const retrieveTime = (now = new Date().getTime()) => (party: any): number => {
   if (party.dueDateTime.seconds * 1000 < now) return -Infinity
