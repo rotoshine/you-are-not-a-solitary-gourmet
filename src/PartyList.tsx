@@ -1,13 +1,19 @@
-import React, { Component } from 'react'
-import { Switch, Route, Link, withRouter } from 'react-router-dom'
-import moment from 'moment'
-import styled from 'styled-components'
-import { find } from 'lodash'
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import * as moment from 'moment'
 
 import DueCountDown from './DueCountDown'
-import PartyDetail from './PartyDetail'
+import styled from './styled-components'
 
 import { PartyTitle, PartyItemInfoText } from './PartyStyledComponents'
+
+type Props = {
+  history?: {
+    push: Function,
+  },
+  parties: Party[],
+  user: User | null,
+}
 
 const PartyTag = styled.span`
   width: 60px;
@@ -72,72 +78,62 @@ const PartyJoinnerGroup = styled.span`
   height: 100%;
 `
 
-class PartyList extends Component {
-  handleClose = (e) => {
-    this.props.history.push('/')
+export default class PartyList extends React.Component<Props> {
+  handleClose = (e: EventTarget) => {
+    this.props.history &&
+      this.props.history.push('/')
   }
 
-  alreadyJoin(party) {
+  alreadyJoin(party: Party) {
     const { user } = this.props
-    return party.joinners.find((joinner) => joinner.email === user.email)
+
+    if (user) {
+      return party.fetchedJoinners &&
+        party.fetchedJoinners.find(joinner => joinner.email === user.email)
+    }
+    return false
   }
 
-  alreadyDeadline = (party) => {
+  alreadyDeadline = (party: Party) => {
     return party.dueDateTime.toDate() < new Date()
   }
 
-  handleJoinPartyClick = (party) => {
-    const { user, onJoinParty } = this.props
+  renderMemberLimit(party: Party) {
+    const { maxPartyMember, fetchedJoinners } = party
 
-    if (user) {
-      onJoinParty(party.id, user.email)
+    if (!fetchedJoinners) {
+      return null
     }
-  }
 
-  renderMemberLimit(party) {
-    const { maxPartyMember, joinners } = party
     if (maxPartyMember === 0) {
       return <span>무제한 멤버</span>
-    } else {
-      const joinnedMemberCount = joinners.length
-
-      if (maxPartyMember > joinnedMemberCount) {
-        return (
-          <span>총 {party.maxPartyMember}명</span>
-        )
-      } else if (maxPartyMember === joinnedMemberCount) {
-        return <span>인원마감</span>
-      }
     }
+
+    const joinnedMemberCount = fetchedJoinners.length
+
+    if (maxPartyMember > joinnedMemberCount) {
+      return (
+        <span>총 {party.maxPartyMember}명</span>
+      )
+    }
+
+    return <span>인원마감</span>
   }
 
   render() {
-    const { user, parties, onLeaveParty } = this.props
+    const { parties } = this.props
 
     return (
       <div className="PartyList">
-        <Switch>
-          <Route
-            path="/parties/:partyId"
-            render={({ match }) => (
-              <PartyDetail
-                party={find(parties, { 'id': match.params.partyId })}
-                parties={parties}
-                renderMemberLimit={this.renderMemberLimit}
-                renderPartyJoinButton={this.renderPartyJoinButton}
-                user={user}
-                handleClose={this.handleClose}
-                onJoinParty={this.handleJoinPartyClick}
-                onLeaveParty={onLeaveParty}
-              />
-            )}
-          />
-        </Switch>
-        {parties && parties.length === 0 && <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>}
+        {
+          parties &&
+          parties.length === 0 && (
+            <h4 className="App__text-black">저런! 아무런 파티가 없군요. 파티를 직접 만들어보시는 건 어떨까요?</h4>
+          )
+        }
         {parties.map(party => (
-          <Link className="Link" to={`/parties/${party.id}`}>
+          <Link key={party.id} className="Link" to={`/parties/${party.id}`}>
             <PartyItem
-              key={party.id}
               className="PartyList__party"
             >
               <PartyItemContents>
@@ -146,6 +142,7 @@ class PartyList extends Component {
                     <PartyTag>{party.category}</PartyTag>
                   )}
                   <PartyTag>{this.renderMemberLimit(party)}</PartyTag>
+                  {party.isDelivery && <PartyTag>배달음식</PartyTag>}
                 </div>
                 <div className="card-text">
                   <PartyTitle>{party.title}</PartyTitle>
@@ -159,7 +156,7 @@ class PartyList extends Component {
                     </div>
                     <PartyJoinners>
                       <PartyJoinnerPhoto>
-                        {party.joinners && party.joinners.map((joinner, i) => (
+                        {party.fetchedJoinners && party.fetchedJoinners.map((joinner, i) => (
                           <PartyJoinnerGroup key={i} className="tooltip-joinner" >
                             <img src={joinner.photoURL} alt={joinner.displayName} />
                             <span className="tooltiptext-joinner">{joinner.displayName}</span>
@@ -177,5 +174,3 @@ class PartyList extends Component {
     )
   }
 }
-
-export default withRouter(PartyList)

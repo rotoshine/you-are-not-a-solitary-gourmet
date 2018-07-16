@@ -9,7 +9,6 @@ export default class PartyStore implements IPartyStore {
   initializeParties = () => {
     subscribeTodayParties((parties: Party[]) => {
       this.parties = [...parties]
-
       this.initializedParty = true
     })
   }

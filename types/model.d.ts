@@ -4,19 +4,31 @@ declare type User = {
   email: string,
 }
 
-declare type Party = {
+type FirestoreDateType = {
+  toDate: () => Date,
+}
+
+declare type PartyCommonProps = {
+  id?: string,
   category: string,
   title: string,
   description: string,
   destinationName: string,
-  isDelivery: boolean,
-  dueDateTime: string,
-  maxPartyMember: number,
-  partyTime: Date,
-  joinners: string[], 
-  createdAt: Date,
+  isDelivery: boolean,  
+  maxPartyMember: number,  
+  joinners: string[],
   createdBy: string,
-  
+}
+
+declare type Party = PartyCommonProps & {
+  dueDateTime: FirestoreDateType,
+  partyTime: FirestoreDateType,
+  fetchedJoinners?: User[],  
+}
+
+declare type PartyFormData = PartyCommonProps & {   
+  partyTimeDate: Date,
+  dueDateTimeDate: Date,
 }
 
 declare type Destination = {
@@ -25,6 +37,7 @@ declare type Destination = {
 }
 
 declare type PartyComment = {
+  id: string,
   partyId: string,
   content: string,
   isDisplay: boolean,

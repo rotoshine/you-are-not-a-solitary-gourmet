@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { signIn } from './utils/user'
 
-export default class GoogleLoginButton extends Component {
+export default class GoogleLoginButton extends React.Component {
   render () {
     return (
       <button
