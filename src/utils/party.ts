@@ -95,6 +95,7 @@ const createTodayPartiesQuery = () => firestore
 
 export const subscribeTodayParties = (callback: Function) => {
   createTodayPartiesQuery()
+    .orderBy('partyTime', 'desc')
     .onSnapshot(async (querySnapshot: any) => {
       callback(await querySnapshotToArray(querySnapshot))
     })
