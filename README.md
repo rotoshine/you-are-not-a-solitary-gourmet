@@ -51,6 +51,24 @@ REACT_APP_SLACK_HOOK=your slack hook url
 }
 ```
 
+## firebase functions 세팅
+
+firebase functions에 SSR을 위한 처리가 되어있다.
+
+사용을 위해선 `firebase-tools`를 설치한다.
+
+```
+npm install -g firebase-tools
+```
+
+### config
+
+아래의 커맨드로 firebase functions에서 사용할 환경변수를 정의한다.
+
+```
+firebase functions:config:set angomi.domain=YOUR_SERVICE_URL
+```
+
 # 만드는 사람들
 
 - 로토 - https://github.com/rotoshine

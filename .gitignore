@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+functions/node_modules
 
 # testing
 /coverage
@@ -23,3 +24,11 @@ yarn-error.log*
 
 # firebase
 .firebaserc
+
+# deploy to s3
+build-aws.sh
+
+# firebase functions
+functions/**/*.js
+functions/**/*.js.map
+functions/index.html
