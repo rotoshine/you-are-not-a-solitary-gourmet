@@ -2,13 +2,13 @@ import * as React from 'react'
 
 import styled from './styled-components'
 
-const Footer__container = styled.footer`
+const FooterContainer = styled.footer`
   overflow: hidden;
   width: 100%;
   height: 100%;
   position: relative;
 `
-const Footer__bg = styled.div`
+const Background = styled.div`
   margin-top: 22rem;
   background: linear-gradient(60deg, #ff8d00, #a5007d, #26186f);
   transform: skewY(-11deg);
@@ -27,7 +27,7 @@ const Footer__bg = styled.div`
   }
 `
 
-const Footer__content = styled.div`
+const FooterContent = styled.div`
   flex-wrap: wrap;
   display: flex;
   font-size: 1.3rem;
@@ -48,7 +48,7 @@ const Footer__content = styled.div`
     text-transform: uppercase;
   }
 
-  .footer_group {
+  .group {
     p {
       line-height: 2;
       letter-spacing: 0.05rem;
@@ -72,7 +72,7 @@ const Footer__content = styled.div`
   }
 `
 
-const Footer__secret = styled.div`
+const SecretMSG = styled.div`
   text-align: right;
   font-weight: 100;
   font-size: 1rem;
@@ -81,12 +81,12 @@ const Footer__secret = styled.div`
 `
 
 const Footer = () => (
-  <Footer__container>
-    <Footer__bg></Footer__bg>
+  <FooterContainer>
+    <Background></Background>
       <div className="container">
-        <Footer__content>
+        <FooterContent>
           <h2 className="col-md-12">ANGOMI:안 고독한 미식가</h2>
-          <div className="footer_group col-md-3">
+          <div className="group col-md-3">
             <h3>links</h3>
             <a
               target="_blank"
@@ -94,7 +94,7 @@ const Footer = () => (
               github
             </a>
           </div>
-          <div className="footer_group col-md-3">
+          <div className="group col-md-3">
             <h3>contributors</h3>
             <a
               target="_blank"
@@ -113,7 +113,7 @@ const Footer = () => (
               href="https://github.com/rotoshine">Roto<span>🐱</span>
             </a>
           </div>
-          <div className="footer_group col-md-6">
+          <div className="group col-md-6">
             <h3>about</h3>
             <p>안 고미는 사내 그룹이나 동호회 등에서 소규모 파티 모임을
                활성화해, 늘 어울리는 사람이 아닌 다양한 사람들과 함께 맛있는
@@ -121,12 +121,12 @@ const Footer = () => (
                 오픈소스이며 여러분의 다양한 기여를 언제나 환영합니다. 버그를 발견하거나, 개선사항이 있으시면 깃허브에 언제든 이슈
                  남겨주세요.</p>
           </div>
-          <Footer__secret className="col-md-12">
-            <strong>for our lonely friend, kingkong<em>🦍</em></strong>
-          </Footer__secret>
-        </Footer__content>
+          <SecretMSG className="col-md-12">
+            <strong>for our lonely friend, kingkong / 이 프로젝트를 우리의 고독한 킹콩에게 받칩니다</strong>
+          </SecretMSG>
+        </FooterContent>
       </div>
-  </Footer__container>
+  </FooterContainer>
 )
 
 export default Footer
