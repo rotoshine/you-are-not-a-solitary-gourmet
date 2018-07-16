@@ -1,8 +1,12 @@
 import * as Bluebird from 'bluebird'
+import * as moment from 'moment'
+
 import firestore from './firestore'
 import { findByEmails } from './user'
 import { isValidSlackHook, notifyToSlack } from './slack'
 import { saveDestination } from './destination'
+
+const COLLECTION_NAME = 'parties'
 
 const querySnapshotToArray = async (querySnapshot: any) => {
   const parties = querySnapshot.docs.map((doc: any) => ({
@@ -11,59 +15,103 @@ const querySnapshotToArray = async (querySnapshot: any) => {
   }))
 
   return await Bluebird.map(parties, async (party: Party) => {
-    const joinners = await findByEmails(party.joinners)
+    const fetchedJoinners = await findByEmails(party.joinners)
 
     return {
       ...party,
-      joinners,
+      fetchedJoinners,
     }
   })
 }
+
 export const findById = async (partyId: string): Promise<Party | null> => {
-  const querySnapshot = await firestore.collection('parties').doc(partyId).get()
-  return <Party>querySnapshot.data()
+  const querySnapshot = await firestore.collection(COLLECTION_NAME).doc(partyId).get()
+  return {
+    ...<Party>querySnapshot.data(),
+    id: querySnapshot.id,
+  }
 }
 
-export const saveParty = async (party: Party, user: User) => {
+export const saveParty = async (partyForm: PartyFormData, user: User) => {
   const {
     category,
     title,
     destinationName,
-    partyTime,
-    dueDateTime,
+    partyTimeDate,
+    dueDateTimeDate,
     description,
     isDelivery,
     maxPartyMember = 0,
     joinners = [],
-  } = party
+  } = partyForm
 
-  const savedParty = await firestore.collection('parties').add({
+  const saveOrUpdatePartyForm = {
     description,
     isDelivery,
     maxPartyMember,
-    joinners,
     category,
     title,
     destinationName,
-    partyTime: new Date(partyTime),
-    dueDateTime: new Date(dueDateTime),
+    partyTime: new Date(partyTimeDate),
+    dueDateTime: new Date(dueDateTimeDate),
     createdBy: user.email,
-    createdAt: new Date(),
-  })
-
-  if (isValidSlackHook()) {
-    await notifyToSlack(`${title} 파티가 만들어졌어요! 파티 장소는 ${destinationName} 입니다!`)
   }
 
-  await saveDestination(destinationName)
+  if (partyForm.id) {
+    const alreadySavedParty = await firestore.collection(COLLECTION_NAME).doc(partyForm.id).get()
 
-  return savedParty
+    if (alreadySavedParty && alreadySavedParty.exists) {
+      await firestore.collection(COLLECTION_NAME).doc(partyForm.id).update({
+        ...saveOrUpdatePartyForm,
+        updatedAt: new Date(),
+      })
+
+      if (isValidSlackHook()) {
+        const notifyTexts = [
+          `\`[${category}]\` \`${title}\` 파티가 수정되었어요!`,
+          `${window.location.origin}/parties/${partyForm.id}`,
+        ]
+        await notifyToSlack(notifyTexts.join('\n'))
+      }
+    }
+
+  } else {
+    const newPartyRef = await firestore.collection(COLLECTION_NAME).add({
+      ...saveOrUpdatePartyForm,
+      joinners,
+      createdAt: new Date(),
+    })
+
+    if (isValidSlackHook()) {
+      const notifyTexts = [
+        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
+        `${window.location.origin}/parties/${newPartyRef.id}`,
+        `파티 마감 시간은 \`${moment(dueDateTimeDate).format('YYYY-MM-DD HH:mm')}\`까지 입니다.`,
+      ]
+      await notifyToSlack(notifyTexts.join('\n'))
+    }
+
+    await saveDestination(destinationName)
+  }
+}
+
+const createTodayPartiesQuery = () => firestore
+  .collection('parties')
+  .where('partyTime', '>', new Date())
+  .orderBy('partyTime', 'asc')
+
+const retrieveTime = (now = new Date().getTime()) => (party: any): number => {
+  if (party.dueDateTime.seconds * 1000 < now) return -Infinity
+  return Math.abs(now - party.partyTime.seconds)
 }
 
 export const subscribeTodayParties = (callback: Function) => {
-  firestore.collection('parties').where('partyTime', '>', new Date())
+  createTodayPartiesQuery()
     .onSnapshot(async (querySnapshot: any) => {
-      callback(await querySnapshotToArray(querySnapshot))
+      const data = await querySnapshotToArray(querySnapshot)
+      const retrieve = retrieveTime()
+      const sorted = data.sort((a: any, b: any) => retrieve(b) - retrieve(a))
+      callback(sorted)
     })
 }
 
@@ -72,9 +120,7 @@ export const unsubscribeTodayParties = () => {
 }
 
 export const findTodayParties = async () => {
-  const querySnapshot = await firestore
-    .collection('parties')
-    .where('partyTime', '>', new Date())
+  const querySnapshot = await createTodayPartiesQuery()
     .get()
 
   if (querySnapshot) {

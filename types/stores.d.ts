@@ -1,6 +1,12 @@
+declare interface IAllStore {
+  userStore: IUserStore,
+  partyStore: IPartyStore,
+  destinationsStore: IDestinationsStore
+}
+
 declare interface IPartyStore {
-  initialized: boolean
-  parties: Party[]
+  initializedParty: boolean
+  parties: Party[] | null
   initializeParties(): void
 }
 

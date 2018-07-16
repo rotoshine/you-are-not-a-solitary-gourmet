@@ -5,13 +5,19 @@ import 'moment/locale/ko'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Provider } from 'mobx-react'
 
-import Root from './Root'
+import App from './App'
+
+import stores from './stores'
+
 import registerServiceWorker from './registerServiceWorker'
 
 ReactDOM.render(
   (
-    <Root />
+    <Provider {...stores}>
+      <App />
+    </Provider>
   ),
   document.getElementById('root') as HTMLDivElement,
 )

@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- stable
+cache:
+  directories:
+  - node_modules
+script:
+- npm run build
+deploy:
+  provider: firebase
+  skip_cleanup: true
+  project: angomi-9e9af
+  on:
+    branch: master
+  token:
+    secure: TEUSvPgs83+sUdOUk0WAvcZBdzLXqr2n/h4c3qkkAeb3pOiwPo3ZMLbU5c8AUT68L8REp3xqUyViyAtM/b2rXl2MneFggPc+Xlupiy02j1HuwsiUR/c3hQxztAFH9A4bQi5iYHBXK/dk08UC5ijhiilqPOnVWbUGBPNlTc1EDXbdG4bv/MzJNfHkaVUr276tIdv+xhV3ZPZuKf3iw4j+dfXMaSez544+7LxAV75YaZdn760ZotkL7DxzWbjxMyqcRAzbbSKYKNwEw0LfUvflzgjPl7o0CAvBKCd7hQHXP7X2R/MgD7rJimfoYFFrSRdbnUFS26WTm0uRLupLPhoUGegIDR7fPM34ZII1HYcueU2conynzk9vq4DxVv0mq6bkzH+5PatkCittFxXRHZXRXzFHyWMpM/sJz4nCjfugvnzVg56IdEJH/UN3fmaEQNN0Z5p+BSasSbekj/w7xdHe/yFmKtppO3b9caDWKgZK8WJwZsjHXlFw+q1Bmzf1/AXTlYXXoQUEgRk2OcEDTJytzz/i8hKhqRMbmP+BfwvFuLNMvNUYKJfDDhk+UstBDHkeMOEVpluwpdEDl0ZPL7Lhc9bPV0/qLDKJqdVnohQhT93522obS5inJxLY8tfz4eUphVg1srvItuBj3cTdkHpPIkEryB/Lw7tovlhn3vJSwZ8=
+after_deploy:
+   -  ./travis/build-notify.sh

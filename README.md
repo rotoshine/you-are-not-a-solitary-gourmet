@@ -1,4 +1,4 @@
-# 안 고독한 미식가
+# 안 고독한 미식가 [![Build Status](https://travis-ci.org/rotoshine/you-are-not-a-solitary-gourmet.svg?branch=master)](https://travis-ci.org/rotoshine/you-are-not-a-solitary-gourmet)
 
 식사, 커피타임, 각종 문화생활을 함께 할 파티를 만들고 모집하는 웹 애플리케이션
 
@@ -49,6 +49,24 @@ REACT_APP_SLACK_HOOK=your slack hook url
     "default": YOUR_FIREBASE_PROJECT_NAME   
   }
 }
+```
+
+## firebase functions 세팅
+
+firebase functions에 SSR을 위한 처리가 되어있다.
+
+사용을 위해선 `firebase-tools`를 설치한다.
+
+```
+npm install -g firebase-tools
+```
+
+### config
+
+아래의 커맨드로 firebase functions에서 사용할 환경변수를 정의한다.
+
+```
+firebase functions:config:set angomi.domain=YOUR_SERVICE_URL
 ```
 
 # 만드는 사람들

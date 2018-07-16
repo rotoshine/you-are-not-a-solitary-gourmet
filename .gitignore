@@ -31,3 +31,4 @@ build-aws.sh
 # firebase functions
 functions/**/*.js
 functions/**/*.js.map
+functions/index.html

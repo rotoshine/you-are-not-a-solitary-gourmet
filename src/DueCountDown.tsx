@@ -1,7 +1,16 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import styled from 'styled-components'
-import moment from 'moment'
+import * as moment from 'moment'
 moment.locale('ko')
+
+type Props = {
+  dueDateTime: Date,
+}
+
+type State = {
+  dueCountDown: number,
+  now: number,
+}
 
 const DueCountDownWrapper = styled.span`
   color: #ff2700;
@@ -13,26 +22,30 @@ const DueCountDownTime = styled.em`
   font-weight: 600;
   color: #ff2700;
 `
-export default class DueCountDown extends Component {
-  constructor(props) {
+export default class DueCountDown extends React.Component<Props, State> {
+  timer: number | undefined
+  constructor(props: Props) {
     super(props)
-    this.timer = null
+    this.timer = undefined
     this.state = {
       dueCountDown: new Date(props.dueDateTime).getTime(),
-      now: new Date().getTime()
+      now: new Date().getTime(),
     }
   }
 
   componentDidMount() {
-    this.timer = setInterval(() => {
-      this.setState({
-        now: new Date().getTime()
-      })
-    }, 1000)
+    this.timer = window.setInterval(
+      () => {
+        this.setState({
+          now: new Date().getTime(),
+        })
+      },
+      1000,
+    )
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer)
+    window.clearInterval(this.timer)
   }
 
   render() {
