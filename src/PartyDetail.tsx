@@ -30,6 +30,7 @@ const PartyDetailGroup = styled.div`
   position: absolute;
   top: 10rem;
   border-radius: 6px;
+  margin-bottom: 4rem;
 
   @media screen and (max-width: 600px) {
     border-radius: 0;
