@@ -49,32 +49,38 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
     description,
     isDelivery,
     maxPartyMember,
-    joinners,
     category,
     title,
     destinationName,
     partyTime: new Date(partyTimeDate),
     dueDateTime: new Date(dueDateTimeDate),
     createdBy: user.email,
-    createdAt: new Date(),
   }
 
   if (partyForm.id) {
     const alreadySavedParty = await firestore.collection(COLLECTION_NAME).doc(partyForm.id).get()
 
     if (alreadySavedParty && alreadySavedParty.exists) {
-      await firestore.collection(COLLECTION_NAME).doc(partyForm.id).update(saveOrUpdatePartyForm)
-      const notifyTexts = [
-        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
-        `${window.location.origin}/parties/${partyForm.id}`,
-      ]
+      await firestore.collection(COLLECTION_NAME).doc(partyForm.id).update({
+        ...saveOrUpdatePartyForm,
+        updatedAt: new Date(),
+      })
+
       if (isValidSlackHook()) {
+        const notifyTexts = [
+          `\`[${category}]\` \`${title}\` 파티가 수정되었어요!`,
+          `${window.location.origin}/parties/${partyForm.id}`,
+        ]
         await notifyToSlack(notifyTexts.join('\n'))
       }
     }
 
   } else {
-    const newPartyRef = await firestore.collection(COLLECTION_NAME).add(saveOrUpdatePartyForm)
+    const newPartyRef = await firestore.collection(COLLECTION_NAME).add({
+      ...saveOrUpdatePartyForm,
+      joinners,
+      createdAt: new Date(),
+    })
 
     if (isValidSlackHook()) {
       const notifyTexts = [
