@@ -72,6 +72,9 @@ class AuthenticateHeader extends React.Component<Props> {
         {userInitialized && isExistUser && (
           <div className="App">
             <div className="App__header">
+               <div className="App__button-user">
+                  <img src={userStore.user!.photoURL} alt={userStore.user!.displayName} />
+              </div>
               <form>
                 <button
                   className="App__button"

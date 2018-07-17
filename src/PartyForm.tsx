@@ -4,6 +4,7 @@ import flatpickr from 'flatpickr'
 import Flatpickr from 'react-flatpickr'
 
 import { ESC } from './utils/keycodes'
+import { Overlay, CloseBtn } from './CommonStyledComponents'
 
 import './PartyForm.css'
 import 'flatpickr/dist/themes/light.css'
@@ -163,16 +164,13 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
     const { onClose } = this.props
 
     return (
-      <div className="PartyForm-overlay" onClick={this.handleClose}>
+      <Overlay onClick={() => onClose()}>
+        <CloseBtn />
         <div className="PartyForm-group"
           onClick={(evt: any) => evt.stopPropagation()}
         >
           <div className="PartyForm-title">
             <h3><span role="img" aria-label="tada">🎉</span> 파티 {form.id ? '수정하기' : '만들기'}</h3>
-            <button
-              className="btn btn-sm btn-danger"
-              onClick={() => onClose()}
-            >닫기</button>
           </div>
           <form
             className="PartyForm-form"
@@ -196,7 +194,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                   }
                 />
               </div>
-              <div className="form-group col-sm-3">
+              <div className="form-group col-sm-3 form-delivery">
                 <label htmlFor="isDelivery">배달음식?</label>
                 <input
                   className="PartyForm__form-control form-control"
@@ -208,6 +206,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                     e: React.ChangeEvent<HTMLInputElement>,
                   ) => this.handleFormChange('isDelivery', e.currentTarget.checked)}
                 />
+                <span className="showformobile">배달음식일 경우 체크해 주세요.</span>
               </div>
             </div>
             <div className="form-group">
@@ -246,7 +245,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-sm-9">
+              <div className="form-group col-sm-9 Partyform__form-location">
                 <label
                   htmlFor="destinationName">
                   행선지
@@ -334,7 +333,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
             <button className="PartyForm__button btn">파티를 {form.id ? '수정합니다!' : '만듭니다!'}</button>
           </form>
         </div>
-      </div>
+      </Overlay>
     )
   }
 }

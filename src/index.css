@@ -9,8 +9,8 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Gothic+A1', sans-serif;
-  font-weight: 400;
+  font-family: 'Gothic+A1', sans-serif !important;
+  font-weight: 400 !important;
   font-size: 1rem;
 }
 
@@ -28,4 +28,13 @@ body.modal-open {
 
 .form-control:disabled, .form-control[readonly] {
   background-color: white !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

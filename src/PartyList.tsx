@@ -50,6 +50,7 @@ const PartyJoinners = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `
 
 const PartyJoinnerPhoto = styled.div`
@@ -60,7 +61,7 @@ const PartyJoinnerPhoto = styled.div`
     height: 40px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    margin-right: 10px;
+    margin-right: -1.5rem;
   }
 `
 
