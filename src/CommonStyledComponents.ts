@@ -64,6 +64,6 @@ export const CloseBtn = styled.div`
     transform: translate(-2px,2px);
   }
   @media screen and (max-width: 600px) {
-    padding: 5rem 8rem 5rem 2rem;
+    padding: 5rem 6rem 5rem 2rem;
   }
 `
