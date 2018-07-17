@@ -133,6 +133,9 @@ export default class PartyList extends React.Component<Props> {
                   <PartyItemInfo>
                     <div className="PartyList__block">
                       <PartyItemInfoText>{party.destinationName}</PartyItemInfoText>
+                      {party.category.isPlaying &&
+                        <PartyItemInfoText>{party.playName}</PartyItemInfoText>
+                      }
                       <PartyItemInfoText>
                         <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
                         <DueCountDown dueDateTime={party.dueDateTime.toDate()} />

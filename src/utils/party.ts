@@ -1,5 +1,4 @@
 import * as Bluebird from 'bluebird'
-import * as moment from 'moment'
 
 import firestore from './firestore'
 import { findByEmails } from './user'
@@ -7,6 +6,21 @@ import { isValidSlackHook, notifyToSlack } from './slack'
 import { saveDestination } from './destination'
 
 const COLLECTION_NAME = 'parties'
+
+const sendSlackNotifyMessage = async (
+  category: Category,
+  isNew: boolean,
+  partyTitle: string,
+  partyId: string) => {
+  if (isValidSlackHook()) {
+    const texts = [
+      `\`[${category.name}]\` \`${partyTitle}\` 파티가 ${isNew ? '만들어졌어요!' : '수정되었어요!'}`,
+      `${window.location.origin}/parties/${partyId}`,
+    ]
+
+    await notifyToSlack(texts.join('\n'))
+  }
+}
 
 const querySnapshotToArray = async (querySnapshot: any) => {
   const parties = querySnapshot.docs.map((doc: any) => ({
@@ -40,18 +54,18 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
     partyTimeDate,
     dueDateTimeDate,
     description,
-    isDelivery,
+    playName,
     maxPartyMember = 0,
     joinners = [],
   } = partyForm
 
   const saveOrUpdatePartyForm = {
     description,
-    isDelivery,
     maxPartyMember,
     category,
     title,
     destinationName,
+    playName,
     partyTime: new Date(partyTimeDate),
     dueDateTime: new Date(dueDateTimeDate),
     createdBy: user.email,
@@ -66,13 +80,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
         updatedAt: new Date(),
       })
 
-      if (isValidSlackHook()) {
-        const notifyTexts = [
-          `\`[${category}]\` \`${title}\` 파티가 수정되었어요!`,
-          `${window.location.origin}/parties/${partyForm.id}`,
-        ]
-        await notifyToSlack(notifyTexts.join('\n'))
-      }
+      await sendSlackNotifyMessage(category, false, title, partyForm.id)
     }
 
   } else {
@@ -82,16 +90,22 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
       createdAt: new Date(),
     })
 
-    if (isValidSlackHook()) {
-      const notifyTexts = [
-        `\`[${category}]\` \`${title}\` 파티가 만들어졌어요!`,
-        `${window.location.origin}/parties/${newPartyRef.id}`,
-        `파티 마감 시간은 \`${moment(dueDateTimeDate).format('YYYY-MM-DD HH:mm')}\`까지 입니다.`,
-      ]
-      await notifyToSlack(notifyTexts.join('\n'))
-    }
+    await sendSlackNotifyMessage(category, true, title, newPartyRef.id)
+    await saveDestination(destinationName, {
+      isDeliverable: category.isDeliverable,
+      isRestaurant: category.isRestaurant,
+      isPlaying: category.isPlaying,
+      isTravel: category.isTravel,
+    })
 
-    await saveDestination(destinationName)
+    if (category.isPlaying && playName.length > 0) {
+      await saveDestination(destinationName, {
+        isDeliverable: false,
+        isRestaurant: false,
+        isTravel: false,
+        isPlaying: true,
+      })
+    }
   }
 }
 

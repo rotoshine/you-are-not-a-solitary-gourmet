@@ -98,7 +98,7 @@ export default class PartyDetail extends React.Component<Props> {
 
     const isCreator = (user && user.email === party.createdBy)
 
-    if (user && party.id) {
+    if (party.id) {
       return (
         <PartyDetailGroup onClick={(evt: React.SyntheticEvent) => evt.stopPropagation()}>
           <PartyDetailHeader>
@@ -119,17 +119,40 @@ export default class PartyDetail extends React.Component<Props> {
               <PartyJoinButton
                 user={user}
                 party={party}
-                onJoinParty={onJoinParty}
+                onJoinParty={() => {
+                  if (!user) {
+                    alert('로그인 후 참여할 수 있습니다.')
+                  } else {
+                    onJoinParty()
+                  }
+                }}
                 onLeaveParty={onLeaveParty} />
             </PartyJoinButtonWrapper>
             <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
             <PartyDetailContents>
               <Block>
                 <h5>파티 상세 정보</h5>
-                <PartyItemInfoText>
-                  <span>장소 | </span>
-                  <span>{party.destinationName}</span>
-                </PartyItemInfoText>
+                {
+                  party.category.isRestaurant &&
+                  <PartyItemInfoText>
+                    <span>식당 | </span>
+                    <span>{party.destinationName}</span>
+                  </PartyItemInfoText>
+                }
+                {
+                  party.category.isTravel &&
+                  <PartyItemInfoText>
+                    <span>여행지 | </span>
+                    <span>{party.destinationName}</span>
+                  </PartyItemInfoText>
+                }
+                {
+                  party.category.isPlaying &&
+                  <PartyItemInfoText>
+                    <span>하고 놀 것 | </span>
+                    <span>{party.playName}</span>
+                  </PartyItemInfoText>
+                }
                 <PartyItemInfoText>
                   <span>일시 | </span>
                   <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD ddd HH:mm')}</span>
