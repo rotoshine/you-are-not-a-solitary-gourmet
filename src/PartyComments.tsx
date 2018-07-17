@@ -85,6 +85,9 @@ export default class PartyComments extends React.Component<Props, State> {
             <li className="PartyComments__nocomment">
               <span role="img" aria-label="cry-face">😢</span> 이 파티에 대한 댓글이 하나도 없네요.</li>
           )}
+          {partyComments !== null && partyComments.length > 0 && (
+            <li className="PartyComments__comment">{partyComments.length}개의 댓글이 있습니다.</li>
+          )}
           {partyComments && partyComments.map((comment: PartyComment, i: number) => (
             <li key={i} className="PartyComments__comment PartyComments__comment--input">
               <img

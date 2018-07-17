@@ -1,7 +1,6 @@
 .PartyComments {
   flex: 1;
   border-top: 1px solid #bfbfbf;
-  padding-top: 12px;
 }
 
 .PartyComments__list {
@@ -12,7 +11,8 @@
 .PartyComments__comment {
   display: flex;
   flex-direction: row;
-  margin: 10px 0;
+  margin: 1.6rem 0;
+  font-size: 1.6rem;
 }
 
 .PartyComments__comment img {
@@ -26,6 +26,8 @@
 .PartyComments__commentline {
   line-height: 1.5;
   font-size: 1.6rem;
+  width: 90%;
+  display: inline-block;
 }
 
 .PartyComments__commentUser {
@@ -82,6 +84,9 @@
 .partyComments__createdAt {
   color: gray;
   line-height: 1 !important;
+  width: 10%;
+  display: inline-block;
+  text-align: right;
 }
 
 .PartyDetail__partyContent .PartyList__tags {
