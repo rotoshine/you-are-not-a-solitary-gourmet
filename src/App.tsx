@@ -8,6 +8,8 @@ import PartyDetailPage from './pages/PartyDetailPage'
 import MyPage from './pages/MyPage'
 
 import AuthenticateHeader from './AuthenticateHeader'
+import GNB from './GNB'
+
 import Footer from './Footer'
 
 import { unsubscribeDestinations } from './utils/destination'
@@ -45,6 +47,7 @@ class App extends React.Component<Props> {
         {userStore!.isExistUser &&
           <Router>
             <React.Fragment>
+              <GNB />
               <Route exact path="/" render={() => (
                 <Redirect to="/parties" />
               )}
@@ -72,7 +75,7 @@ class App extends React.Component<Props> {
                   component={PartyListPage}
                 />
                 <Route
-                  paht="/me"
+                  path="/me"
                   component={MyPage}
                 />
               </Switch>

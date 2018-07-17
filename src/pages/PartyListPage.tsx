@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router-dom'
 
 import PartyList from '../PartyList'
 
@@ -56,9 +55,6 @@ class PartyListPage extends React.Component<Props> {
               user={user}
               parties={parties}
             />
-            <Link to="/parties/new">
-              <button className="App__button make">파티만들기</button>
-            </Link>
           </React.Fragment>
         )}
       </div>
