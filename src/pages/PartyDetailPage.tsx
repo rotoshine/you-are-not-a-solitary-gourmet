@@ -2,7 +2,7 @@ import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { Overlay, CenterText } from '../CommonStyledComponents'
+import { Overlay, CloseBtn, CenterText } from '../CommonStyledComponents'
 import PartyDetail from '../PartyDetail'
 
 import { ESC } from '../utils/keycodes'
@@ -47,6 +47,7 @@ class PartyDetailPage extends React.Component<Props> {
     if (!initializedParty) {
       return (
         <Overlay onClick={() => this.close()}>
+          <CloseBtn />
           <CenterText>
             <h1>Loading..</h1>
           </CenterText>
@@ -63,6 +64,7 @@ class PartyDetailPage extends React.Component<Props> {
       if (party) {
         return (
           <Overlay onClick={() => this.close()}>
+            <CloseBtn />
             <PartyDetail
               party={party}
               user={user}
@@ -76,6 +78,7 @@ class PartyDetailPage extends React.Component<Props> {
 
     return (
       <Overlay onClick={() => this.close()}>
+        <CloseBtn />
         <CenterText>
           <h1>파티가 존재하지 않거나 이미 끝난 파티입니다.</h1>
         </CenterText>
