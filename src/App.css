@@ -12,14 +12,14 @@
   padding: 160px 0;
   margin-bottom: -10rem;
   background: linear-gradient(90deg, #ff8d00, #a5007d, #26186f);
-  transform: skewY(-10deg);
+  transform: skewY(-8deg);
   transform-origin: 0;
   transition: all 0.2s ease;
 }
 
 .App__intro-member {
   height: 760px;
-  transform: skewY(-10deg) translateY(-160px);
+  transform: skewY(-8deg) translateY(-160px);
 }
 
 small {
