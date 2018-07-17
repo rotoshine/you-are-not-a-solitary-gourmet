@@ -10,8 +10,18 @@ const getPartyCreadtedCount = (querySnapshot: any): number => {
   return 1
 }
 
-export const saveDestination = async (destinationName: string) => {
+export const saveDestination = async (
+  destinationName: string,
+  meta: CategoryMeta) => {
+
   try {
+    const {
+      isRestaurant,
+      isDeliverable,
+      isTravel,
+      isPlaying,
+    } = meta
+
     const alreadyStoredDestination = await firestore
       .collection(COLLECTION_NAME)
       .doc(destinationName)
@@ -21,6 +31,10 @@ export const saveDestination = async (destinationName: string) => {
 
     await firestore.collection(COLLECTION_NAME).doc(destinationName).set({
       partyCreatedCount,
+      isRestaurant,
+      isDeliverable,
+      isTravel,
+      isPlaying,
     })
   } catch (e) {
     console.log(e)
@@ -42,5 +56,5 @@ export const subscribeDestinations = (callback: Function): void => {
 }
 
 export const unsubscribeDestinations = () => {
-  return firestore.collection(COLLECTION_NAME).onSnapshot(() => {})
+  return firestore.collection(COLLECTION_NAME).onSnapshot(() => { })
 }

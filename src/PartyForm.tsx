@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { FormGroup, Label } from 'reactstrap'
 import * as AutoComplete from 'react-autocomplete'
+import ReactSelect from 'react-select'
 import flatpickr from 'flatpickr'
 import Flatpickr from 'react-flatpickr'
 
@@ -8,24 +10,26 @@ import { Overlay, CloseBtn } from './CommonStyledComponents'
 
 import './PartyForm.css'
 import 'flatpickr/dist/themes/light.css'
+import 'react-select/dist/react-select.css'
 
-type Props = {
-  party: Party | null,
-  destinations: Destination[] | null,
-  onSave: Function,
-  onClose: Function,
+interface Props {
+  party: Party | null
+  categories: Category[]
+  destinations: Destination[] | null
+  onSave: Function
+  onClose: Function
 }
 
-type PartyFormState = {
+interface State {
   form: {
     id?: string,
-    category: string,
+    category: Category,
     title: string,
     destinationName: string,
+    playName: string,
     partyTimeString: string,
     dueDateTimeString: string,
     description: string,
-    isDelivery: boolean,
     maxPartyMember: number,
   },
 }
@@ -33,11 +37,11 @@ type PartyFormState = {
 const DATE_FORMAT = 'Y-m-d H:i'
 const { parseDate, formatDate } = flatpickr
 
-export default class PartyForm extends React.Component<Props, PartyFormState> {
+export default class PartyForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const { party } = props
+    const { party, categories } = props
 
     if (party) {
       const {
@@ -45,10 +49,10 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
         category,
         title,
         destinationName,
+        playName,
         partyTime,
         dueDateTime,
         description,
-        isDelivery,
         maxPartyMember,
       } = party
 
@@ -58,8 +62,8 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
           category,
           title,
           destinationName,
+          playName,
           description,
-          isDelivery,
           maxPartyMember,
           partyTimeString: formatDate(partyTime.toDate(), DATE_FORMAT),
           dueDateTimeString: formatDate(dueDateTime.toDate(), DATE_FORMAT),
@@ -68,13 +72,13 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
     } else {
       this.state = {
         form: {
-          category: '',
+          category: categories[0],
           title: '',
           destinationName: '',
+          playName: '',
           partyTimeString: formatDate(new Date(), DATE_FORMAT),
           dueDateTimeString: formatDate(new Date(), DATE_FORMAT),
           description: '',
-          isDelivery: false,
           maxPartyMember: 0,
         },
       }
@@ -103,7 +107,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
       title,
       description,
       destinationName,
-      isDelivery,
+      playName,
       maxPartyMember,
       partyTimeString,
       dueDateTimeString,
@@ -115,25 +119,13 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
       title,
       description,
       destinationName,
-      isDelivery,
+      playName,
       maxPartyMember,
       partyTimeDate: parseDate(partyTimeString, DATE_FORMAT),
       dueDateTimeDate: parseDate(dueDateTimeString, DATE_FORMAT),
     })
 
     onClose()
-  }
-
-  destinationsToAutocompleteData(): any[] {
-    const { destinations } = this.props
-
-    if (!destinations) {
-      return []
-    }
-
-    return destinations.map((destination: Destination) => ({
-      label: destination.id,
-    }))
   }
 
   componentDidMount() {
@@ -144,6 +136,56 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
   componentWillUnmount() {
     document.body.classList.remove('modal-open')
     document.body.removeEventListener('keyup', this.handleKeyPress)
+  }
+
+  getPartyText(category: Category) {
+    if (category.isTravel) {
+      return '여행 출발 날짜가 언제인가요?'
+    }
+
+    if (category.isRestaurant) {
+      return '언제 먹나요?'
+    }
+
+    return '언제 모이나요?'
+  }
+
+  destinationsToAutoComplete(filter: (destination: Destination) => boolean): any[] {
+    const { destinations } = this.props
+
+    if (!destinations) {
+      return []
+    }
+
+    return destinations
+      .filter(filter)
+      .map((destination: Destination) => ({
+        label: destination.id,
+      }))
+  }
+
+  destinationsToFilteredAutocomplete(): any[] {
+    const { category } = this.state.form
+
+    const filter = (() => {
+      if (category.isTravel) {
+        return (destination: Destination) => destination.isTravel
+      }
+
+      if (category.isRestaurant) {
+        return category.isDeliverable ?
+          (destination: Destination) => destination.isRestaurant && destination.isDeliverable :
+          (destination: Destination) => destination.isRestaurant
+      }
+
+      return () => true
+    })()
+
+    return this.destinationsToAutoComplete(filter)
+  }
+
+  destinationsToPlayNameAutocomplete(): any[] {
+    return this.destinationsToAutoComplete((destination: Destination) => destination.isPlaying)
   }
 
   handleKeyPress = (evt: KeyboardEvent) => {
@@ -161,7 +203,8 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
 
   render() {
     const { form } = this.state
-    const { onClose } = this.props
+    const { category } = form
+    const { categories, onClose } = this.props
 
     return (
       <Overlay onClick={() => onClose()}>
@@ -176,7 +219,28 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
             className="PartyForm-form"
             onSubmit={this.handleSubmit}>
             <div className="form-row">
-              <div className="form-group col-sm-9">
+              <FormGroup className="col-sm-12">
+                <Label for="category">파티 종류</Label>
+                <ReactSelect
+                  id="category"
+                  autoFocus
+                  wrapperStyle={{ zIndex: 25 }}
+                  placeholder="파티 종류를 선택해주세요."
+                  options={categories}
+                  value={category}
+                  clearable={false}
+                  labelKey="name"
+                  valueKey="id"
+                  onChange={(selectedOption: any) => {
+                    if (selectedOption) {
+                      this.handleFormChange('category', selectedOption)
+                    }
+                  }}
+                />
+              </FormGroup>
+            </div>
+            <div className="form-row">
+              <FormGroup className="col-sm-12">
                 <label
                   htmlFor="title">
                   파티 제목
@@ -193,63 +257,16 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                       this.handleFormChange('title', e.currentTarget.value)
                   }
                 />
-              </div>
-              <div className="form-group col-sm-3 form-delivery">
-                <label htmlFor="isDelivery">배달음식?</label>
-                <input
-                  className="PartyForm__form-control form-control"
-                  type="checkbox"
-                  name="isDelivery"
-                  id="isDelivery"
-                  defaultChecked={form.isDelivery}
-                  onChange={(
-                    e: React.ChangeEvent<HTMLInputElement>,
-                  ) => this.handleFormChange('isDelivery', e.currentTarget.checked)}
-                />
-                <span className="showformobile">배달음식일 경우 체크해 주세요.</span>
-              </div>
-            </div>
-            <div className="form-group">
-              <label
-                htmlFor="category"
-              >
-                카테고리
-                </label>
-              <div className="PartyForm__inline">
-                {['점심', '저녁', '간식', '기타'].map(
-                  (category, i) => (
-                    <div
-                      key={category}
-                      className="PartyForm__checkbox form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="categoryOptions"
-                        id={`category-${i}`}
-                        value={category}
-                        checked={form.category === category}
-                        onChange={
-                          (e: React.FormEvent<HTMLInputElement>) =>
-                            this.handleFormChange('category', e.currentTarget.value)}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={`category-${i}`}
-                      >
-                        {category}
-                      </label>
-                    </div>
-                  ),
-                )
-                }
-              </div>
+              </FormGroup>
             </div>
             <div className="form-row">
-              <div className="form-group col-sm-9 Partyform__form-location">
-                <label
-                  htmlFor="destinationName">
-                  행선지
-              </label>
+              <FormGroup className="col-sm-9">
+                <Label
+                  for="destinationName">
+                  {
+                    category.isTravel ? '여행 장소' : '식당 이름'
+                  }
+                </Label>
                 <AutoComplete
                   inputProps={{
                     className: 'PartyForm__form-control form-control',
@@ -262,7 +279,7 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                     zIndex: 20,
                   }}
                   getItemValue={(item: any) => item.label}
-                  items={this.destinationsToAutocompleteData()}
+                  items={this.destinationsToFilteredAutocomplete()}
                   renderItem={(item, isHighlighted: boolean) => (
                     <div
                       key={item.label}
@@ -277,8 +294,8 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                       this.handleFormChange('destinationName', e.currentTarget.value)}
                   onSelect={(value: string) => this.handleFormChange('destinationName', value)}
                 />
-              </div>
-              <div className="form-group col-sm-3">
+              </FormGroup>
+              <FormGroup className="col-sm-3">
                 <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
                 <input
                   id="maxPartyMember"
@@ -290,12 +307,47 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                       this.handleFormChange('maxPartyMember', e.currentTarget.value)
                   }
                 />
-              </div>
+              </FormGroup>
             </div>
+            {
+              category.isPlaying &&
+              <div className="form-row">
+                <FormGroup className="col-sm-12">
+                  <Label for="playName">무엇을 하고 노나요?</Label>
+                  <AutoComplete
+                    inputProps={{
+                      className: 'PartyForm__form-control form-control',
+                      id: 'playName',
+                      placeholder: 'ex) 마리오 테니스, 배틀그라운드',
+                    }}
+                    wrapperStyle={{
+                      width: 'calc(100% - 10px)',
+                      position: 'absolute',
+                      zIndex: 20,
+                    }}
+                    getItemValue={(item: any) => item.label}
+                    items={this.destinationsToPlayNameAutocomplete()}
+                    renderItem={(item, isHighlighted: boolean) => (
+                      <div
+                        key={item.label}
+                        className="PartyForm__autocompleteItem"
+                        style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.label}
+                      </div>
+                    )}
+                    value={form.playName}
+                    onChange={
+                      (e: React.ChangeEvent<HTMLInputElement>) =>
+                        this.handleFormChange('playName', e.currentTarget.value)}
+                    onSelect={(value: string) => this.handleFormChange('playName', value)}
+                  />
+                </FormGroup>
+              </div>
+            }
             <div className="form-row">
-              <div className="form-group col-sm-6">
+              <FormGroup className="col-sm-6">
                 <label
-                  htmlFor="partyTime">언제 먹나요?</label>
+                  htmlFor="partyTime">{this.getPartyText(category)}</label>
                 <div className="PartyForm__form-control form-control">
                   <Flatpickr data-enable-time
                     value={form.partyTimeString}
@@ -303,26 +355,29 @@ export default class PartyForm extends React.Component<Props, PartyFormState> {
                     onChange={this.handlePartyTimeChange}
                   />
                 </div>
-              </div>
-              <div className="form-group col-sm-6">
-                <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
-                <div className="PartyForm__form-control form-control">
-                  <Flatpickr data-enable-time
-                    value={form.dueDateTimeString}
-                    options={{
-                      dateFormat: DATE_FORMAT,
-                      minDate: 'today',
-                      maxDate: `${form.partyTimeString}`,
-                    }}
-                    onChange={
-                      (date, str: string) =>
-                        this.handleFormChange('dueDateTimeString', str)}
-                  />
-                </div>
-              </div>
+              </FormGroup>
+              {
+                category.isRestaurant &&
+                <FormGroup className="col-sm-6">
+                  <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
+                  <div className="PartyForm__form-control form-control">
+                    <Flatpickr data-enable-time
+                      value={form.dueDateTimeString}
+                      options={{
+                        dateFormat: DATE_FORMAT,
+                        minDate: 'today',
+                        maxDate: `${form.partyTimeString}`,
+                      }}
+                      onChange={
+                        (date, str: string) =>
+                          this.handleFormChange('dueDateTimeString', str)}
+                    />
+                  </div>
+                </FormGroup>
+              }
             </div>
             <div className="form-group">
-              <label htmlFor="description">자세한 정보를 입력하세요</label>
+              <label htmlFor="description">파티에 대한 정보를 입력해주세요</label>
               <textarea
                 placeholder="파티를 설명해주세요!"
                 className="PartyForm__form-control form-control"

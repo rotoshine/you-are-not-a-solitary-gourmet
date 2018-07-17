@@ -11,6 +11,7 @@ import { findById, saveParty } from '../utils/party'
 type Props = & RouteComponentProps<any> & {
   userStore: IUserStore,
   destinationsStore: IDestinationsStore,
+  partyStore: IPartyStore,
   onClose: () => void,
 }
 
@@ -21,6 +22,7 @@ type State = {
 
 @inject((allStores: IAllStore) => ({
   userStore: allStores.userStore as IUserStore,
+  partyStore: allStores.partyStore as IPartyStore,
   destinationsStore: allStores.destinationsStore as IDestinationsStore,
 }))
 @observer
@@ -55,13 +57,16 @@ class PartyFormPage extends React.Component<Props, State> {
 
   handleSaveParty = async (partyFormData: PartyFormData) => {
     const { user } = this.props.userStore!
-    if (!user) return
+    const { categories } = this.props.partyStore
+
+    if (!user || !categories) return
 
     partyFormData.joinners = [
       user.email,
     ]
 
     await saveParty(partyFormData, user)
+
   }
 
   handleClose = () => {
@@ -70,10 +75,11 @@ class PartyFormPage extends React.Component<Props, State> {
 
   render() {
     const { isNowFetching, party } = this.state
-    const { destinationsStore } = this.props
+    const { destinationsStore, partyStore } = this.props
     const { destinations } = destinationsStore
+    const { categories } = partyStore
 
-    if (isNowFetching) {
+    if (isNowFetching || !categories) {
       return (
         <Overlay>
           <CenterText>
@@ -86,6 +92,7 @@ class PartyFormPage extends React.Component<Props, State> {
     return (
       <PartyForm
         party={party}
+        categories={categories}
         destinations={destinations}
         onSave={this.handleSaveParty}
         onClose={this.handleClose}

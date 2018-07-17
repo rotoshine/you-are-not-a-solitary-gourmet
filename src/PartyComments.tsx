@@ -11,7 +11,7 @@ import './PartyComments.css'
 
 type Props = {
   partyId: string,
-  user: User,
+  user: User | null,
 }
 
 type State = {
@@ -46,18 +46,20 @@ export default class PartyComments extends React.Component<Props, State> {
     const { partyComments, insertedComment } = this.state
     const { partyId, user } = this.props
 
-    const insertComment = {
-      partyId,
-      user,
-      content: insertedComment,
-      id: 'temp',
-    }
+    if (user) {
+      const insertComment = {
+        partyId,
+        user,
+        content: insertedComment,
+        id: 'temp',
+      }
 
-    await this.asyncSetState({
-      partyComments: partyComments ? [...partyComments, insertComment] : [insertComment],
-      insertedComment: '',
-    })
-    await savePartyComment(partyId, insertedComment, user)
+      await this.asyncSetState({
+        partyComments: partyComments ? [...partyComments, insertComment] : [insertComment],
+        insertedComment: '',
+      })
+      await savePartyComment(partyId, insertedComment, user)
+    }
   }
 
   handleCommentRemoveClick = async (commentId: string, index: number) => {
@@ -112,24 +114,27 @@ export default class PartyComments extends React.Component<Props, State> {
               </div>
             </li>
           ))}
-          {user &&
-            <li className="PartyComments__comment PartyComments__comment--input">
+
+          <li className="PartyComments__comment PartyComments__comment--input">
+            {user &&
               <img src={user.photoURL} alt={`${user.displayName} profile`} />
-              <div className="PartyComments__group">
-                <form onSubmit={this.handleAddComment}>
-                  <input
-                    type="text"
-                    className="MakeParty__form-control form-control"
-                    value={insertedComment}
-                    onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                      this.setState({
-                        insertedComment: e.currentTarget.value,
-                      })}
-                  />
-                </form>
-              </div>
-            </li>
-          }
+            }
+            <div className="PartyComments__group">
+              <form onSubmit={this.handleAddComment}>
+                <input
+                  type="text"
+                  className="MakeParty__form-control form-control"
+                  value={insertedComment}
+                  disabled={!user}
+                  placeholder={user ? '이 파티에 대해 의견을 남길 수 있어요.' : '로그인 후 파티에 대한 의견을 남길 수 있습나다.'}
+                  onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                    this.setState({
+                      insertedComment: e.currentTarget.value,
+                    })}
+                />
+              </form>
+            </div>
+          </li>
         </ul>
       </div>
     )

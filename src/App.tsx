@@ -16,10 +16,12 @@ import './App.css'
 interface Props { }
 interface InjectedProps extends Props {
   destinationsStore: IDestinationsStore,
+  partyStore: IPartyStore,
 }
 
 @inject((allStores: IAllStore) => ({
   destinationsStore: allStores.destinationsStore as IDestinationsStore,
+  partyStore: allStores.partyStore as IPartyStore,
 }))
 @observer
 class App extends React.Component<Props> {
@@ -34,33 +36,38 @@ class App extends React.Component<Props> {
   }
 
   render() {
+    const { partyStore } = this.props as InjectedProps
+    const { categories } = partyStore
+
     return (
       <div className="App">
         <AuthenticateHeader />
         <Router>
-          <React.Fragment>
-            <Route
-              path="/"
-              component={PartyListPage}
-            />
-            <Switch>
+          {categories &&
+            <React.Fragment>
               <Route
-                path="/parties/new"
-                component={PartyFormPage}
-                exact
+                path="/"
+                component={PartyListPage}
               />
-              <Route
-                path="/parties/:partyId"
-                component={PartyDetailPage}
-                exact
-              />
-              <Route
-                path="/parties/:partyId/edit"
-                component={PartyFormPage}
-                exact
-              />
-            </Switch>
-          </React.Fragment>
+              <Switch>
+                <Route
+                  path="/parties/new"
+                  component={PartyFormPage}
+                  exact
+                />
+                <Route
+                  path="/parties/:partyId"
+                  component={PartyDetailPage}
+                  exact
+                />
+                <Route
+                  path="/parties/:partyId/edit"
+                  component={PartyFormPage}
+                  exact
+                />
+              </Switch>
+            </React.Fragment>
+          }
         </Router>
         <Footer />
       </div>

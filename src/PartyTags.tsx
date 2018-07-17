@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { PartyTag, PartyTagLimit, PartyTagDelivery } from './PartyStyledComponents'
 
-type Props = {
+interface Props {
   party: Party,
 }
 
@@ -27,14 +27,18 @@ const renderMemberLimit = (party: Party) => {
   return <span>인원마감</span>
 }
 
-const PartyTags: React.SFC<Props> = ({ party }) => (
-  <div className="PartyTags">
-    {party.category && (
-      <PartyTag>{party.category}</PartyTag>
-    )}
-    <PartyTagLimit>{renderMemberLimit(party)}</PartyTagLimit>
-    {party.isDelivery && <PartyTagDelivery>배달음식</PartyTagDelivery>}
-  </div>
-)
+const PartyTags: React.SFC<Props> = ({ party }) => {
+  const { category } = party
+
+  return (
+    <div className="PartyTags">
+      {category.isRestaurant && <PartyTag>식사</PartyTag>}
+      {category.isDeliverable && <PartyTagDelivery>배달</PartyTagDelivery>}
+      {category.isPlaying && <PartyTag>놀이</PartyTag>}
+      {category.isTravel && <PartyTag>여행</PartyTag>}
+      <PartyTagLimit>{renderMemberLimit(party)}</PartyTagLimit>
+    </div>
+  )
+}
 
 export default PartyTags

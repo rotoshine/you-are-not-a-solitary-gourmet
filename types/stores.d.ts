@@ -6,6 +6,7 @@ declare interface IAllStore {
 
 declare interface IPartyStore {
   initializedParty: boolean
+  categories: Category[] | null
   parties: Party[] | null
   initializeParties(): void
 }
