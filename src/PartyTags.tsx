@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PartyTag } from './PartyStyledComponents'
+import { PartyTag, PartyTagLimit, PartyTagDelivery } from './PartyStyledComponents'
 
 type Props = {
   party: Party,
@@ -32,8 +32,8 @@ const PartyTags: React.SFC<Props> = ({ party }) => (
     {party.category && (
       <PartyTag>{party.category}</PartyTag>
     )}
-    <PartyTag>{renderMemberLimit(party)}</PartyTag>
-    {party.isDelivery && <PartyTag>배달음식</PartyTag>}
+    <PartyTagLimit>{renderMemberLimit(party)}</PartyTagLimit>
+    {party.isDelivery && <PartyTagDelivery>배달음식</PartyTagDelivery>}
   </div>
 )
 

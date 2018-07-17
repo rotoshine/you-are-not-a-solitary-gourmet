@@ -23,7 +23,6 @@ const PartyItem = styled.div`
   box-shadow: 0px 4px 16px 2px #6666663b;
   cursor: pointer;
   transition: all 0.2s ease;
-
   &:hover {
     transform: scale(0.98);
     box-shadow: 0px 4px 16px 2px #6666663b;
@@ -50,17 +49,17 @@ const PartyJoinners = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `
 
 const PartyJoinnerPhoto = styled.div`
   display: flex;
-
   img {
     width: 40px;
     height: 40px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    margin-right: 10px;
+    margin-right: -1.5rem;
   }
 `
 

@@ -27,17 +27,15 @@ const PartyDetailGroup = styled.div`
   width: 600px;
   background: white;
   padding: 4rem 3rem;
-  position: relative;
+  position: absolute;
+  top: 10rem;
   border-radius: 6px;
-  max-height: 90%;
-  overflow-y: scroll;
-
+  margin-bottom: 4rem;
   @media screen and (max-width: 600px) {
     border-radius: 0;
     width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    max-height: 100%;
+    top: 0;
+    margin-bottom: 0;
   }
 `
 const PartyDetailHeader = styled.div`
@@ -113,11 +111,6 @@ export default class PartyDetail extends React.Component<Props> {
                   >수정</HeaderButton>
                 </Link>
               )}
-              <Link to="/">
-                <HeaderButton
-                  className="btn btn-sm btn-danger"
-                >닫기</HeaderButton>
-              </Link>
             </div>
           </PartyDetailHeader>
           <div className="card-text">
@@ -188,7 +181,6 @@ export default class PartyDetail extends React.Component<Props> {
         </PartyDetailGroup>
       )
     }
-
     return null
   }
 }
