@@ -128,7 +128,10 @@ export default class PartyDetail extends React.Component<Props> {
                 }}
                 onLeaveParty={onLeaveParty} />
             </PartyJoinButtonWrapper>
-            <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+            {
+              party.category.hasDueDateTime && party.dueDateTime &&
+              <DueCountDown counterName="마감시간" dueDateTime={party.dueDateTime.toDate()} />
+            }
             <PartyDetailContents>
               <Block>
                 <h5>파티 상세 정보</h5>

@@ -4,6 +4,7 @@ import * as moment from 'moment'
 moment.locale('ko')
 
 type Props = {
+  counterName: string,
   dueDateTime: Date,
 }
 
@@ -50,11 +51,12 @@ export default class DueCountDown extends React.Component<Props, State> {
 
   render() {
     const { dueCountDown, now } = this.state
+    const { counterName } = this.props
 
     if (dueCountDown < now) {
       return (
         <DueCountDownWrapper>
-          마감시간 지났군요<span role="img" aria-label="cry-face">😢</span>
+          {counterName} 지났군요<span role="img" aria-label="cry-face">😢</span>
         </DueCountDownWrapper>
       )
     }
@@ -63,7 +65,7 @@ export default class DueCountDown extends React.Component<Props, State> {
 
     return (
       <DueCountDownWrapper>
-        마감까지 <DueCountDownTime>{durationTime}</DueCountDownTime> 남았습니다!
+        {counterName}까지 <DueCountDownTime>{durationTime}</DueCountDownTime> 남았습니다!
       </DueCountDownWrapper>
     )
   }

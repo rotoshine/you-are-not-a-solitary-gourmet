@@ -13,7 +13,13 @@ const isAlreadyJoin = (party: Party, user: User | null) =>
   party.fetchedJoinners &&
   party.fetchedJoinners.find((joinner: User) => joinner.email === user.email)
 
-const isFinished = (party: Party) => party.dueDateTime.toDate() < new Date()
+const isFinished = (party: Party) => {
+  if (party.category.hasDueDateTime && party.dueDateTime) {
+    return party.dueDateTime.toDate() < new Date()
+  }
+
+  return false
+}
 
 const PartyButton = styled.button`
   background: #FF7744;

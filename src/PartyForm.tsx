@@ -22,20 +22,51 @@ interface Props {
 
 interface State {
   form: {
+    isChanged: boolean,
     id?: string,
     category: Category,
     title: string,
     destinationName: string,
     playName: string,
     partyTimeString: string,
-    dueDateTimeString: string,
+    dueDateTimeString: string | null,
     description: string,
     maxPartyMember: number,
   },
+  selectedDueDateTime: DueDateTimeOption,
 }
 
+interface DueDateTimeOption {
+  label: string,
+  value: number,
+}
+
+const ONE_MINUTE = 1000 * 60
 const DATE_FORMAT = 'Y-m-d H:i'
 const { parseDate, formatDate } = flatpickr
+
+const dueDateTimeOptions = [
+  {
+    label: '5분 전',
+    value: ONE_MINUTE * 5,
+  },
+  {
+    label: '15분 전',
+    value: ONE_MINUTE * 10,
+  },
+  {
+    label: '삼십분 전',
+    value: ONE_MINUTE * 30,
+  },
+  {
+    label: '한 시간 전',
+    value: ONE_MINUTE * 60,
+  },
+  {
+    label: '하루 전',
+    value: ONE_MINUTE * 60 * 24,
+  },
+]
 
 export default class PartyForm extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -66,8 +97,10 @@ export default class PartyForm extends React.Component<Props, State> {
           description,
           maxPartyMember,
           partyTimeString: formatDate(partyTime.toDate(), DATE_FORMAT),
-          dueDateTimeString: formatDate(dueDateTime.toDate(), DATE_FORMAT),
+          dueDateTimeString: dueDateTime ? formatDate(dueDateTime.toDate(), DATE_FORMAT) : null,
+          isChanged: false,
         },
+        selectedDueDateTime: dueDateTimeOptions[0],
       }
     } else {
       this.state = {
@@ -80,7 +113,9 @@ export default class PartyForm extends React.Component<Props, State> {
           dueDateTimeString: formatDate(new Date(), DATE_FORMAT),
           description: '',
           maxPartyMember: 0,
+          isChanged: false,
         },
+        selectedDueDateTime: dueDateTimeOptions[0],
       }
     }
   }
@@ -91,6 +126,7 @@ export default class PartyForm extends React.Component<Props, State> {
       form: {
         ...form,
         [field]: value,
+        isChanged: true,
       },
     })
   }
@@ -122,7 +158,7 @@ export default class PartyForm extends React.Component<Props, State> {
       playName,
       maxPartyMember,
       partyTimeDate: parseDate(partyTimeString, DATE_FORMAT),
-      dueDateTimeDate: parseDate(dueDateTimeString, DATE_FORMAT),
+      dueDateTimeDate: dueDateTimeString ? parseDate(dueDateTimeString, DATE_FORMAT) : null,
     })
 
     onClose()
@@ -188,26 +224,67 @@ export default class PartyForm extends React.Component<Props, State> {
     return this.destinationsToAutoComplete((destination: Destination) => destination.isPlaying)
   }
 
+  calculateDueDateTime = (partyTimeString: string, duration: number): string | null => {
+    const partyTime = parseDate(partyTimeString, DATE_FORMAT)
+
+    if (partyTime) {
+      return formatDate(
+        new Date(partyTime.getTime() - duration),
+        DATE_FORMAT,
+      )
+    }
+
+    return null
+  }
+
   handleKeyPress = (evt: KeyboardEvent) => {
     if (evt.keyCode !== ESC) return
     this.handleClose()
   }
 
   handleClose = () => {
-    this.props.onClose()
+    if (this.state.form.isChanged) {
+      if (confirm('작성 중인 내용이 날라가도 괜찮습니까?')) {
+        this.props.onClose()
+      }
+    } else {
+      this.props.onClose()
+    }
+
   }
 
   handlePartyTimeChange = (date: any, str: string) => {
     this.handleFormChange('partyTimeString', str)
+
+    if (this.state.form.category.hasDueDateTime) {
+      this.handleDueDateTimeChange(this.state.selectedDueDateTime)
+    }
+  }
+
+  handleDueDateTimeChange = (selectedOption: DueDateTimeOption) => {
+    if (selectedOption) {
+      const { form } = this.state
+      const { partyTimeString } = form
+
+      this.setState({
+        form: {
+          ...form,
+          dueDateTimeString: this.calculateDueDateTime(
+            partyTimeString, selectedOption.value,
+          ),
+        },
+        selectedDueDateTime: selectedOption,
+      })
+    }
   }
 
   render() {
-    const { form } = this.state
+    const { form, selectedDueDateTime } = this.state
     const { category } = form
-    const { categories, onClose } = this.props
+    const { categories } = this.props
 
     return (
-      <Overlay onClick={() => onClose()}>
+      <Overlay onClick={this.handleClose}>
         <CloseBtn />
         <div className="PartyForm-group"
           onClick={(evt: any) => evt.stopPropagation()}
@@ -357,20 +434,18 @@ export default class PartyForm extends React.Component<Props, State> {
                 </div>
               </FormGroup>
               {
-                category.isRestaurant &&
+                category.hasDueDateTime &&
                 <FormGroup className="col-sm-6">
-                  <label htmlFor="dueDateTime">파티 모집 마감 시간</label>
+                  <Label for="dueDateTime">파티 모집 마감 시간</Label>
                   <div className="PartyForm__form-control form-control">
-                    <Flatpickr data-enable-time
-                      value={form.dueDateTimeString}
-                      options={{
-                        dateFormat: DATE_FORMAT,
-                        minDate: 'today',
-                        maxDate: `${form.partyTimeString}`,
-                      }}
-                      onChange={
-                        (date, str: string) =>
-                          this.handleFormChange('dueDateTimeString', str)}
+                    <ReactSelect
+                      id="dueDateTime"
+                      wrapperStyle={{ zIndex: 25 }}
+                      placeholder="파티 마감 시간을 선택해주세요."
+                      options={dueDateTimeOptions}
+                      value={selectedDueDateTime ? selectedDueDateTime : undefined}
+                      clearable={false}
+                      onChange={this.handleDueDateTimeChange}
                     />
                   </div>
                 </FormGroup>

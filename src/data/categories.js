@@ -1,11 +1,13 @@
 export default [
   {
     id: 'MEAL_LUNCH',
-    name: '점심식사',
+    name: '점심식사',    
     isDeliverable: false,
     isRestaurant: true,
     isPlaying: false,
     isTravel: false,
+    hasDueDateTime: false,
+    emoji: '🍱',
   },
   {
     id: 'MEAL_LUNCH_DELIVERY',
@@ -14,6 +16,8 @@ export default [
     isRestaurant: true,
     isPlaying: false,
     isTravel: false,
+    hasDueDateTime: true,
+    emoji: '🏍🍱',
   },
   {
     id: 'MEAL_DINNER',
@@ -22,6 +26,8 @@ export default [
     isRestaurant: true,
     isPlaying: false,
     isTravel: false,
+    hasDueDateTime: false,
+    emoji: '🥘',
   },
   {
     id: 'MEAL_DINNER_DELIVERY',
@@ -30,6 +36,18 @@ export default [
     isRestaurant: true,
     isPlaying: false,
     isTravel: false,
+    hasDueDateTime: true,
+    emoji: '🏍🥘',
+  },
+  {
+    id: 'SNACK',
+    name: '간식',
+    isDeliverable: false,
+    isRestaurant: true,
+    isPlaying: false,
+    isTravel: false,
+    hasDueDateTime: false,
+    emoji: '☕',
   },
   {
     id: 'MEAL_AFTER_GAME',
@@ -38,6 +56,8 @@ export default [
     isRestaurant: true,
     isPlaying: true,
     isTravel: false,
+    hasDueDateTime: true,
+    emoji: '🏍🍱 ➡ 🎮',
   },
   {
     id: 'TRAVEL',
@@ -46,6 +66,8 @@ export default [
     isRestaurant: false,
     isPlaying: false,
     isTravel: true,
+    hasDueDateTime: true,
+    emoji: '🏖',
   },
   {
     id: 'PLAY',
@@ -54,5 +76,7 @@ export default [
     isRestaurant: false,
     isPlaying: true,
     isTravel: false,
+    hasDueDateTime: false,
+    emoji: '🏄',
   },
 ]

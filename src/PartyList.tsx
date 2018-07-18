@@ -85,7 +85,7 @@ export default class PartyList extends React.Component<Props> {
   }
 
   alreadyDeadline = (party: Party) => {
-    return party.dueDateTime.toDate() < new Date()
+    return party.dueDateTime && party.dueDateTime.toDate() < new Date()
   }
 
   renderMemberLimit(party: Party) {
@@ -138,7 +138,13 @@ export default class PartyList extends React.Component<Props> {
                       }
                       <PartyItemInfoText>
                         <span>{moment(party.partyTime.toDate()).format('YYYY.MM.DD HH:mm')}</span>
-                        <DueCountDown dueDateTime={party.dueDateTime.toDate()} />
+                        {
+                          party.category.hasDueDateTime && party.dueDateTime &&
+                          <DueCountDown
+                            counterName="마감시간"
+                            dueDateTime={party.dueDateTime.toDate()}
+                          />
+                        }
                       </PartyItemInfoText>
                     </div>
                     <PartyJoinners>
