@@ -68,6 +68,7 @@ const Categories: React.SFC<Props> = ({ selectedCategory, onSelect }) => (
     </CategoryItem>
     {categories.map((category: Category) => (
       <CategoryItem
+        key={category.id}
         onClick={() => onSelect(category)}>
         {selectedCategory &&
           selectedCategory.id === category.id &&

@@ -19,8 +19,8 @@ import {
 type Props = {
   party: Party,
   user: User | null,
-  onJoinParty: Function,
-  onLeaveParty: Function,
+  onJoinParty: (partyId: string, email:string) => void,
+  onLeaveParty: (partyId: string, email:string) => void,
 }
 
 const PartyDetailGroup = styled.div`
@@ -119,11 +119,11 @@ export default class PartyDetail extends React.Component<Props> {
               <PartyJoinButton
                 user={user}
                 party={party}
-                onJoinParty={() => {
+                onJoinParty={(partyId: string, email: string) => {
                   if (!user) {
                     alert('로그인 후 참여할 수 있습니다.')
                   } else {
-                    onJoinParty()
+                    onJoinParty(partyId, email)
                   }
                 }}
                 onLeaveParty={onLeaveParty} />
