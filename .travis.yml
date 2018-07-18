@@ -7,7 +7,7 @@ cache:
 script:
 - npm run build
 before_deploy:
-- cd functions && yarn && cd ..
+- cd functions && npm install && cd ..
 deploy:
   provider: firebase
   skip_cleanup: true
