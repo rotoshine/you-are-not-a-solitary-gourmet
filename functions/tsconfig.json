@@ -12,6 +12,7 @@
     "src"
   ],
   "files": [
+    "../types/model.d.ts",
     "node_modules/typescript/lib/lib.es6.d.ts"
   ],
   "exclude": [

@@ -3,13 +3,27 @@ import express = require('express')
 import * as functions from 'firebase-functions'
 import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore'
 import * as admin from 'firebase-admin'
-
 import * as cors from 'cors'
+import * as hangul from 'hangul-js'
 
 admin.initializeApp();
 
 const app = express()
 app.use(cors({ origin: true }));
+
+const createDescription = (party: Party) => {
+  const { category, destinationName, playName } = party
+ 
+  if (category.isTravel) {
+    return `${destinationName}${hangul.endsWithConsonant(destinationName) ? '로' : '으로'} 떠나는 여행에 참여하세요!`
+  } else if (category.isRestaurant && category.isPlaying) {
+    return `${destinationName} 먹고 ${playName} 할 사람 모여요!`
+  } else if (!category.isRestaurant && category.isPlaying) {
+    return `${playName} 하고 놀 사람 모여요!`
+  }
+
+  return `${destinationName}에서 벌어지는 파티에 참여하세요!`
+}
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -32,11 +46,11 @@ app.get('/parties/:partyId', async (req, res): Promise<any> => {
         .get()
         .then((query: DocumentSnapshot) => {
           if (query.exists) {
-            const party = query.data()
+            const party = <Party>query.data()
             res.set('Content-Type', 'text/html')
 
             const title = `안 고독한 미식가 - ${party.title}`
-            const description = `${party.destinationName}에서 벌어지는 파티에 참여하세요.`
+            const description = createDescription(party)
 
             const url = `https://${functions.config().angomi.domain}/${partyId}`
 
