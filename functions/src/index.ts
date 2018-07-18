@@ -19,8 +19,8 @@ app.use(cors({ origin: true }));
 // });
 app.get('/parties/:partyId', async (req, res): Promise<any> => {
   const { partyId } = req.params
-  
-  fs.readFile('./index.html', 'utf8', (err, htmlString) => {    
+
+  fs.readFile('./index.html', 'utf8', (err, htmlString) => {
     if (err) {
       console.error(err.message)
       res.redirect('/')
@@ -30,14 +30,14 @@ app.get('/parties/:partyId', async (req, res): Promise<any> => {
         .collection('parties')
         .doc(partyId)
         .get()
-        .then((query: DocumentSnapshot) => {          
+        .then((query: DocumentSnapshot) => {
           if (query.exists) {
             const party = query.data()
             res.set('Content-Type', 'text/html')
 
             const title = `안 고독한 미식가 - ${party.title}`
             const description = `${party.destinationName}에서 벌어지는 파티에 참여하세요.`
-            내
+
             const url = `https://${functions.config().angomi.domain}/${partyId}`
 
             let replacedHTML = htmlString.replace(
@@ -69,7 +69,7 @@ app.get('/parties/:partyId', async (req, res): Promise<any> => {
               `<meta name="identifier-URL" content="${url}" />`
             )
 
-            console.log(replacedHTML)
+            console.log(`${title} visited.`)
             res.send(new Buffer(replacedHTML))
           } else {
             res.redirect('/')
