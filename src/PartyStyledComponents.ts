@@ -57,3 +57,19 @@ export const PartyItemInfoText = styled.p`
   margin-bottom: 0.4rem;
   font-size: 1.6rem;
 `
+
+export const Categories = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem 0 6rem 0;
+`
+
+export const CategoryBlock = styled.div`
+  width: 160px;
+  height: 140px;
+  border-radius: 4px;
+  background: ${props => props.color};
+  box-shadow: 0px 4px 16px 2px #6666663b;
+  cursor: pointer;
+  margin-right: 1rem;
+`

@@ -2,6 +2,8 @@ import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import styled from 'styled-components'
 
+import PartyList from '../PartyList'
+
 type Props = {
   partyStore: IPartyStore,
   userStore: IUserStore,
@@ -44,7 +46,7 @@ class MyPage extends React.Component<Props> {
   }
 
   render() {
-    const { partyStore } = this.props
+    const { partyStore, userStore } = this.props
     const { myCreatedParties, myCreatedPartiesFetchStatus } = partyStore
 
     return (
@@ -63,6 +65,20 @@ class MyPage extends React.Component<Props> {
           </ul>
         </div>
         <h3>내가 참여한 파티</h3>
+        {myCreatedParties && (
+          <React.Fragment>
+              <div className="APP_text-group">
+                <h3
+                  className="App__text-black">
+                    다가오는 파티 <span role="img" aria-label="eyes">👀</span>
+                </h3>
+                <PartyList
+                  user={userStore.user!}
+                  parties={myCreatedParties}
+                />
+              </div>
+            </React.Fragment>
+        )}
       </div>
     )
   }
