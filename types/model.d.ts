@@ -28,14 +28,14 @@ declare interface PartyCommonProps {
 }
 
 declare interface Party extends PartyCommonProps {
-  dueDateTime: FirestoreDateType
+  dueDateTime: FirestoreDateType | null
   partyTime: FirestoreDateType
   fetchedJoinners?: User[]
 }
 
 declare interface PartyFormData extends PartyCommonProps {
   partyTimeDate: Date
-  dueDateTimeDate: Date
+  dueDateTimeDate: Date | null
 }
 
 declare interface CategoryMeta {
@@ -43,6 +43,7 @@ declare interface CategoryMeta {
   isDeliverable: boolean
   isTravel: boolean
   isPlaying: boolean
+  hasDueDateTime?: boolean
 }
 
 declare interface Destination extends CategoryMeta {
@@ -64,5 +65,6 @@ declare interface PartyComment {
 
 declare interface Category extends CategoryMeta {
   id: string,
-  name: string
+  name: string,
+  emoji: string,
 }

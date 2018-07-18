@@ -2,13 +2,18 @@ import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
+import Categories from '../Categories'
 import PartyList from '../PartyList'
 
 import { unsubscribeTodayParties } from '../utils/party'
 
-type Props = {
-  partyStore?: IPartyStore,
-  userStore?: IUserStore,
+interface Props {
+  partyStore?: IPartyStore
+  userStore?: IUserStore
+}
+
+interface State {
+  selectedCategory: Category | null
 }
 
 @inject((allStores: IAllStore) => ({
@@ -16,7 +21,11 @@ type Props = {
   partyStore: allStores.partyStore as IPartyStore,
 }))
 @observer
-class PartyListPage extends React.Component<Props> {
+class PartyListPage extends React.Component<Props, State> {
+  state = {
+    selectedCategory: null,
+  }
+
   componentDidMount() {
     this.initializeParties()
   }
@@ -31,7 +40,19 @@ class PartyListPage extends React.Component<Props> {
     initializeParties()
   }
 
+  filteredParties = (selectedCategory: Category, parties: Party[]): Party[] => (
+    parties.filter((party: Party) => (
+      selectedCategory.id === party.category.id
+    ))
+  )
+
+  handleCategorySelect = (selectedCategory: Category) => {
+    this.setState({
+      selectedCategory: this.state.selectedCategory !== selectedCategory ? selectedCategory : null,
+    })
+  }
   render() {
+    const { selectedCategory } = this.state
     const { user } = this.props.userStore!
     const { initializedParty, parties } = this.props.partyStore!
 
@@ -44,9 +65,16 @@ class PartyListPage extends React.Component<Props> {
         }
         {
           initializedParty && parties && (
-            <h3 className="App__text-black">
-              다가오는 파티 <span role="img" aria-label="eyes">👀</span>
-            </h3>
+            <React.Fragment>
+              <h3 className="App__text-black">
+                어떤파티를 찾나요? 🎉
+                <Categories selectedCategory={selectedCategory} onSelect={this.handleCategorySelect}
+                />
+              </h3>
+              <h3 className="App__text-black">
+                다가오는 파티 <span role="img" aria-label="eyes">👀</span>
+              </h3>
+            </React.Fragment>
           )
         }
 
@@ -54,7 +82,7 @@ class PartyListPage extends React.Component<Props> {
           <React.Fragment>
             <PartyList
               user={user}
-              parties={parties}
+              parties={selectedCategory ? this.filteredParties(selectedCategory, parties) : parties}
             />
             <Link to="/parties/new">
               <button className="App__button make">파티만들기</button>

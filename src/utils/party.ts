@@ -67,7 +67,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
     destinationName,
     playName,
     partyTime: new Date(partyTimeDate),
-    dueDateTime: new Date(dueDateTimeDate),
+    dueDateTime: dueDateTimeDate ? new Date(dueDateTimeDate) : null,
     createdBy: user.email,
   }
 
@@ -96,6 +96,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
       isRestaurant: category.isRestaurant,
       isPlaying: category.isPlaying,
       isTravel: category.isTravel,
+      hasDueDateTime: category.hasDueDateTime,
     })
 
     if (category.isPlaying && playName.length > 0) {
