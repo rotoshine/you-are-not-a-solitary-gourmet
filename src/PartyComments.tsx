@@ -108,7 +108,7 @@ export default class PartyComments extends React.Component<Props, State> {
                 <div className="PartyComments__commentContent comment-text">
                   <p className="PartyComments__commentline">{comment.content}</p>
                   <div className="partyComments__createdAt comment-text">
-                    {comment.createdAt ? moment().fromNow(comment.createdAt.toDate()) : '작성 중'}
+                    {comment.createdAt ? moment(comment.createdAt.toDate()).fromNow() : '작성 중'}
                   </div>
                 </div>
               </div>
