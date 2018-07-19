@@ -34,12 +34,22 @@ const CategoryItem = styled.li`
     box-shadow: 0 10px 20px 3px #00000020;
     transform: translateY(-5px);
   }
+
+  @media screen and (max-width: 560px) {
+    width: 27%;
+    height: 80px;
+    padding: 5px;
+  }
 `
 
 const SelectedCategory = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
+
+  @media screen and (max-width: 560px) {
+    display: none;
+  }
 `
 
 const CategoryEmoji = styled.p`
@@ -47,6 +57,10 @@ const CategoryEmoji = styled.p`
   line-height: 3rem;
   margin-bottom: 2px;
   display: inline-block;
+
+  @media screen and (max-width: 560px) {
+    display: none;
+  }
 `
 
 const CategoryName = styled.p`
@@ -55,6 +69,14 @@ const CategoryName = styled.p`
   letter-spacing: .1rem;
   word-break: keep-all;
   height: 3rem;
+
+  @media screen and (max-width: 560px) {
+    font-size: 1.5rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `
 
 const Categories: React.SFC<Props> = ({ selectedCategory, onSelect }) => (
