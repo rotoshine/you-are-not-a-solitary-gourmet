@@ -336,56 +336,60 @@ export default class PartyForm extends React.Component<Props, State> {
                 />
               </FormGroup>
             </div>
-            <div className="form-row">
-              <FormGroup className="col-sm-9">
-                <Label
-                  for="destinationName">
-                  {
-                    category.isTravel ? '여행 장소' : '식당 이름'
-                  }
-                </Label>
-                <AutoComplete
-                  inputProps={{
-                    className: 'PartyForm__form-control form-control',
-                    id: 'destinationName',
-                    placeholder: '식당, 장소이름을 입력해 주세요',
-                  }}
-                  wrapperStyle={{
-                    width: 'calc(100% - 10px)',
-                    position: 'absolute',
-                    zIndex: 20,
-                  }}
-                  getItemValue={(item: any) => item.label}
-                  items={this.destinationsToFilteredAutocomplete()}
-                  renderItem={(item, isHighlighted: boolean) => (
-                    <div
-                      key={item.label}
-                      className="PartyForm__autocompleteItem"
-                      style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                      {item.label}
-                    </div>
-                  )}
-                  value={form.destinationName}
-                  onChange={
-                    (e: React.ChangeEvent<HTMLInputElement>) =>
-                      this.handleFormChange('destinationName', e.currentTarget.value)}
-                  onSelect={(value: string) => this.handleFormChange('destinationName', value)}
-                />
-              </FormGroup>
-              <FormGroup className="col-sm-3">
-                <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
-                <input
-                  id="maxPartyMember"
-                  className="PartyForm__form-control form-control"
-                  type="number"
-                  value={form.maxPartyMember}
-                  onChange={
-                    (e: React.FormEvent<HTMLInputElement>) =>
-                      this.handleFormChange('maxPartyMember', e.currentTarget.value)
-                  }
-                />
-              </FormGroup>
-            </div>
+            {
+              category.isRestaurant &&
+
+              <div className="form-row">
+                <FormGroup className="col-sm-9">
+                  <Label
+                    for="destinationName">
+                    {
+                      category.isTravel ? '여행 장소' : '식당 이름'
+                    }
+                  </Label>
+                  <AutoComplete
+                    inputProps={{
+                      className: 'PartyForm__form-control form-control',
+                      id: 'destinationName',
+                      placeholder: '식당, 장소이름을 입력해 주세요',
+                    }}
+                    wrapperStyle={{
+                      width: 'calc(100% - 10px)',
+                      position: 'absolute',
+                      zIndex: 20,
+                    }}
+                    getItemValue={(item: any) => item.label}
+                    items={this.destinationsToFilteredAutocomplete()}
+                    renderItem={(item, isHighlighted: boolean) => (
+                      <div
+                        key={item.label}
+                        className="PartyForm__autocompleteItem"
+                        style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.label}
+                      </div>
+                    )}
+                    value={form.destinationName}
+                    onChange={
+                      (e: React.ChangeEvent<HTMLInputElement>) =>
+                        this.handleFormChange('destinationName', e.currentTarget.value)}
+                    onSelect={(value: string) => this.handleFormChange('destinationName', value)}
+                  />
+                </FormGroup>
+                <FormGroup className="col-sm-3">
+                  <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
+                  <input
+                    id="maxPartyMember"
+                    className="PartyForm__form-control form-control"
+                    type="number"
+                    value={form.maxPartyMember}
+                    onChange={
+                      (e: React.FormEvent<HTMLInputElement>) =>
+                        this.handleFormChange('maxPartyMember', e.currentTarget.value)
+                    }
+                  />
+                </FormGroup>
+              </div>
+            }
             {
               category.isPlaying &&
               <div className="form-row">
