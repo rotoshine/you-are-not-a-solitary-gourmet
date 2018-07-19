@@ -54,32 +54,21 @@ class AuthenticateHeader extends React.Component<Props> {
             </div>
           </div>
         )}
-        {userInitialized && !isExistUser && (
-          <div className="App__constraint">
-            <div className="App__header">
-              <GoogleLoginButton />
-            </div>
-            <div className="App__intro">
-              <div className="App__container container">
-                <small>안 고독한 미식가</small>
-                <h2 className="App__container-header">오늘도 혼자인가요?</h2>
-                <h2 className="App__container-header">더이상 혼자 먹지 마세요.</h2>
-                <p className="App__text">다양한 파티에 참여해보세요. 로그인 후 이용할 수 있습니다.</p>
-              </div>
-            </div>
-          </div>
-        )}
-        {userInitialized && isExistUser && (
+        {userInitialized && (
           <div className="App">
             <div className="App__header">
-              <form>
-                <button
-                  className="App__button"
-                  onClick={signOut}
-                >
-                  로그아웃
-                </button>
-              </form>
+              {
+                isExistUser ? (
+                  <form>
+                    <button
+                      className="App__button"
+                      onClick={signOut}
+                    >
+                      로그아웃
+                    </button>
+                  </form>
+                ) : <GoogleLoginButton />
+              }
             </div>
             <div className="App__intro App__intro-member">
               <div className="App__container container">
