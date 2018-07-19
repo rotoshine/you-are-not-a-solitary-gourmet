@@ -28,6 +28,7 @@
   font-size: 1.6rem;
   width: 90%;
   display: inline-block;
+  word-break: keep-all;
 }
 
 .PartyComments__commentUser {
@@ -104,4 +105,14 @@
 
 .PartyComments__comment .MakeParty__form-control {
   font-size: 1.6rem;
+}
+
+@media screen and (max-width: 560px) {
+  .PartyComments__commentline {
+    width: 85%;
+  }
+  
+  .partyComments__createdAt {
+    font-size: 1rem;
+  }
 }
