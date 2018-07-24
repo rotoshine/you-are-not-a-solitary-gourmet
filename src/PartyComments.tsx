@@ -16,13 +16,21 @@ type Props = {
 
 type State = {
   insertedComment: string,
+  editComment: string,
   partyComments: PartyComment[],
+  editCommentIndex: number,
+  nowEditCommentUpdating: boolean,
 }
 
 export default class PartyComments extends React.Component<Props, State> {
+  $editInput: HTMLInputElement | null = null
+
   state = {
     insertedComment: '',
+    editComment: '',
     partyComments: [],
+    editCommentIndex: -1,
+    nowEditCommentUpdating: false,
   }
 
   componentDidMount() {
@@ -31,6 +39,12 @@ export default class PartyComments extends React.Component<Props, State> {
     })
   }
 
+  componentDidUpdate() {
+    if (this.$editInput) {
+      this.$editInput.focus()
+      this.$editInput = null
+    }
+  }
   componentWillUnmount() {
     unsubscibeComments()
   }
@@ -51,33 +65,84 @@ export default class PartyComments extends React.Component<Props, State> {
         partyId,
         user,
         content: insertedComment,
-        id: 'temp',
       }
 
       await this.asyncSetState({
         partyComments: partyComments ? [...partyComments, insertComment] : [insertComment],
         insertedComment: '',
       })
-      await savePartyComment(partyId, insertedComment, user)
+      await savePartyComment(insertComment)
     }
   }
 
-  handleCommentRemoveClick = async (commentId: string, index: number) => {
-    if (this.state.partyComments) {
+  handleCommentEditClick = (index: number) => {
+    const { partyComments } = this.state
+
+    if (partyComments && partyComments[index]) {
+      const editTargetComment = partyComments[index] as PartyComment
+      this.setState({
+        editComment: editTargetComment.content,
+        editCommentIndex: index,
+      })
+    }
+  }
+
+  handleCommentEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    await this.asyncSetState({
+      nowEditCommentUpdating: true,
+    })
+
+    const { partyComments, editCommentIndex, editComment } = this.state
+    const updateTargetComment = partyComments[editCommentIndex] as PartyComment
+
+    if (updateTargetComment) {
+      const { id, partyId, user } = updateTargetComment
+      const updateComment = {
+        id,
+        partyId,
+        user,
+        content: editComment,
+      }
+
+      await savePartyComment(updateComment)
+    }
+
+    await this.asyncSetState({
+      nowEditCommentUpdating: false,
+      editComment: '',
+      editCommentIndex: -1,
+    })
+  }
+  handleCommentRemoveClick = async (commentId: string | undefined, index: number) => {
+    if (commentId && this.state.partyComments) {
       // 낙관적 업데이트
       const partyComments = [...this.state.partyComments]
       partyComments.splice(index, 1)
-      await this.asyncSetState({
-        partyComments,
-      })
-
+      await this.asyncSetState({ partyComments })
       await removePartyComment(commentId)
     }
+  }
 
+  renderMoment(comment: PartyComment) {
+    const momentTarget = comment.isEdited ? comment.updatedAt : comment.createdAt
+
+    if (momentTarget) {
+      return moment(momentTarget.toDate()).fromNow()
+    }
+
+    return null
   }
 
   render() {
-    const { partyComments, insertedComment } = this.state
+    const {
+      partyComments,
+      insertedComment,
+      editCommentIndex,
+      editComment,
+      nowEditCommentUpdating,
+    } = this.state
     const { user } = this.props
 
     return (
@@ -99,17 +164,50 @@ export default class PartyComments extends React.Component<Props, State> {
               <div className="PartyComments__group">
                 <div className="PartyComments__commentUser comment-text">
                   <span>{comment.user.displayName}</span>
-                  {user && comment.createdBy === user.email &&
-                    <button
-                      className="btn btn-sm btn-light"
-                      onClick={() => this.handleCommentRemoveClick(comment.id, i)}>삭제</button>
+                  {user &&
+                    comment.createdBy === user.email &&
+                    <div className="PartyComments__buttons">
+                      <button
+                        className="btn btn-sm btn-info"
+                        onClick={() => this.handleCommentEditClick(i)}>수정</button>
+                      <button
+                        className="btn btn-sm btn-light"
+                        onClick={() => this.handleCommentRemoveClick(comment.id, i)}>삭제</button>
+                    </div>
                   }
                 </div>
                 <div className="PartyComments__commentContent comment-text">
-                  <p className="PartyComments__commentline">{comment.content}</p>
-                  <div className="partyComments__createdAt comment-text">
-                    {comment.createdAt ? moment(comment.createdAt.toDate()).fromNow() : '작성 중'}
-                  </div>
+                  {
+                    editCommentIndex === i ?
+                      (
+                        <form onSubmit={this.handleCommentEditSubmit}>
+                          <input
+                            ref={input => this.$editInput = input}
+                            className="PartyComments__commentline"
+                            type="text"
+                            value={editComment}
+                            disabled={nowEditCommentUpdating}
+                            onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                              this.setState({
+                                editComment: e.currentTarget.value,
+                              })}
+                            onBlur={this.handleCommentEditSubmit}
+                          />
+                        </form>
+                      ) : (
+                        <React.Fragment>
+                          <p className="PartyComments__commentline">
+                            {comment.isEdited ? (
+                              <span className="PartyComments__edited">(edited)</span>
+                            ) : ''}
+                            {comment.content}
+                          </p>
+                          <div className="partyComments__createdAt comment-text">
+                            {this.renderMoment(comment)}
+                          </div>
+                        </React.Fragment>
+                      )
+                  }
                 </div>
               </div>
             </li>

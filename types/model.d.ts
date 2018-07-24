@@ -51,16 +51,23 @@ declare interface Destination extends CategoryMeta {
   partyCreatedCount: number
 }
 
-declare interface PartyComment {
-  id: string
+declare interface PartyCommentFormData {
+  id?: string
   partyId: string
   content: string
-  isDisplay: boolean
   user: User
+}
+
+declare interface PartyComment extends PartyCommentFormData {  
+  isDisplay: boolean
+  isEdited: boolean  
   createdAt: {
     toDate: Function
   }
   createdBy: string
+  updatedAt?: {
+    toDate: Function
+  }  
 }
 
 declare interface Category extends CategoryMeta {

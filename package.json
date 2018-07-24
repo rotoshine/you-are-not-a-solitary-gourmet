@@ -48,6 +48,7 @@
     "mobx-react-devtools": "^5.0.1",
     "react-app-rewired": "^1.5.2",
     "tslint-config-airbnb": "^5.9.2",
+    "tslint-config-prettier": "^1.14.0",
     "typescript": "^2.9.2"
   }
 }

@@ -26,7 +26,7 @@
 .PartyComments__commentline {
   line-height: 1.5;
   font-size: 1.6rem;
-  width: 90%;
+  width: 85%;
   display: inline-block;
   word-break: keep-all;
 }
@@ -42,8 +42,9 @@
   font-size: 1.6rem;
 }
 
-.PartyComments__commentUser button {
+.PartyComments__buttons {
   position: absolute;
+  top: 0;
   right: 1rem;
   font-size: 1.4rem;
 }
@@ -85,7 +86,7 @@
 .partyComments__createdAt {
   color: gray;
   line-height: 1 !important;
-  width: 10%;
+  width: 15%;
   display: inline-block;
   text-align: right;
 }
@@ -105,6 +106,12 @@
 
 .PartyComments__comment .MakeParty__form-control {
   font-size: 1.6rem;
+}
+
+.PartyComments__edited {
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
 }
 
 @media screen and (max-width: 560px) {
