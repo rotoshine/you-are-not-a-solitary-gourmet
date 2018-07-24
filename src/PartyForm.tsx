@@ -336,10 +336,9 @@ export default class PartyForm extends React.Component<Props, State> {
                 />
               </FormGroup>
             </div>
-            {
-              category.isRestaurant &&
 
-              <div className="form-row">
+            <div className="form-row">
+              {category.isRestaurant ? (
                 <FormGroup className="col-sm-9">
                   <Label
                     for="destinationName">
@@ -375,23 +374,26 @@ export default class PartyForm extends React.Component<Props, State> {
                     onSelect={(value: string) => this.handleFormChange('destinationName', value)}
                   />
                 </FormGroup>
-                <FormGroup className="col-sm-3">
-                  <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
-                  <input
-                    id="maxPartyMember"
-                    className="PartyForm__form-control form-control"
-                    type="number"
-                    value={form.maxPartyMember}
-                    onChange={
-                      (e: React.FormEvent<HTMLInputElement>) =>
-                        this.handleFormChange('maxPartyMember', e.currentTarget.value)
-                    }
-                  />
-                </FormGroup>
-              </div>
-            }
-            {
-              category.isPlaying &&
+              ) : (
+                  <FormGroup className="col-sm-9" />
+                )
+              }
+              <FormGroup className="col-sm-3">
+                <label htmlFor="maxPartyMember">인원 (무제한:0)</label>
+                <input
+                  id="maxPartyMember"
+                  className="PartyForm__form-control form-control"
+                  type="number"
+                  value={form.maxPartyMember}
+                  onChange={
+                    (e: React.FormEvent<HTMLInputElement>) =>
+                      this.handleFormChange('maxPartyMember', e.currentTarget.value)
+                  }
+                />
+              </FormGroup>
+            </div>
+
+            {category.isPlaying &&
               <div className="form-row">
                 <FormGroup className="col-sm-12">
                   <Label for="playName">무엇을 하고 노나요?</Label>

@@ -80,7 +80,7 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
         updatedAt: new Date(),
       })
 
-      await sendSlackNotifyMessage(category, false, title, partyForm.id)
+      // await sendSlackNotifyMessage(category, false, title, partyForm.id)
     }
 
   } else {
@@ -99,8 +99,8 @@ export const saveParty = async (partyForm: PartyFormData, user: User) => {
       hasDueDateTime: category.hasDueDateTime,
     })
 
-    if (category.isPlaying && playName.length > 0) {
-      await saveDestination(destinationName, {
+    if (category.isPlaying && playName && playName.length > 0) {
+      await saveDestination(playName, {
         isDeliverable: false,
         isRestaurant: false,
         isTravel: false,
