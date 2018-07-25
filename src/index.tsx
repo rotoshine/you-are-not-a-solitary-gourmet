@@ -11,7 +11,7 @@ import App from './App'
 
 import stores from './stores'
 
-import registerServiceWorker from './registerServiceWorker'
+import { unregister } from './registerServiceWorker'
 
 ReactDOM.render(
   (
@@ -21,4 +21,4 @@ ReactDOM.render(
   ),
   document.getElementById('root') as HTMLDivElement,
 )
-registerServiceWorker()
+unregister()
