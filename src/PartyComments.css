@@ -15,7 +15,7 @@
   font-size: 1.6rem;
 }
 
-.PartyComments__comment img {
+.PartyComments__comment .PartyComments__userImage {
   width: 25px;
   height: 25px;
   border-radius: 13px;
