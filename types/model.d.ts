@@ -58,20 +58,44 @@ declare interface PartyCommentFormData {
   user: User
 }
 
-declare interface PartyComment extends PartyCommentFormData {  
+declare interface PartyComment extends PartyCommentFormData {
   isDisplay: boolean
-  isEdited: boolean  
+  isEdited: boolean
   createdAt: {
     toDate: Function
   }
   createdBy: string
   updatedAt?: {
     toDate: Function
-  }  
+  }
 }
 
 declare interface Category extends CategoryMeta {
   id: string,
   name: string,
   emoji: string,
+}
+
+declare interface GiphySearchResult {
+  data: Giphy[] 
+}
+
+declare interface Giphy {
+  type: string
+  id: string
+  slug: string
+  url: string
+  bitlyUrl: string
+  embedUrl: string
+  username: string
+  source: string
+  rating: string
+  sourcePostUrl: string
+  images: {
+    fixedHeight: {
+      url: string
+      width: number
+      height: number
+    }
+  }
 }

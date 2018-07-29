@@ -6,7 +6,10 @@
     "axios": "^0.18.0",
     "bluebird": "^3.5.1",
     "bootstrap": "^4.1.1",
+    "es6-promise": "^4.2.4",
     "firebase": "^5.1.0",
+    "humps": "^2.0.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.10",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
@@ -33,6 +36,7 @@
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.21",
+    "@types/humps": "^1.1.2",
     "@types/jest": "^23.1.5",
     "@types/lodash": "^4.14.111",
     "@types/moment": "^2.13.0",
