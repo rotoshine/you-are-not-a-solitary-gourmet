@@ -13,8 +13,8 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "firebase-admin": "~5.12.1",
-    "firebase-functions": "^3.3.0",
+    "firebase-admin": "~11.4.1",
+    "firebase-functions": "^3.24.1",
     "hangul-js": "^0.2.4"
   },
   "devDependencies": {
